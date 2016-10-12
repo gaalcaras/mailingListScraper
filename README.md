@@ -11,10 +11,10 @@ For now, this scraper only supports the Linux Kernel Mailing List, using this pu
 
 ## Set up
 
-Make sure to install [scrapy](https://doc.scrapy.org/en/latest/intro/install.html) first.
+Make sure to install [scrapy](https://doc.scrapy.org/en/latest/intro/install.html) and the dependencies first.
 
 ```
-pip install scrapy
+pip install scrapy python-dateutil
 ```
 
 Clone the repo and `cd` into it. You're done!

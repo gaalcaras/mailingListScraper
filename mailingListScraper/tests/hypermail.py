@@ -4,6 +4,7 @@
 import unittest
 from mailingListScraper.tests.validationCase import validationCase
 from mailingListScraper.pipelines import CleanReplyto
+from mailingListScraper.pipelines import ParseTimeFields
 
 from mailingListScraper.spiders.hypermail import HypermailSpider
 import re
@@ -63,9 +64,22 @@ class TestPipelines(TestBase):
                                                      self.spider)
 
                 # Compare test and validation data
-                for item, trueValue in case.finalItem.items():
-                    with self.subTest(item=item):
-                        self.assertEqual(trueValue, testItem[item])
+                self.assertEqual(case.finalItem['replyto'],
+                                 testItem['replyto'])
+
+    def testParseTimeFields(self):
+        for caseId in self.cases:
+            with self.subTest(caseId=caseId):
+                # Create a validation case and generate test data
+                case = validationCase(caseId)
+                testItem = ParseTimeFields.process_item(self, case.rawItem,
+                                                        self.spider)
+
+                # Compare test and validation data
+                self.assertEqual(case.finalItem['timestampSent'],
+                                 testItem['timestampSent'])
+                self.assertEqual(case.finalItem['timestampReceived'],
+                                 testItem['timestampReceived'])
 
 if __name__ == '__main__':
     unittest.main()

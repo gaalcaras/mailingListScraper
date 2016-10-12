@@ -10,6 +10,8 @@ from scrapy.exporters import CsvItemExporter
 
 import re
 import os
+from dateutil.parser import parse as dateParser
+from dateutil import tz
 
 
 class GenerateId(object):
@@ -33,6 +35,29 @@ class CleanReplyto(object):
         page = re.search('(.*)\.html', item['replyto']).group(1)
         yearMonth = re.search('(.*-)\d{4}$', item['emailId']).group(1)
         item['replyto'] = yearMonth + page
+
+        return item
+
+
+class ParseTimeFields(object):
+
+    def process_item(self, item, spider):
+        times = {
+                'timestampSent': dateParser(item['timeSent']),
+                'timestampReceived': dateParser(item['timeReceived'])
+        }
+
+        timeFormat = "%Y-%m-%d %H:%M:%S%z"
+
+        # Define a default time zone according to the email server setting
+        if spider.name == 'hypermail':
+            defTZ = tz.tzoffset('EST', -18000)
+
+        for key, val in times.items():
+            if val.tzinfo is None:
+                val = val.replace(tzinfo=defTZ)
+
+            item[key] = val.strftime(timeFormat)
 
         return item
 
@@ -68,8 +93,10 @@ class CsvExport(object):
         self.files[spider] = file
         self.exporter = CsvItemExporter(file)
         self.exporter.fields_to_export = ['emailId', 'replyto', 'senderName',
-                                          'senderEmail', 'timeSent',
-                                          'timeReceived', 'subject', 'url']
+                                          'senderEmail',
+                                          'timeSent', 'timestampSent',
+                                          'timeReceived', 'timestampReceived',
+                                          'subject', 'url']
         self.exporter.start_exporting()
 
     def spider_closed(self, spider):

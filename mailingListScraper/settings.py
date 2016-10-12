@@ -27,6 +27,7 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
    'mailingListScraper.pipelines.GenerateId': 100,
    'mailingListScraper.pipelines.CleanReplyto': 200,
+   'mailingListScraper.pipelines.ParseTimeFields': 300,
    'mailingListScraper.pipelines.BodyExport': 800,
    'mailingListScraper.pipelines.CsvExport': 900,
 }

@@ -13,7 +13,9 @@
     "senderName": "Richard B. Johnson",
     "senderEmail": "root@chaos.analogic.com",
     "timeSent": "Mon, 25 Jun 2001 12:52:59 -0400 (EDT)",
+    "timestampSent": "2001-06-25 12:52:59-0400",
     "timeReceived": "Mon Jun 25 11:54:46 2001",
+    "timestampReceived": "2001-06-25 11:54:46-0500",
     "subject": "Re: Making a module 2.4 compatible",
     "url": "http://lkml.iu.edu/hypermail/linux/kernel/0106.3/0269.html"
   }
