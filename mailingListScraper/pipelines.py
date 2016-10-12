@@ -10,6 +10,7 @@ from scrapy.exporters import CsvItemExporter
 
 import re
 import os
+from datetime import datetime
 from dateutil.parser import parse as dateParser
 from dateutil import tz
 
@@ -17,10 +18,11 @@ from dateutil import tz
 class GenerateId(object):
 
     def process_item(self, item, spider):
-        url = re.search('kernel/(.*)\.html', item['url']).group(1)
-        cleaned = url.replace('/', '-')
-        cleaned = cleaned.replace('.', '-')
-        item['emailId'] = cleaned
+        timeFormat = "%Y-%m-%d %H:%M:%S%z"
+        timestamp = datetime.strptime(item['timestampReceived'], timeFormat)
+
+        idFormat = "%Y%m%d-%H%M%S"
+        item['emailId'] = timestamp.strftime(idFormat)
 
         return item
 
@@ -28,13 +30,14 @@ class GenerateId(object):
 class CleanReplyto(object):
 
     def process_item(self, item, spider):
+        print(item['replyto'])
         if item['replyto'] == '':
             item['replyto'] = 'NA'
             return item
 
-        page = re.search('(.*)\.html', item['replyto']).group(1)
-        yearMonth = re.search('(.*-)\d{4}$', item['emailId']).group(1)
-        item['replyto'] = yearMonth + page
+        urlBase = re.search('^(.*)/\d{4}\.html', item['url']).group(1)
+        print(urlBase)
+        item['replyto'] = urlBase + '/' + item['replyto']
 
         return item
 
@@ -43,8 +46,8 @@ class ParseTimeFields(object):
 
     def process_item(self, item, spider):
         times = {
-                'timestampSent': dateParser(item['timeSent']),
-                'timestampReceived': dateParser(item['timeReceived'])
+                'timestampSent': 'timeSent',
+                'timestampReceived': 'timeReceived'
         }
 
         timeFormat = "%Y-%m-%d %H:%M:%S%z"
@@ -54,10 +57,16 @@ class ParseTimeFields(object):
             defTZ = tz.tzoffset('EST', -18000)
 
         for key, val in times.items():
-            if val.tzinfo is None:
-                val = val.replace(tzinfo=defTZ)
+            if item[val] == "":
+                item[val] = "NA"
+                item[key] = "NA"
 
-            item[key] = val.strftime(timeFormat)
+            parsedTime = dateParser(item[val])
+
+            if parsedTime.tzinfo is None:
+                parsedTime = parsedTime.replace(tzinfo=defTZ)
+
+            item[key] = parsedTime.strftime(timeFormat)
 
         return item
 
@@ -92,11 +101,11 @@ class CsvExport(object):
         file = open(destFilePath, 'w+b')
         self.files[spider] = file
         self.exporter = CsvItemExporter(file)
-        self.exporter.fields_to_export = ['emailId', 'replyto', 'senderName',
+        self.exporter.fields_to_export = ['emailId', 'senderName',
                                           'senderEmail',
                                           'timeSent', 'timestampSent',
                                           'timeReceived', 'timestampReceived',
-                                          'subject', 'url']
+                                          'subject', 'url', 'replyto']
         self.exporter.start_exporting()
 
     def spider_closed(self, spider):

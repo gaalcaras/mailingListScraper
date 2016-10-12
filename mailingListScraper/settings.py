@@ -25,9 +25,9 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'mailingListScraper.pipelines.GenerateId': 100,
-   'mailingListScraper.pipelines.CleanReplyto': 200,
-   'mailingListScraper.pipelines.ParseTimeFields': 300,
+   'mailingListScraper.pipelines.ParseTimeFields': 100,
+   'mailingListScraper.pipelines.GenerateId': 200,
+   'mailingListScraper.pipelines.CleanReplyto': 300,
    'mailingListScraper.pipelines.BodyExport': 800,
    'mailingListScraper.pipelines.CsvExport': 900,
 }
