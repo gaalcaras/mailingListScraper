@@ -1,0 +1,20 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Richard B. Johnson",
+    "senderEmail": "root@chaos.analogic.com",
+    "timeSent": "Mon, 25 Jun 2001 12:52:59 -0400 (EDT)",
+    "timeReceived": "Mon Jun 25 11:54:46 2001",
+    "subject": "Re: Making a module 2.4 compatible",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0106.3/0269.html"
+  },
+  "pipelineOutput": {
+    "replyto": "NA",
+    "senderName": "Richard B. Johnson",
+    "senderEmail": "root@chaos.analogic.com",
+    "timeSent": "Mon, 25 Jun 2001 12:52:59 -0400 (EDT)",
+    "timeReceived": "Mon Jun 25 11:54:46 2001",
+    "subject": "Re: Making a module 2.4 compatible",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0106.3/0269.html"
+  }
+}

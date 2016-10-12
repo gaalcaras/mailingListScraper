@@ -1,0 +1,20 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Chris Dent",
+    "senderEmail": "cdent@detritus.ucs.indiana.edu",
+    "timeSent": "Fri, 23 Jun 1995 16:37:56 -0500",
+    "timeReceived": "Fri Jun 23 16:32:53 1995 EST",
+    "subject": "New Mailing Archives",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9506/0000.html"
+  },
+  "pipelineOutput": {
+    "replyto": "NA",
+    "senderName": "Chris Dent",
+    "senderEmail": "cdent@detritus.ucs.indiana.edu",
+    "timeSent": "Fri, 23 Jun 1995 16:37:56 -0500",
+    "timeReceived": "Fri Jun 23 16:32:53 1995 EST",
+    "subject": "New Mailing Archives",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9506/0000.html"
+  }
+}
