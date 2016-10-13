@@ -109,12 +109,14 @@ class TestPipelineGenerateId(TestBase):
 
     def testRealData(self):
         pipeline = GenerateId()
+        parseTime = ParseTimeFields()
 
         for caseId in self.cases:
             with self.subTest(caseId=caseId):
                 # Create a validation case and generate test data
                 case = validationCase(caseId)
-                testItem = pipeline.process_item(case.finalItem, self.spider)
+                testItem = parseTime.process_item(case.rawItem, self.spider)
+                testItem = pipeline.process_item(testItem, self.spider)
 
                 # Compare test and validation data
                 self.assertEqual(case.finalItem['emailId'],
