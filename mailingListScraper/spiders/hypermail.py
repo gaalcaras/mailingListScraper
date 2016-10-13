@@ -13,7 +13,7 @@ class HypermailSpider(scrapy.Spider):
     start_urls = (
         'http://lkml.iu.edu/hypermail/linux/kernel/9506/0000.html',
         'http://lkml.iu.edu/hypermail/linux/kernel/0106.3/0269.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/0007.1/1040.html',
+        'http://lkml.iu.edu/hypermail/linux/kernel/0008.3/0094.html',
         'http://lkml.iu.edu/hypermail/linux/kernel/0211.2/0196.html',
         'http://lkml.iu.edu/hypermail/linux/kernel/9910.1/0253.html',
         'http://lkml.iu.edu/hypermail/linux/kernel/9704.1/0107.html',
@@ -37,7 +37,8 @@ class HypermailSpider(scrapy.Spider):
 
         load.add_value('url', response.url)
 
-        replytoPattern = '//ul[1]/li[contains(b, "In reply to:")]/a/@href'
+        replytoPattern = '//ul[1]/li[contains((b|strong), "In reply to:")]'
+        replytoPattern += '/a/@href'
         link = response.xpath(replytoPattern).extract()
 
         if len(link) == 0:
