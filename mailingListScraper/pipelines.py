@@ -68,6 +68,7 @@ class ParseTimeFields(object):
             if item[val] == "":
                 item[val] = "NA"
                 item[key] = "NA"
+                continue
 
             parsedTime = dateParser(item[val])
 

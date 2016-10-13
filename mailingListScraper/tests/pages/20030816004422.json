@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "0009.html",
+    "senderName": "Matt Mackall",
+    "senderEmail": "mpm@selenic.com",
+    "timeSent": "Sat, 16 Aug 2003 01:44:22 -0400",
+    "timeReceived": "Sat Aug 16 2003 - 00:44:22 EST",
+    "subject": "Re: [RFC][PATCH] Make cryptoapi non-optional?",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0308.2/0009.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20030816004422,
+    "replyto": "http://lkml.iu.edu/hypermail/linux/kernel/0308.2/0009.html",
+    "senderName": "Matt Mackall",
+    "senderEmail": "mpm@selenic.com",
+    "timeSent": "Sat, 16 Aug 2003 01:44:22 -0400",
+    "timestampSent": "2003-08-16 01:44:22-0400",
+    "timeReceived": "Sat Aug 16 2003 - 00:44:22 EST",
+    "timestampReceived": "2003-08-16 00:44:22-0500",
+    "subject": "Re: [RFC][PATCH] Make cryptoapi non-optional?",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0308.2/0009.html"
+  }
+}

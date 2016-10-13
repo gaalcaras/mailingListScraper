@@ -6,7 +6,8 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from scrapy.loader.processors import Join
+from scrapy.loader.processors import Join, MapCompose
+from w3lib.html import replace_entities
 
 
 class Email(scrapy.Item):
@@ -15,7 +16,10 @@ class Email(scrapy.Item):
     replyto = scrapy.Field(output_processor=Join())
     senderName = scrapy.Field(output_processor=Join())
     senderEmail = scrapy.Field(output_processor=Join())
-    timeSent = scrapy.Field(output_processor=Join())
+    timeSent = scrapy.Field(
+            input_processor=MapCompose(replace_entities),
+            output_processor=Join()
+            )
     timestampSent = scrapy.Field()
     timeReceived = scrapy.Field(output_processor=Join())
     timestampReceived = scrapy.Field()

@@ -1,0 +1,83 @@
+On Fri, Aug 15, 2003 at 10:03:24PM -0700, Andrew Morton wrote:<br>
+&gt;<i> Matt Mackall &lt;mpm@xxxxxxxxxxx&gt; wrote:</i><br>
+&gt;<i> &gt;</i><br>
+&gt;<i> &gt; a) extract_entropy (pool-&gt;lock)</i><br>
+&gt;<i> &gt; </i><br>
+&gt;<i> &gt; ...</i><br>
+&gt;<i> &gt; </i><br>
+&gt;<i> &gt;  [There was also a cute sleeping problem here with random_read.</i><br>
+&gt;<i> &gt;  random_read used old-style open-coded sleeping, marked itself</i><br>
+&gt;<i> &gt;  TASK_INTERRUPTIBLE, then called extract_entropy, which would do a</i><br>
+&gt;<i> &gt;  conditional reschedule, and fall asleep until the next wake up,</i><br>
+&gt;<i> &gt;  despite having enough entropy to fulfill the request.]</i><br>
+&gt;<i> </i><br>
+&gt;<i> OK.  There was no description of all this in your initial patch, so I don't</i><br>
+&gt;<i> know which patches solve these problems.</i><br>
+<br>
+Almost all of this was in the first locking patch, which was probably<br>
+shorter than this description.<br>
+<br>
+&gt;<i> &gt; ...</i><br>
+&gt;<i> &gt;  [By the way, whoever did the workqueue conversion for 2.5 changed this</i><br>
+&gt;<i> &gt;  code to wakeup the processing worker when the sample pool was half</i><br>
+&gt;<i> &gt;  full rather on every sample but got the test not quite right.</i><br>
+&gt;<i> </i><br>
+&gt;<i> That would have been me.  The context switch rate due to</i><br>
+&gt;<i> add_disk_randomness() was much too high (1000/sec iirc), so that was an</i><br>
+&gt;<i> attempt to reduce the wakeup rate.</i><br>
+&gt;<i> </i><br>
+&gt;<i> What we really should try to do is to not pass the work to keventd at all:</i><br>
+&gt;<i> just do the entropy addition right there in interrupt context, with</i><br>
+&gt;<i> appropriate locking.</i><br>
+<br>
+Agreed, will add to my list.<br>
+<br>
+&gt;<i> &gt; f) change_poolsize (queued for resend)</i><br>
+&gt;<i> </i><br>
+&gt;<i> Queued for resend because I just didn't know what to do with the patches.</i><br>
+&gt;<i> </i><br>
+&gt;<i> I do not understand the random driver, and judging from the past couple of</i><br>
+&gt;<i> days discussions I'm not likely to.  I don't know how to test it and I</i><br>
+&gt;<i> doubt if anyone else is testing it in sufficient depth.</i><br>
+<br>
+Ok, well this piece remains oopsable by inspection, though it is root<br>
+only. See free_entropy_store:<br>
+<br>
+        if (r-&gt;pool)<br>
+                kfree(r-&gt;pool);<br>
+        kfree(r);<br>
+<br>
+..while r and r-&gt;pool are potentially being used concurrently.<br>
+<br>
+&gt;<i> And, to add to my dilemma, the random driver is security-related and</i><br>
+&gt;<i> something which scary propellor-headed types get all emotional about :)</i><br>
+&gt;<i></i><br>
+&gt;<i> So getting these changes in will be hard.  It would help a lot if they</i><br>
+&gt;<i> could be presented individually and that Ted, Jamie and/or other interested</i><br>
+&gt;<i> parties were to review and ack them.</i><br>
+<br>
+Ok. I've significantly improved the instrumentation and will be happy<br>
+to post test cases along with my next fixes too. All the controversial<br>
+things are at the end of my queue, as well (the present controversy<br>
+was not about something I'd submitted for inclusion). <br>
+<br>
+If anyone's interested, I have a preliminary Debian package for NIST's<br>
+RNG statistical test suite too (though this is only good as a sanity<br>
+check).<br>
+ <br>
+&gt;<i> &gt; g) urandom starves/races random (queued for resend)</i><br>
+&gt;<i> </i><br>
+&gt;<i> hrm.  That's one which I actually understood.  There is yet hope.</i><br>
+<br>
+I can probably break this into a bunch of pieces if the two its<br>
+already in don't seem obvious enough on their own.<br>
+<br>
+-- <br>
+Matt Mackall : <a  href="http://www.selenic.com">http://www.selenic.com</a> : of or relating to the moon<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+

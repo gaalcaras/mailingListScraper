@@ -14,14 +14,17 @@ import re
 class TestBase(unittest.TestCase):
     def setUp(self):
         self.spider = HypermailSpider()
-        self.cases = [19950623163756,
+        self.cases = [
+                      19950623163756,
                       19960629003529,
                       19970409195757,
                       19980323182147,
                       19991008202739,
                       20000824142828,
                       20010625115259,
-                      20021117003913]
+                      20021117003913,
+                      20030816004422
+                      ]
         self.maxDiff = None
 
 

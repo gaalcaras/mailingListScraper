@@ -1,0 +1,172 @@
+<!-- MHonArc v2.6.6 -->
+<!--X-Subject: Re: [RFC][PATCH] Make cryptoapi non&#45;optional? -->
+<!--X-From-R13: [ngg [npxnyy <zczNfryravp.pbz> -->
+<!--X-Date: Sat, 16 Aug 2003 01:44:22 &#45;0400 -->
+<!--X-Message-Id: 20030816053947.GE325@waste.org -->
+<!--X-Content-Type: text/plain -->
+<!--X-Reference: 20030809173329.GU31810@waste.org -->
+<!--X-Reference: Mutt.LNX.4.44.0308102317470.7218&#45;100000@excalibur.intercode.com.au -->
+<!--X-Reference: 20030810174528.GZ31810@waste.org -->
+<!--X-Reference: 20030813032038.GA1244@think -->
+<!--X-Reference: 20030813040614.GP31810@waste.org -->
+<!--X-Reference: 20030815221211.GA4306@think -->
+<!--X-Reference: 20030815235501.GB325@waste.org -->
+<!--X-Reference: 20030815170532.06e14e89.akpm@osdl.org -->
+<!--X-Reference: 20030816043816.GC325@waste.org -->
+<!--X-Reference: 20030815220324.1be2950b.akpm@osdl.org -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: Re: [RFC][PATCH] Make cryptoapi non-optional?</title>
+<meta NAME="Author" CONTENT="Matt Mackall &lt;mpm@selenic.com&gt;">
+<meta NAME="Subject" CONTENT="Re: [RFC][PATCH] Make cryptoapi non-optional?">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>Re: [RFC][PATCH] Make cryptoapi non-optional?</h1>
+<strong>From: </strong>Matt Mackall
+<br><strong>Date: </strong> Sat Aug 16 2003 - 00:44:22 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="0013.html"> Sven Schnelle: "Re: FBDEV updates."</a>
+
+<li><strong>Previous message: </strong> <a href="0011.html"> Wilbert Cope: "VALIUM4U OR XANAX4U OR MERIDAI4Uq kntcnydahtn  ujlddoeutkbruddzrptosibifartauovyspdttr pttadgz iwul f kec lpbszbrxl o"</a>
+
+<li><strong>In reply to: </strong> <a href="0009.html"> Andrew Morton: "Re: [RFC][PATCH] Make cryptoapi non-optional?"</a>
+
+<li><strong>Next in thread: </strong> <a href="0384.html"> Andreas Dilger: "Re: [RFC][PATCH] Make cryptoapi non-optional?"</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#0012">[ date ]</a> <a href="index.html#0012">[ thread ]</a> <a href="subject.html#0012">[ subject ]</a> <a href="author.html#0012">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+On Fri, Aug 15, 2003 at 10:03:24PM -0700, Andrew Morton wrote:<br>
+&gt;<i> Matt Mackall &lt;mpm@xxxxxxxxxxx&gt; wrote:</i><br>
+&gt;<i> &gt;</i><br>
+&gt;<i> &gt; a) extract_entropy (pool-&gt;lock)</i><br>
+&gt;<i> &gt; </i><br>
+&gt;<i> &gt; ...</i><br>
+&gt;<i> &gt; </i><br>
+&gt;<i> &gt;  [There was also a cute sleeping problem here with random_read.</i><br>
+&gt;<i> &gt;  random_read used old-style open-coded sleeping, marked itself</i><br>
+&gt;<i> &gt;  TASK_INTERRUPTIBLE, then called extract_entropy, which would do a</i><br>
+&gt;<i> &gt;  conditional reschedule, and fall asleep until the next wake up,</i><br>
+&gt;<i> &gt;  despite having enough entropy to fulfill the request.]</i><br>
+&gt;<i> </i><br>
+&gt;<i> OK.  There was no description of all this in your initial patch, so I don't</i><br>
+&gt;<i> know which patches solve these problems.</i><br>
+<br>
+Almost all of this was in the first locking patch, which was probably<br>
+shorter than this description.<br>
+<br>
+&gt;<i> &gt; ...</i><br>
+&gt;<i> &gt;  [By the way, whoever did the workqueue conversion for 2.5 changed this</i><br>
+&gt;<i> &gt;  code to wakeup the processing worker when the sample pool was half</i><br>
+&gt;<i> &gt;  full rather on every sample but got the test not quite right.</i><br>
+&gt;<i> </i><br>
+&gt;<i> That would have been me.  The context switch rate due to</i><br>
+&gt;<i> add_disk_randomness() was much too high (1000/sec iirc), so that was an</i><br>
+&gt;<i> attempt to reduce the wakeup rate.</i><br>
+&gt;<i> </i><br>
+&gt;<i> What we really should try to do is to not pass the work to keventd at all:</i><br>
+&gt;<i> just do the entropy addition right there in interrupt context, with</i><br>
+&gt;<i> appropriate locking.</i><br>
+<br>
+Agreed, will add to my list.<br>
+<br>
+&gt;<i> &gt; f) change_poolsize (queued for resend)</i><br>
+&gt;<i> </i><br>
+&gt;<i> Queued for resend because I just didn't know what to do with the patches.</i><br>
+&gt;<i> </i><br>
+&gt;<i> I do not understand the random driver, and judging from the past couple of</i><br>
+&gt;<i> days discussions I'm not likely to.  I don't know how to test it and I</i><br>
+&gt;<i> doubt if anyone else is testing it in sufficient depth.</i><br>
+<br>
+Ok, well this piece remains oopsable by inspection, though it is root<br>
+only. See free_entropy_store:<br>
+<br>
+        if (r-&gt;pool)<br>
+                kfree(r-&gt;pool);<br>
+        kfree(r);<br>
+<br>
+..while r and r-&gt;pool are potentially being used concurrently.<br>
+<br>
+&gt;<i> And, to add to my dilemma, the random driver is security-related and</i><br>
+&gt;<i> something which scary propellor-headed types get all emotional about :)</i><br>
+&gt;<i></i><br>
+&gt;<i> So getting these changes in will be hard.  It would help a lot if they</i><br>
+&gt;<i> could be presented individually and that Ted, Jamie and/or other interested</i><br>
+&gt;<i> parties were to review and ack them.</i><br>
+<br>
+Ok. I've significantly improved the instrumentation and will be happy<br>
+to post test cases along with my next fixes too. All the controversial<br>
+things are at the end of my queue, as well (the present controversy<br>
+was not about something I'd submitted for inclusion). <br>
+<br>
+If anyone's interested, I have a preliminary Debian package for NIST's<br>
+RNG statistical test suite too (though this is only good as a sanity<br>
+check).<br>
+ <br>
+&gt;<i> &gt; g) urandom starves/races random (queued for resend)</i><br>
+&gt;<i> </i><br>
+&gt;<i> hrm.  That's one which I actually understood.  There is yet hope.</i><br>
+<br>
+I can probably break this into a bunch of pieces if the two its<br>
+already in don't seem obvious enough on their own.<br>
+<br>
+-- <br>
+Matt Mackall : <a  href="http://www.selenic.com">http://www.selenic.com</a> : of or relating to the moon<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+
+
+
+
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="0013.html"> Sven Schnelle: "Re: FBDEV updates."</a>
+
+<li><strong>Previous message: </strong> <a href="0011.html"> Wilbert Cope: "VALIUM4U OR XANAX4U OR MERIDAI4Uq kntcnydahtn  ujlddoeutkbruddzrptosibifartauovyspdttr pttadgz iwul f kec lpbszbrxl o"</a>
+
+<li><strong>In reply to: </strong> <a href="0009.html"> Andrew Morton: "Re: [RFC][PATCH] Make cryptoapi non-optional?"</a>
+
+<li><strong>Next in thread: </strong> <a href="0384.html"> Andreas Dilger: "Re: [RFC][PATCH] Make cryptoapi non-optional?"</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#0012">[ date ]</a> <a href="index.html#0012">[ thread ]</a> <a href="subject.html#0012">[ subject ]</a> <a href="author.html#0012">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>
