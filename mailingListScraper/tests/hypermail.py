@@ -57,24 +57,26 @@ class TestPipelines(TestBase):
     """
 
     def testCleanReplyto(self):
+        pipeline = CleanReplyto()
+
         for caseId in self.cases:
             with self.subTest(caseId=caseId):
                 # Create a validation case and generate test data
                 case = validationCase(caseId)
-                testItem = CleanReplyto.process_item(self, case.rawItem,
-                                                     self.spider)
+                testItem = pipeline.process_item(case.rawItem, self.spider)
 
                 # Compare test and validation data
                 self.assertEqual(case.finalItem['replyto'],
                                  testItem['replyto'])
 
     def testParseTimeFields(self):
+        pipeline = ParseTimeFields()
+
         for caseId in self.cases:
             with self.subTest(caseId=caseId):
                 # Create a validation case and generate test data
                 case = validationCase(caseId)
-                testItem = ParseTimeFields.process_item(self, case.rawItem,
-                                                        self.spider)
+                testItem = pipeline.process_item(case.rawItem, self.spider)
 
                 # Compare test and validation data
                 self.assertEqual(case.finalItem['timestampSent'],
@@ -87,6 +89,7 @@ class TestPipelineGenerateId(TestBase):
 
     def testIdFormat(self):
         item = {'timestampReceived': '1995-06-20 12:35:45-0500'}
+
         pipeline = GenerateId()
         result = pipeline.process_item(item, self.spider)
 
