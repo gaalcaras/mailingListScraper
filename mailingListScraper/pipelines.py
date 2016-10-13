@@ -40,13 +40,11 @@ class GenerateId(object):
 class CleanReplyto(object):
 
     def process_item(self, item, spider):
-        print(item['replyto'])
         if item['replyto'] == '':
             item['replyto'] = 'NA'
             return item
 
         urlBase = re.search('^(.*)/\d{4}\.html', item['url']).group(1)
-        print(urlBase)
         item['replyto'] = urlBase + '/' + item['replyto']
 
         return item
