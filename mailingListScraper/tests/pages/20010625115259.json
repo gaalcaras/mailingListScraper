@@ -1,6 +1,6 @@
 {
   "itemOutput": {
-    "replyto": "",
+    "replyto": "0262.html",
     "senderName": "Richard B. Johnson",
     "senderEmail": "root@chaos.analogic.com",
     "timeSent": "Mon, 25 Jun 2001 12:52:59 -0400 (EDT)",
@@ -9,7 +9,8 @@
     "url": "http://lkml.iu.edu/hypermail/linux/kernel/0106.3/0269.html"
   },
   "pipelineOutput": {
-    "replyto": "NA",
+    "emailId": 20010625115446,
+    "replyto": "http://lkml.iu.edu/hypermail/linux/kernel/0106.3/0262.html",
     "senderName": "Richard B. Johnson",
     "senderEmail": "root@chaos.analogic.com",
     "timeSent": "Mon, 25 Jun 2001 12:52:59 -0400 (EDT)",
