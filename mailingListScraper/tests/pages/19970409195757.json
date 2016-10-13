@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "David S. Miller",
+    "senderEmail": "davem@jenolan.rutgers.edu",
+    "timeSent": "Wed, 9 Apr 1997 20:19:09 -0400",
+    "timeReceived": "Wed Apr  9 19:57:57 1997 EST",
+    "subject": "Re: 2.0.29 Oops - NULL deref in ip_defrag",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9704.1/0107.html"
+  },
+  "pipelineOutput": {
+    "emailId": 19970409195757,
+    "replyto": "NA",
+    "senderName": "David S. Miller",
+    "senderEmail": "davem@jenolan.rutgers.edu",
+    "timeSent": "Wed, 9 Apr 1997 20:19:09 -0400",
+    "timestampSent": "1997-04-09 20:19:09-0400",
+    "timeReceived": "Wed Apr  9 19:57:57 1997 EST",
+    "timestampReceived": "1997-04-09 19:57:57-0500",
+    "subject": "Re: 2.0.29 Oops - NULL deref in ip_defrag",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9704.1/0107.html"
+  }
+}

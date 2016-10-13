@@ -1,0 +1,14 @@
+<i>&gt; What NETBEUI does is take reasonable NETBIOS packets and encapsulates</i><br>
+<i>&gt; them inside the BROADCAST packets shown above. Now you get 1500-byte</i><br>
+<i>&gt; packets that are received by everybody on the LAN. Everybody gets</i><br>
+<i>&gt; interrupted and has to throw the stuff away. This is a real CPU-Cycle</i><br>
+<i>&gt; sink.</i><br>
+<p>
+No - only datagram group target messages are sent broadcast and control<br>
+stuff. See the IBM networking technical reference<br>
+<p>
+<p>
+<p>
+-<br>
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in<br>
+the body of a message to majordomo@vger.rutgers.edu<br>

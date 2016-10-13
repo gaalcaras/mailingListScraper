@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Alan Cox",
+    "senderEmail": "alan@lxorguk.ukuu.org.uk",
+    "timeSent": "Mon, 23 Mar 1998 22:54:20 +0000 (GMT)",
+    "timeReceived": "Mon Mar 23 18:21:47 1998 EST",
+    "subject": "Re: NETBEUI support?",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9803.2/0907.html"
+  },
+  "pipelineOutput": {
+    "emailId": 19980323182147,
+    "replyto": "NA",
+    "senderName": "Alan Cox",
+    "senderEmail": "alan@lxorguk.ukuu.org.uk",
+    "timeSent": "Mon, 23 Mar 1998 22:54:20 +0000 (GMT)",
+    "timestampSent": "1998-03-23 22:54:20+0000",
+    "timeReceived": "Mon Mar 23 18:21:47 1998 EST",
+    "timestampReceived": "1998-03-23 18:21:47-0500",
+    "subject": "Re: NETBEUI support?",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9803.2/0907.html"
+  }
+}

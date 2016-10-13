@@ -1,0 +1,35 @@
+<P>
+On Thu, Aug 24, 2000 at 03:16:30PM -0400, Theodore Y. Ts'o wrote:
+<BR>
+<EM>&gt; I'll echo this.  In the Linux Standards Base group, it was hard to find
+</EM><BR>
+<EM>&gt; *anyone* who was actually psyched about Posix Threads.  Even most of the
+</EM><BR>
+<P>We use POSIX threads in RTLinux as an API. We've found that if you are
+<BR>
+sufficiently careful about making sensible decisions where POSIX allows
+<BR>
+leeway, the result is quite simple and clear. Of course, we 
+<BR>
+supply the &quot;main&quot; routine, allowing us to simplify &quot;as if the main
+<BR>
+routine did X&quot;. But POSIX is generally pretty careful about what a
+<BR>
+conforming application has a right to expect and I think it is
+<BR>
+perfectly reasonable to refuse to assist non-conforming applications
+<BR>
+with wacky designs.
+<BR>
+<P><P><PRE>
+-- 
+---------------------------------------------------------
+Victor Yodaiken 
+Finite State Machine Labs: The RTLinux Company.
+ www.fsmlabs.com  www.rtlinux.com
+<P>-
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in
+the body of a message to <A HREF="mailto:majordomo@vger.kernel.org?Subject=Re:%20SCO:%20&quot;thread%20creation%20is%20about%20a%20thousand%20times%20faster%20than%20on%20native%20Linux&quot;&In-Reply-To=&lt;20000824123514.A27213@hq.fsmlabs.com&gt;">majordomo@vger.kernel.org</A>
+Please read the FAQ at <A HREF="http://www.tux.org/lkml/">http://www.tux.org/lkml/</A>
+</PRE>
+<P>

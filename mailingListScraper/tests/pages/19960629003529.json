@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Bruce Thompson",
+    "senderEmail": "bruce@otherother.com",
+    "timeSent": "Fri, 28 Jun 1996 08:14:18 -0700",
+    "timeReceived": "Sat Jun 29 00:35:29 1996 EST",
+    "subject": "Re: Network performance",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9606.3/0278.html"
+  },
+  "pipelineOutput": {
+    "emailId": 19960629003529,
+    "replyto": "NA",
+    "senderName": "Bruce Thompson",
+    "senderEmail": "bruce@otherother.com",
+    "timeSent": "Fri, 28 Jun 1996 08:14:18 -0700",
+    "timestampSent": "1996-06-28 08:14:18-0700",
+    "timeReceived": "Sat Jun 29 00:35:29 1996 EST",
+    "timestampReceived": "1996-06-29 00:35:29-0500",
+    "subject": "Re: Network performance",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9606.3/0278.html"
+  }
+}

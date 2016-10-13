@@ -1,0 +1,20 @@
+   Date: 	Tue, 08 Apr 1997 17:38:01 +0200<br>
+   From: Michael Lausch &lt;mla@gams.co.at&gt;<br>
+<p>
+   the bug has benn fixed somewhere in the 2.1 series. Change the<br>
+      if (tfp-&gt;next != NULL)<br>
+   into<br>
+      if (tmp-&gt;next != NULL)<br>
+<p>
+   This bug also bit me when one of our ethernet hubs failed and the<br>
+   ethernet error on our NFS server raised.<br>
+<p>
+I've applied this change to my 2.0.x tree, should go into 2.0.31 when<br>
+that is released.<br>
+<p>
+---------------------------------------------////<br>
+Yow! 11.26 MB/s remote host TCP bandwidth &amp; ////<br>
+199 usec remote TCP latency over 100Mb/s   ////<br>
+ethernet.  Beat that!                     ////<br>
+-----------------------------------------////__________  o<br>
+David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ &gt;&lt;<br>

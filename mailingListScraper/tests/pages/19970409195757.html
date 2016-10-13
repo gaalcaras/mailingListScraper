@@ -1,0 +1,54 @@
+<!-- received="Wed Apr  9 19:57:57 1997 EST" -->
+<!-- sent="Wed, 9 Apr 1997 20:19:09 -0400" -->
+<!-- name="David S. Miller" -->
+<!-- email="davem@jenolan.rutgers.edu" -->
+<!-- subject="Re: 2.0.29 Oops - NULL deref in ip_defrag" -->
+<!-- id="199704100019.UAA01246@jenolan.caipgeneral" -->
+<!-- inreplyto="2.0.29 Oops - NULL deref in ip_defrag" -->
+<title>Linux-Kernel Archive: Re: 2.0.29 Oops - NULL deref in ip_defrag</title>
+<h1>Re: 2.0.29 Oops - NULL deref in ip_defrag</h1>
+David S. Miller (<i>davem@jenolan.rutgers.edu</i>)<br>
+<i>Wed, 9 Apr 1997 20:19:09 -0400</i>
+<p>
+<ul>
+<li> <b>Messages sorted by:</b> <a href="date.html#107">[ date ]</a><a href="index.html#107">[ thread ]</a><a href="subject.html#107">[ subject ]</a><a href="author.html#107">[ author ]</a>
+<!-- next="start" -->
+<li> <b>Next message:</b> <a href="0108.html">David S. Miller: "Re: binary format loader cache?"</a>
+<li> <b>Previous message:</b> <a href="0106.html">Evan Jeffrey: "Re: linux-kernel-digest V1 #832"</a>
+<li> <b>Maybe in reply to:</b> <a href="0006.html">Benjamin C R LaHaise: "2.0.29 Oops - NULL deref in ip_defrag"</a>
+<!-- nextthread="start" -->
+<!-- reply="end" -->
+</ul>
+<hr>
+<!-- body="start" -->
+   Date: 	Tue, 08 Apr 1997 17:38:01 +0200<br>
+   From: Michael Lausch &lt;mla@gams.co.at&gt;<br>
+<p>
+   the bug has benn fixed somewhere in the 2.1 series. Change the<br>
+      if (tfp-&gt;next != NULL)<br>
+   into<br>
+      if (tmp-&gt;next != NULL)<br>
+<p>
+   This bug also bit me when one of our ethernet hubs failed and the<br>
+   ethernet error on our NFS server raised.<br>
+<p>
+I've applied this change to my 2.0.x tree, should go into 2.0.31 when<br>
+that is released.<br>
+<p>
+---------------------------------------------////<br>
+Yow! 11.26 MB/s remote host TCP bandwidth &amp; ////<br>
+199 usec remote TCP latency over 100Mb/s   ////<br>
+ethernet.  Beat that!                     ////<br>
+-----------------------------------------////__________  o<br>
+David S. Miller, davem@caip.rutgers.edu /_____________/ / // /_/ &gt;&lt;<br>
+<!-- body="end" -->
+<hr>
+<p>
+<ul>
+<!-- next="start" -->
+<li> <b>Next message:</b> <a href="0108.html">David S. Miller: "Re: binary format loader cache?"</a>
+<li> <b>Previous message:</b> <a href="0106.html">Evan Jeffrey: "Re: linux-kernel-digest V1 #832"</a>
+<li> <b>Maybe in reply to:</b> <a href="0006.html">Benjamin C R LaHaise: "2.0.29 Oops - NULL deref in ip_defrag"</a>
+<!-- nextthread="start" -->
+<!-- reply="end" -->
+</ul>

@@ -1,0 +1,73 @@
+At 09:31 06/27/96, Leonard N. Zubkoff wrote:<br>
+<i>&gt;  Date:         Thu, 27 Jun 1996 17:32:11 +0200 (MET DST)</i><br>
+<i>&gt;  From: Michael Neuffer &lt;neuffer@goofy.zdv.uni-mainz.de&gt;</i><br>
+<i>&gt;</i><br>
+<i>&gt;  &gt; I always wondered what happened to Convex ;)</i><br>
+<i>&gt;</i><br>
+<i>&gt;  They have been bought by HP. They also tried to "buy" the people,</i><br>
+<i>&gt;  but at least Stefan didn't seem to be too happy with it.</i><br>
+<i>&gt;</i><br>
+<i>&gt;&lt;sigh&gt; No doubt their acquisition of Convex will work out as well as the Apollo</i><br>
+<i>&gt;acquisition did...</i><br>
+<i>&gt;</i><br>
+<i>&gt;                Leonard</i><br>
+<p>
+Aw Jeez,<br>
+    I'd only just gotten over that and you had to remind me! &lt;sigh&gt; :-)<br>
+<p>
+    A touch more seriously, that reminds me of a couple of wonderful Apollo<br>
+features that I'd love to see in Linux. Those features are variant links<br>
+and extended pathnames.<br>
+<p>
+    For those who've never had the privilege of working on an Apollo<br>
+system, a variant link is a symbolic link with an embedded environment<br>
+variable reference:<br>
+<p>
+        ln -s "/usr/${BINARY_FORMAT}/lib" /usr/lib<br>
+<p>
+would make /usr/lib a link to either /usr/aout/lib or /usr/elf/lib<br>
+depending on the value of the environment variable BINARY_FORMAT at the<br>
+time the link is dereferenced. This was used on Apollo systems to support<br>
+three operating environments: Domain/OS, BSD4.3 and SYS5.3 all at the same<br>
+time. /bin was a variant link depending on the value of SYSTYPE. This was<br>
+incredibly useful! One use I can see for it immediately is to have<br>
+/usr/src/linux be a link to the source of the currently executing kernel.<br>
+Trivial with variant links. Anyone interested in building it?<br>
+<p>
+    The other feature that was really handy was extended pathnames. This<br>
+related to the Apollo's typed filesystem. A filesystem object had a<br>
+particular type with an associated type manager (essentially a library to<br>
+handle the typical file operations). A type manager could accept additional<br>
+filename components beyond the name of the actual file, i.e. a file called<br>
+/usr/foo could be openned as /usr/foo/bar. The type manager would be<br>
+responsible for doing something meaningful based on the extra components.<br>
+One system that used this extensively was the Domain Software Engineering<br>
+Environment (DSEE). DSEE provided version control (among other things). A<br>
+file under DSEE control could be referred to as: .../library/file to refer<br>
+to the latest version of the file or as .../library/file/revision to refer<br>
+to a particular revision of the file. This made it really easy to do things<br>
+like fetch the versions of all files that were used to build a particular<br>
+release, etc.<br>
+<p>
+    Anyhow, we're all talking about post 2.0 wish lists, these two items<br>
+are on my wish list. Variant links would be great, extended pathnames would<br>
+be totally cool. For that matter something like the type manager system<br>
+would be simply amazing.<br>
+<p>
+        Cheers,<br>
+        Bruce.<br>
+<p>
+<pre>
+--
+--------------------------------------------------------------------------
+Bruce Thompson                  | "Rumors of our death have been greatly
+Developer Technical Support     |  exaggerated."
+Newton Systems Group            |      - Employees of Apple Computer, Inc.
+Apple Computer, Inc.            |
+bruce@newton.apple.com          | "Don't believe half of what you hear,
+bthompson@applelink.apple.com   |  and most of what you read in the papers"
+bruce@otherother.com            |      - Me
+                                |
+<p>
+        I don't speak for Apple, my opinions are strictly my own.
+</pre>

@@ -1,0 +1,30 @@
+On Fri, 8 Oct 1999, Horst von Brand wrote:<br>
+<p>
+<i>&gt; David Ford &lt;david@kalifornia.com&gt; said:</i><br>
+<i>&gt; </i><br>
+<i>&gt; [...]</i><br>
+<i>&gt; </i><br>
+<i>&gt; &gt; One must also be cognizant of the fact that by using devfs, you will</i><br>
+<i>&gt; &gt; always have the right major/minor etc even from release to release.  No</i><br>
+<i>&gt; &gt; fussing about a MAKEDEV script that didn't get updated.</i><br>
+<i>&gt; </i><br>
+<i>&gt; Exactly! It will _never_ happen that you've got devfsd-2.4.2 with your</i><br>
+<i>&gt; shiny new 2.5.3 kernel, that needs devfsd-2.5.0 at least.</i><br>
+<i>&gt;</i><br>
+That would be relevant if devfs _needed_ devfsd to function.<br>
+<p>
+It doesn't, devfsd exists purely to provide additional<br>
+functionality that cannot easily be provided in ANY dynamicly<br>
+changing /dev directory (even one on ext2). <br>
+<p>
+<pre>
+-- 
+Daniel Taylor      Senior Test Engineer     Digi International
+danielt@digi.com                             Open systems win.
+<p>
+<p>
+-
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+the body of a message to majordomo@vger.rutgers.edu
+Please read the FAQ at <a href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a>
+</pre>
