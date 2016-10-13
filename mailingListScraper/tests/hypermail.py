@@ -5,6 +5,7 @@ import unittest
 from mailingListScraper.tests.validationCase import validationCase
 from mailingListScraper.pipelines import CleanReplyto
 from mailingListScraper.pipelines import ParseTimeFields
+from mailingListScraper.pipelines import GenerateId
 
 from mailingListScraper.spiders.hypermail import HypermailSpider
 import re
@@ -80,6 +81,41 @@ class TestPipelines(TestBase):
                                  testItem['timestampSent'])
                 self.assertEqual(case.finalItem['timestampReceived'],
                                  testItem['timestampReceived'])
+
+
+class TestPipelineGenerateId(TestBase):
+
+    def testIdFormat(self):
+        item = {'timestampReceived': '1995-06-20 12:35:45-0500'}
+        pipeline = GenerateId()
+        result = pipeline.process_item(item, self.spider)
+
+        self.assertEqual(result['emailId'], 19950620123545)
+
+    def testIdUnicity(self):
+        item1 = {'timestampReceived': '1995-06-20 12:35:45-0500'}
+        item2 = {'timestampReceived': '1995-06-20 12:35:45-0500'}
+
+        pipeline = GenerateId()
+
+        result1 = pipeline.process_item(item1, self.spider)
+        result2 = pipeline.process_item(item2, self.spider)
+
+        self.assertEqual(result1['emailId'], 19950620123545)
+        self.assertEqual(result2['emailId'], 199506201235450)
+
+    def testRealData(self):
+        pipeline = GenerateId()
+
+        for caseId in self.cases:
+            with self.subTest(caseId=caseId):
+                # Create a validation case and generate test data
+                case = validationCase(caseId)
+                testItem = pipeline.process_item(case.finalItem, self.spider)
+
+                # Compare test and validation data
+                self.assertEqual(case.finalItem['emailId'],
+                                 testItem['emailId'])
 
 if __name__ == '__main__':
     unittest.main()

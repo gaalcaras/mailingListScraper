@@ -17,12 +17,22 @@ from dateutil import tz
 
 class GenerateId(object):
 
+    def __init__(self):
+        self.attributedIds = set()
+
     def process_item(self, item, spider):
         timeFormat = "%Y-%m-%d %H:%M:%S%z"
         timestamp = datetime.strptime(item['timestampReceived'], timeFormat)
 
-        idFormat = "%Y%m%d-%H%M%S"
-        item['emailId'] = timestamp.strftime(idFormat)
+        idFormat = "%Y%m%d%H%M%S"
+        emailId = int(timestamp.strftime(idFormat))
+
+        if emailId in self.attributedIds:
+            emailId = emailId*10
+
+        self.attributedIds.add(emailId)
+
+        item['emailId'] = emailId
 
         return item
 
