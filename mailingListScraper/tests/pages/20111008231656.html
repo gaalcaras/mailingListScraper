@@ -1,0 +1,122 @@
+<!-- MHonArc v2.6.6 -->
+<!--X-Subject: Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged(). -->
+<!--X-From-R13: @nzXnr Xrba <yvaxvawrbaNtznvy.pbz> -->
+<!--X-Date: Sat,  8 Oct 2011 23:16:56 &#45;0400 (EDT) -->
+<!--X-Message-Id: CAKYAXd8M6mnf0f_5RHpkjZ51suGnnFTHU1ZuJgvt5Nr0JVR1RQ@mail.gmail.com -->
+<!--X-Content-Type: multipart/mixed -->
+<!--X-Reference: 1317650037&#45;4648&#45;1&#45;git&#45;send&#45;email&#45;linkinjeon@gmail.com -->
+<!--X-Reference: 20111005220813.GK23467@quack.suse.cz -->
+<!--X-Reference: 1317853198.3095.19.camel@Joe&#45;Laptop -->
+<!--X-Reference: 20111006214159.GK31367@quack.suse.cz -->
+<!--X-Derived: 00161 -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged().</title>
+<meta NAME="Author" CONTENT="NamJae Jeon &lt;linkinjeon@gmail.com&gt;">
+<meta NAME="Subject" CONTENT="Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged().">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged().</h1>
+<strong>From: </strong>NamJae Jeon
+<br><strong>Date: </strong> Sat Oct 08 2011 - 23:16:56 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="00162.html"> Joe Perches: "Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged()."</a>
+
+<li><strong>Previous message: </strong> <a href="00160.html"> Alex Elsayed: "Re: A Plumber&#xE2;s Wish List for Linux"</a>
+
+
+
+<li><strong>Next in thread: </strong> <a href="00162.html"> Joe Perches: "Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged()."</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#00161">[ date ]</a> <a href="index.html#00161">[ thread ]</a> <a href="subject.html#00161">[ subject ]</a> <a href="author.html#00161">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+2011/10/7 Jan Kara &lt;jack@xxxxxxx&gt;:<br>
+&gt;<i> On Wed 05-10-11 15:19:58, Joe Perches wrote:</i><br>
+&gt;<i>&gt; On Thu, 2011-10-06 at 00:08 +0200, Jan Kara wrote:</i><br>
+&gt;<i>&gt; &gt; Hello,</i><br>
+&gt;<i>&gt; &gt;</i><br>
+&gt;<i>&gt; &gt; On Mon 03-10-11 22:53:57, Namjae Jeon wrote:</i><br>
+&gt;<i>&gt; &gt; &gt; While reading metadata, if a problem occurs, Print out only one of the</i><br>
+&gt;<i>&gt; &gt; &gt; five case.(It also does not show a checksum properly.) Because currently</i><br>
+&gt;<i>&gt; &gt; &gt; it have been disable by undef udf_debug. &#xC2;If there is a problem with</i><br>
+&gt;<i>&gt; &gt; &gt; scratched disc or loader, the user needs to know which error happened.</i><br>
+&gt;<i>&gt; &gt; &gt; And I use pr_fmt instead of printk by joe's suggestion. I try to modify</i><br>
+&gt;<i>&gt; &gt; &gt; totally it to pr_fmt also.</i><br>
+&gt;<i>&gt;</i><br>
+&gt;<i>&gt; &gt; &#xC2; Thanks for the patch. I'm willing to take the patch since it's an</i><br>
+&gt;<i>&gt; &gt; improvement but what would be even nicer is to have error reporting like in</i><br>
+&gt;<i>&gt; &gt; ext3 / ext4. We would have functions udf_info, udf_warn, udf_err which</i><br>
+&gt;<i>&gt; &gt; also print sb-&gt;s_id with each error so that user can better identify on</i><br>
+&gt;<i>&gt; &gt; which filesystem error happened.</i><br>
+&gt;<i>&gt;</i><br>
+&gt;<i>&gt; Modifying the follow-on patch I sent would be pretty trivial.</i><br>
+&gt;<i> &#xC2;Sure, I can do that but if Namjae is willing to do it, I'd have less work</i><br>
+&gt;<i> :).</i><br>
+Hi. Jan.<br>
+<br>
+Currently I can not send a patch using git send-email.<br>
+maybe it is the problem related with git or patch size...<br>
+So I attach a patch. Is it okay? or I resend a patch again..<br>
+plz review attach patch.<br>
+Thanks.<br>
+&gt;<i></i><br>
+&gt;<i> &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2;Honza</i><br>
+&gt;<i> --</i><br>
+&gt;<i> Jan Kara &lt;jack@xxxxxxx&gt;</i><br>
+&gt;<i> SUSE Labs, CR</i><br>
+&gt;<i></i><br>
+<p><strong>Attachment:
+<a href="00161/0001-udf-enable-error-print-in-udf_read_tagged.patch" ><tt>0001-udf-enable-error-print-in-udf_read_tagged.patch</tt></a></strong><br>
+<em>Description:</em> Binary data</p>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+
+
+</ul></li></ul>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="00162.html"> Joe Perches: "Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged()."</a>
+
+<li><strong>Previous message: </strong> <a href="00160.html"> Alex Elsayed: "Re: A Plumber&#xE2;s Wish List for Linux"</a>
+
+
+
+<li><strong>Next in thread: </strong> <a href="00162.html"> Joe Perches: "Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged()."</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#00161">[ date ]</a> <a href="index.html#00161">[ thread ]</a> <a href="subject.html#00161">[ subject ]</a> <a href="author.html#00161">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>

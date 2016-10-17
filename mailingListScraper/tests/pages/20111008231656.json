@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "NamJae Jeon",
+    "senderEmail": "linkinjeon@gmail.com",
+    "timeSent": "Sat,  8 Oct 2011 23:16:56 -0400 (EDT)",
+    "timeReceived": "Sat Oct 08 2011 - 23:16:56 EST",
+    "subject": "Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged().",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1110.1/00161.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20111008231656,
+    "replyto": "NA",
+    "senderName": "NamJae Jeon",
+    "senderEmail": "linkinjeon@gmail.com",
+    "timeSent": "Sat,  8 Oct 2011 23:16:56 -0400 (EDT)",
+    "timestampSent": "2011-10-08 23:16:56-0400",
+    "timeReceived": "Sat Oct 08 2011 - 23:16:56 EST",
+    "timestampReceived": "2011-10-08 23:16:56-0500",
+    "subject": "Re: [PATCH 1/2 v3] udf : enable error print in udf_read_tagged().",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1110.1/00161.html"
+  }
+}

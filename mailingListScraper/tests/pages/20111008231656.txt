@@ -1,0 +1,38 @@
+2011/10/7 Jan Kara &lt;jack@xxxxxxx&gt;:<br>
+&gt;<i> On Wed 05-10-11 15:19:58, Joe Perches wrote:</i><br>
+&gt;<i>&gt; On Thu, 2011-10-06 at 00:08 +0200, Jan Kara wrote:</i><br>
+&gt;<i>&gt; &gt; Hello,</i><br>
+&gt;<i>&gt; &gt;</i><br>
+&gt;<i>&gt; &gt; On Mon 03-10-11 22:53:57, Namjae Jeon wrote:</i><br>
+&gt;<i>&gt; &gt; &gt; While reading metadata, if a problem occurs, Print out only one of the</i><br>
+&gt;<i>&gt; &gt; &gt; five case.(It also does not show a checksum properly.) Because currently</i><br>
+&gt;<i>&gt; &gt; &gt; it have been disable by undef udf_debug. &#xC2;If there is a problem with</i><br>
+&gt;<i>&gt; &gt; &gt; scratched disc or loader, the user needs to know which error happened.</i><br>
+&gt;<i>&gt; &gt; &gt; And I use pr_fmt instead of printk by joe's suggestion. I try to modify</i><br>
+&gt;<i>&gt; &gt; &gt; totally it to pr_fmt also.</i><br>
+&gt;<i>&gt;</i><br>
+&gt;<i>&gt; &gt; &#xC2; Thanks for the patch. I'm willing to take the patch since it's an</i><br>
+&gt;<i>&gt; &gt; improvement but what would be even nicer is to have error reporting like in</i><br>
+&gt;<i>&gt; &gt; ext3 / ext4. We would have functions udf_info, udf_warn, udf_err which</i><br>
+&gt;<i>&gt; &gt; also print sb-&gt;s_id with each error so that user can better identify on</i><br>
+&gt;<i>&gt; &gt; which filesystem error happened.</i><br>
+&gt;<i>&gt;</i><br>
+&gt;<i>&gt; Modifying the follow-on patch I sent would be pretty trivial.</i><br>
+&gt;<i> &#xC2;Sure, I can do that but if Namjae is willing to do it, I'd have less work</i><br>
+&gt;<i> :).</i><br>
+Hi. Jan.<br>
+<br>
+Currently I can not send a patch using git send-email.<br>
+maybe it is the problem related with git or patch size...<br>
+So I attach a patch. Is it okay? or I resend a patch again..<br>
+plz review attach patch.<br>
+Thanks.<br>
+&gt;<i></i><br>
+&gt;<i> &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2; &#xC2;Honza</i><br>
+&gt;<i> --</i><br>
+&gt;<i> Jan Kara &lt;jack@xxxxxxx&gt;</i><br>
+&gt;<i> SUSE Labs, CR</i><br>
+&gt;<i></i><br>
+<p><strong>Attachment:
+<a href="00161/0001-udf-enable-error-print-in-udf_read_tagged.patch" ><tt>0001-udf-enable-error-print-in-udf_read_tagged.patch</tt></a></strong><br>
+<em>Description:</em> Binary data</p>

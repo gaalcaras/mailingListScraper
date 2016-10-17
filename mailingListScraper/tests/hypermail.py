@@ -28,6 +28,7 @@ class TestBase(unittest.TestCase):
                       20050426154225,
                       20060208021218,
                       20070524191655,
+                      20111008231656,
                       20160930024050
                       ]
         self.maxDiff = None
