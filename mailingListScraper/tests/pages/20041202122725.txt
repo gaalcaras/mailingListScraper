@@ -1,0 +1,26 @@
+On Thu, Dec 02, 2004 at 08:55:18AM -0800, Andrew Morton wrote:<br>
+&gt;<i> Andrea Arcangeli &lt;andrea@xxxxxxx&gt; wrote:</i><br>
+&gt;<i> &gt;</i><br>
+&gt;<i> &gt; I believe the thing you're hiding with the callback, is some screwup in</i><br>
+&gt;<i> &gt;  the VM. It shouldn't fire oom 300 times in a row.</i><br>
+&gt;<i> </i><br>
+&gt;<i> Well no ;) </i><br>
+<br>
+I bet zone-&gt;all_unreclaimable is one of the main issues here as Andrea notes.<br>
+<br>
+&gt;<i> Thomas, could you please put together a description of how to reproduce</i><br>
+&gt;<i> this behaviour?</i><br>
+<br>
+A simple &quot;fillmem&quot; works for me - the OOM killer kills the hog and the bash <br>
+which its being ran from. Have you tried that? <br>
+<br>
+If you fire up a few fillmem's at the same time I bet you'll see the problem in a <br>
+greater degree.<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+<br>
+

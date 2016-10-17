@@ -1,0 +1,142 @@
+<!-- MHonArc v2.6.6 -->
+<!--X-Subject: Re: [openib&#45;general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation -->
+<!--X-From-R13: Oaqerj [begba <nxczNbfqy.bet> -->
+<!--X-Date: Tue, 26 Apr 2005 15:42:25 &#45;0500 (EST) -->
+<!--X-Message-Id: 20050426133229.416a5e66.akpm@osdl.org -->
+<!--X-Content-Type: text/plain -->
+<!--X-Reference: 20050425135401.65376ce0.akpm@osdl.org -->
+<!--X-Reference: 521x8yv9vb.fsf@topspin.com -->
+<!--X-Reference: 20050425151459.1f5fb378.akpm@osdl.org -->
+<!--X-Reference: 426D6D68.6040504@ammasso.com -->
+<!--X-Reference: 20050425153256.3850ee0a.akpm@osdl.org -->
+<!--X-Reference: 52vf6atnn8.fsf@topspin.com -->
+<!--X-Reference: 20050425171145.2f0fd7f8.akpm@osdl.org -->
+<!--X-Reference: 52acnmtmh6.fsf@topspin.com -->
+<!--X-Reference: 20050425173757.1dbab90b.akpm@osdl.org -->
+<!--X-Reference: 52wtqpsgff.fsf@topspin.com -->
+<!--X-Reference: 20050426084234.A10366@topspin.com -->
+<!--X-Reference: 52mzrlsflu.fsf@topspin.com -->
+<!--X-Reference: 20050426122850.44d06fa6.akpm@osdl.org -->
+<!--X-Reference: 5264y9s3bs.fsf@topspin.com -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation</title>
+<meta NAME="Author" CONTENT="Andrew Morton &lt;akpm@osdl.org&gt;">
+<meta NAME="Subject" CONTENT="Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation</h1>
+<strong>From: </strong>Andrew Morton
+<br><strong>Date: </strong> Tue Apr 26 2005 - 15:42:25 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="0730.html"> Andrew Morton: "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation"</a>
+
+<li><strong>Previous message: </strong> <a href="0728.html"> Bill Davidsen: "Re: Mercurial 0.3 vs git benchmarks"</a>
+
+<li><strong>In reply to: </strong> <a href="1642.html"> Caitlin Bestler: "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspace verbs implementation"</a>
+
+<li><strong>Next in thread: </strong> <a href="0736.html"> Roland Dreier: "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation"</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#0729">[ date ]</a> <a href="index.html#0729">[ thread ]</a> <a href="subject.html#0729">[ subject ]</a> <a href="author.html#0729">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+Roland Dreier &lt;roland@xxxxxxxxxxx&gt; wrote:<br>
+&gt;<i></i><br>
+&gt;<i>     Roland&gt;     a) app registers 0x0000 through 0x17ff</i><br>
+&gt;<i>     Roland&gt;     b) app registers 0x1800 through 0x2fff</i><br>
+&gt;<i>     Roland&gt;     c) app unregisters 0x0000 through 0x17ff</i><br>
+&gt;<i>     Roland&gt;     d) the page at 0x1000 must stay pinned</i><br>
+&gt;<i> </i><br>
+&gt;<i>     Andrew&gt; The userspace library should be able to track the tree and</i><br>
+&gt;<i>     Andrew&gt; the overlaps, etc.  Things might become interesting when</i><br>
+&gt;<i>     Andrew&gt; the memory is MAP_SHARED pagecache and multiple</i><br>
+&gt;<i>     Andrew&gt; independent processes are involved, although I guess</i><br>
+&gt;<i>     Andrew&gt; that'd work OK.</i><br>
+&gt;<i> </i><br>
+&gt;<i> I used to think I knew how to handle this, but in your scheme where</i><br>
+&gt;<i> the kernel is doing accounting for pinned memory by marking vmas with</i><br>
+&gt;<i> VM_KERNEL_LOCKED, at step c), I don't see why the kernel won't unlock</i><br>
+&gt;<i> vmas covering 0x0000 through 0x1fff and credit 8K back to the</i><br>
+&gt;<i> process's pinning count.</i><br>
+&gt;<i> </i><br>
+&gt;<i> Sorry to be so dense but can you spell out what you think should</i><br>
+&gt;<i> happen at steps a), b) and c) above?</i><br>
+<br>
+Well I was vaguely proposing that the userspace library keep track of the<br>
+byteranges and the underlying page states.  So in the above scenario<br>
+userspace would leave the page at 0x1000 registered until all<br>
+registrations against that page have been undone.<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+<br>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+
+
+</ul></li></ul>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="0730.html"> Andrew Morton: "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation"</a>
+
+<li><strong>Previous message: </strong> <a href="0728.html"> Bill Davidsen: "Re: Mercurial 0.3 vs git benchmarks"</a>
+
+<li><strong>In reply to: </strong> <a href="1642.html"> Caitlin Bestler: "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspace verbs implementation"</a>
+
+<li><strong>Next in thread: </strong> <a href="0736.html"> Roland Dreier: "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation"</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#0729">[ date ]</a> <a href="index.html#0729">[ thread ]</a> <a href="subject.html#0729">[ subject ]</a> <a href="author.html#0729">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>

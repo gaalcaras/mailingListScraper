@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "0390.html",
+    "senderName": "Marcelo Tosatti",
+    "senderEmail": "marcelo.tosatti@cyclades.com",
+    "timeSent": "Thu,  2 Dec 2004 12:27:25 -0500 (EST)",
+    "timeReceived": "Thu Dec 02 2004 - 12:27:25 EST",
+    "subject": "Re: [PATCH] oom killer (Core)",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0412.0/0389.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20041202122725,
+    "replyto": "http://lkml.iu.edu/hypermail/linux/kernel/0412.0/0390.html",
+    "senderName": "Marcelo Tosatti",
+    "senderEmail": "marcelo.tosatti@cyclades.com",
+    "timeSent": "Thu,  2 Dec 2004 12:27:25 -0500 (EST)",
+    "timestampSent": "2004-12-02 12:27:25-0500",
+    "timeReceived": "Thu Dec 02 2004 - 12:27:25 EST",
+    "timestampReceived": "2004-12-02 12:27:25-0500",
+    "subject": "Re: [PATCH] oom killer (Core)",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0412.0/0389.html"
+  }
+}

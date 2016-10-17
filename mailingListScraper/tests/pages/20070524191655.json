@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "0416.html",
+    "senderName": "Henrique de Moraes Holschuh",
+    "senderEmail": "hmh@hmh.eng.br",
+    "timeSent": "Thu, 24 May 2007 19:16:55 -0400 (EDT)",
+    "timeReceived": "Thu May 24 2007 - 19:16:55 EST",
+    "subject": "Re: pcmcia resume 60 second hang. Re: [patch 00/69] -stable review",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0705.3/0451.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20070524191655,
+    "replyto": "http://lkml.iu.edu/hypermail/linux/kernel/0705.3/0416.html",
+    "senderName": "Henrique de Moraes Holschuh",
+    "senderEmail": "hmh@hmh.eng.br",
+    "timeSent": "Thu, 24 May 2007 19:16:55 -0400 (EDT)",
+    "timestampSent": "2007-05-24 19:16:55-0400",
+    "timeReceived": "Thu May 24 2007 - 19:16:55 EST",
+    "timestampReceived": "2007-05-24 19:16:55-0500",
+    "subject": "Re: pcmcia resume 60 second hang. Re: [patch 00/69] -stable review",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0705.3/0451.html"
+  }
+}

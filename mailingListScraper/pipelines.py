@@ -44,7 +44,7 @@ class CleanReplyto(object):
             item['replyto'] = 'NA'
             return item
 
-        urlBase = re.search('^(.*)/\d{4}\.html', item['url']).group(1)
+        urlBase = re.search('^(.*)/\d{4,6}\.html', item['url']).group(1)
         item['replyto'] = urlBase + '/' + item['replyto']
 
         return item

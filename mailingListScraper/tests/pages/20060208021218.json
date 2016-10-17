@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Al Viro",
+    "senderEmail": "viro@ftp.linux.org.uk",
+    "timeSent": "Wed,  8 Feb 2006 02:12:18 -0500 (EST)",
+    "timeReceived": "Wed Feb 08 2006 - 02:12:18 EST",
+    "subject": "[PATCH 03/17] s390x compat __user annotations",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0602.1/0090.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20060208021218,
+    "replyto": "NA",
+    "senderName": "Al Viro",
+    "senderEmail": "viro@ftp.linux.org.uk",
+    "timeSent": "Wed,  8 Feb 2006 02:12:18 -0500 (EST)",
+    "timestampSent": "2006-02-08 02:12:18-0500",
+    "timeReceived": "Wed Feb 08 2006 - 02:12:18 EST",
+    "timestampReceived": "2006-02-08 02:12:18-0500",
+    "subject": "[PATCH 03/17] s390x compat __user annotations",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0602.1/0090.html"
+  }
+}

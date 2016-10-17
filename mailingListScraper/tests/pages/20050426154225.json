@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "1642.html",
+    "senderName": "Andrew Morton",
+    "senderEmail": "akpm@osdl.org",
+    "timeSent": "Tue, 26 Apr 2005 15:42:25 -0500 (EST)",
+    "timeReceived": "Tue Apr 26 2005 - 15:42:25 EST",
+    "subject": "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0504.3/0729.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20050426154225,
+    "replyto": "http://lkml.iu.edu/hypermail/linux/kernel/0504.3/1642.html",
+    "senderName": "Andrew Morton",
+    "senderEmail": "akpm@osdl.org",
+    "timeSent": "Tue, 26 Apr 2005 15:42:25 -0500 (EST)",
+    "timestampSent": "2005-04-26 15:42:25-0500",
+    "timeReceived": "Tue Apr 26 2005 - 15:42:25 EST",
+    "timestampReceived": "2005-04-26 15:42:25-0500",
+    "subject": "Re: [openib-general] Re: [PATCH][RFC][0/4] InfiniBand userspaceverbs implementation",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0504.3/0729.html"
+  }
+}
