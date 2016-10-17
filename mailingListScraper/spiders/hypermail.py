@@ -80,7 +80,18 @@ class HypermailSpider(scrapy.Spider):
         who = response.xpath('//meta[@name="Author"]/@content').extract()[0]
         whoReg = re.search('^(.*) <(.*)>', who)
         fields['senderName'] = whoReg.group(1)
-        fields['senderEmail'] = whoReg.group(2)
+        email = whoReg.group(2)
+
+        if 'xxxxxxxxxxxxx' in email:
+            # Sometimes the email domain is masked in the Author meta field
+            # (ex: "davem@xxxxxxxxxxxxx"). Turns out, more often then not,
+            # you can get the domain of the email in the Message Id Field.
+            msgId = response.xpath('//comment()[contains(., "X-Message-Id")]')
+            domainReg = re.search('@(.*) -->', msgId.extract()[0])
+            emailReg = re.search('^(.*)@', email)
+            email = emailReg.group(1) + '@' + domainReg.group(1)
+
+        fields['senderEmail'] = email
 
         what = response.xpath('//meta[@name="Subject"]/@content').extract()[0]
         fields['subject'] = what

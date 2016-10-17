@@ -2,7 +2,7 @@
   "itemOutput": {
     "replyto": "03501.html",
     "senderName": "David Miller",
-    "senderEmail": "davem@xxxxxxxxxxxxx",
+    "senderEmail": "davem@davemloft.net",
     "timeSent": "Fri, 30 Sep 2016 02:40:50 -0400 (EDT)",
     "timeReceived": "Fri Sep 30 2016 - 02:40:50 EST",
     "subject": "Re: [PATCH v8 0/8] thunderbolt: Introducing Thunderbolt(TM) Networking",
@@ -12,7 +12,7 @@
     "emailId": 20160930024050,
     "replyto": "http://lkml.iu.edu/hypermail/linux/kernel/1609.3/03501.html",
     "senderName": "David Miller",
-    "senderEmail": "davem@xxxxxxxxxxxxx",
+    "senderEmail": "davem@davemloft.net",
     "timeSent": "Fri, 30 Sep 2016 02:40:50 -0400 (EDT)",
     "timestampSent": "2016-09-30 02:40:50-0400",
     "timeReceived": "Fri Sep 30 2016 - 02:40:50 EST",
