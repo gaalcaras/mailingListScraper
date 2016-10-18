@@ -14,8 +14,14 @@ class Email(scrapy.Item):
     emailId = scrapy.Field()
 
     replyto = scrapy.Field(output_processor=Join())
-    senderName = scrapy.Field(output_processor=Join())
-    senderEmail = scrapy.Field(output_processor=Join())
+    senderName = scrapy.Field(
+            input_processor=MapCompose(replace_entities),
+            output_processor=Join()
+            )
+    senderEmail = scrapy.Field(
+            input_processor=MapCompose(replace_entities),
+            output_processor=Join()
+            )
     timeSent = scrapy.Field(
             input_processor=MapCompose(replace_entities),
             output_processor=Join()
