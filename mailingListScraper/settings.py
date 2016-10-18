@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
-
-# Scrapy settings for mailingListScraper project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     http://doc.scrapy.org/en/latest/topics/settings.html
-#     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
+# #############################################
+# Settings for mailingListScraper bot
+# #############################################
 
 BOT_NAME = 'mailingListScraper'
 
@@ -20,14 +14,14 @@ LOG_FILE = 'log.txt'
 LOG_LEVEL = 'INFO'
 
 # Crawl responsibly by identifying yourself (and your website) on the
-# user-agent
-# USER_AGENT = 'mailingListScraper (+http://www.yourdomain.com)'
+# user-agent AND uncomment the following lines before scraping.
+# USER_AGENT = 'mailingListScraper '
+# USER_AGENT += '(https://github.com/gaalcaras/mailingListScraper)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-# Configure item pipelines
-# See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
+# Configure item pipelines and their order
 ITEM_PIPELINES = {
    'mailingListScraper.pipelines.ParseTimeFields': 100,
    'mailingListScraper.pipelines.GenerateId': 200,

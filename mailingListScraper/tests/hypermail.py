@@ -1,14 +1,18 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# #############################################
+# Hypermail Spider Unit Tests
+# #############################################
 
 import unittest
+import re
+
 from mailingListScraper.tests.validationCase import validationCase
+
 from mailingListScraper.pipelines import CleanReplyto
 from mailingListScraper.pipelines import ParseTimeFields
 from mailingListScraper.pipelines import GenerateId
 
 from mailingListScraper.spiders.hypermail import HypermailSpider
-import re
 
 
 class TestBase(unittest.TestCase):

@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# #############################################
+# Validation Case Class
+# #############################################
 
 import os
 import json
@@ -7,16 +10,25 @@ from scrapy.http import Request, TextResponse
 
 
 class validationCase:
+    """
+    Create response and expected values for real data test cases.
+    """
+
     def __init__(self, id):
         self.__curDir = os.path.dirname(__file__)
-        caseId = str(id).zfill(4)
+        caseId = str(id)
+
         self.validation = self.loadValidation(caseId)
         self.rawItem = self.validation['itemOutput']
         self.finalItem = self.validation['pipelineOutput']
+
         self.body = self.loadBody(caseId)
+
         self.response = self.loadResponse(caseId)
 
     def loadValidation(self, caseId):
+        "Load validation data from the json file"
+
         jsonId = caseId + '.json'
         jsonPath = os.path.join(self.__curDir, 'pages', jsonId)
 
@@ -26,6 +38,8 @@ class validationCase:
         return data
 
     def loadBody(self, caseId):
+        "Load body from the txt file"
+
         bodyId = caseId + '.txt'
         bodyPath = os.path.join(self.__curDir, 'pages', bodyId)
 
@@ -35,6 +49,8 @@ class validationCase:
         return body
 
     def loadResponse(self, caseId):
+        "Create Scrapy Response from the html file"
+
         url = self.rawItem['url']
 
         request = Request(url=url)

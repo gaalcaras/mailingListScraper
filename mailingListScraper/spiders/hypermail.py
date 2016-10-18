@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-import scrapy
-
-from scrapy.loader import ItemLoader
-from mailingListScraper.items import Email
+# #############################################
+# Hypermail Spider
+# #############################################
 
 import re
+
+import scrapy
+from scrapy.loader import ItemLoader
+from mailingListScraper.items import Email
 
 
 class HypermailSpider(scrapy.Spider):
