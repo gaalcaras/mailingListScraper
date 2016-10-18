@@ -33,6 +33,8 @@ class TestBase(unittest.TestCase):
                       20150930190314,  # No senderName, only email with xxxx
                       20160930024050
                       ]
+
+        # Enable long strings comparisons
         self.maxDiff = None
 
 

@@ -16,6 +16,14 @@ from dateutil import tz
 
 
 class GenerateId(object):
+    """
+    Generate a unique ID for the email.
+
+    Each email should have its own unique ID. This pipeline generates it with
+    the received timestamp, because I make the assumption that few emails will
+    share the same timestamp down to the second. For those who do, the (n+1)th
+    processed item gets n zeros added to their timestamp.
+    """
 
     def __init__(self):
         self.attributedIds = set()
@@ -27,8 +35,9 @@ class GenerateId(object):
         idFormat = "%Y%m%d%H%M%S"
         emailId = int(timestamp.strftime(idFormat))
 
-        if emailId in self.attributedIds:
-            emailId = emailId*10
+        # If two emails were received at the same time, multiply by 10
+        # (i.e. add a 0 at the end of the ID)
+        emailId = emailId*10 if emailId in self.attributedIds else emailId
 
         self.attributedIds.add(emailId)
 
@@ -38,6 +47,12 @@ class GenerateId(object):
 
 
 class CleanReplyto(object):
+    """
+    Clean the "replyto" field.
+
+    1. Return NA if not in reply to another email
+    2. Reconstruct the entire URL if we only get a relative URL
+    """
 
     def process_item(self, item, spider):
         if item['replyto'] == '':
@@ -51,6 +66,12 @@ class CleanReplyto(object):
 
 
 class ParseTimeFields(object):
+    """
+    Create well formated timestamps with existing time fields.
+
+    1. Return NA when appropriate (time missing or unreadable)
+    2. Use dateutil to parse the field and format it
+    """
 
     def process_item(self, item, spider):
         times = {
@@ -81,6 +102,9 @@ class ParseTimeFields(object):
 
 
 class BodyExport(object):
+    """
+    Export email body to a separate file.
+    """
 
     def process_item(self, item, spider):
         destFile = 'data/{}/{}.html'.format(spider.name, item['emailId'])
@@ -94,6 +118,9 @@ class BodyExport(object):
 
 
 class CsvExport(object):
+    """
+    Export items to a csv file.
+    """
 
     def __init__(self):
         self.files = {}
