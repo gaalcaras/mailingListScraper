@@ -86,7 +86,7 @@ class BodyExport(object):
         destFile = 'data/{}/{}.html'.format(spider.name, item['emailId'])
         os.makedirs(os.path.dirname(destFile), exist_ok=True)
 
-        with open(destFile, 'w+b') as body:
+        with open(destFile, 'wb') as body:
             for line in item['body']:
                 body.write(line.encode('utf-8'))
 
@@ -107,7 +107,7 @@ class CsvExport(object):
 
     def spider_opened(self, spider):
         destFilePath = 'data/{}ByEmail.csv'.format(spider.name)
-        file = open(destFilePath, 'w+b')
+        file = open(destFilePath, 'wb')
         self.files[spider] = file
         self.exporter = CsvItemExporter(file)
         self.exporter.fields_to_export = ['emailId', 'senderName',
