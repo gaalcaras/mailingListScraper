@@ -14,13 +14,17 @@ BOT_NAME = 'mailingListScraper'
 SPIDER_MODULES = ['mailingListScraper.spiders']
 NEWSPIDER_MODULE = 'mailingListScraper.spiders'
 
+LOG_FILE = 'log.txt'
+# Comment the following line when doing development.
+# For actual scraping, we don't want all the debugging messages.
+LOG_LEVEL = 'INFO'
+
 # Crawl responsibly by identifying yourself (and your website) on the
 # user-agent
 # USER_AGENT = 'mailingListScraper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
-
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
