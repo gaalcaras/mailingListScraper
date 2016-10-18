@@ -123,9 +123,11 @@ class HypermailSpider(scrapy.Spider):
         """
 
         who = response.xpath('//meta[@name="Author"]/@content').extract()[0]
-        whoReg = re.search('^(.*) <(.*)>', who)
-        fields['senderName'] = whoReg.group(1)
-        email = whoReg.group(2)
+        # The author meta field often contains the name and the email :
+        # "Sender Name <email@adress.com>"
+        whoReg = re.search('^"?([^"]*)"? <(.*)>', who)
+
+        email = who if whoReg is None else whoReg.group(2)
 
         if 'xxxx' in email:
             # Sometimes the email domain is masked in the Author meta field
@@ -136,6 +138,7 @@ class HypermailSpider(scrapy.Spider):
             emailReg = re.search('^(.*)@', email)
             email = emailReg.group(1) + '@' + domainReg.group(1)
 
+        fields['senderName'] = email if whoReg is None else whoReg.group(1)
         fields['senderEmail'] = email
 
         what = response.xpath('//meta[@name="Subject"]/@content').extract()[0]
