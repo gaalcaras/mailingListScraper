@@ -22,6 +22,7 @@ class TestBase(unittest.TestCase):
                       19991008202739,
                       20000824142828,
                       20010625115259,
+                      20011129134159,  # Encoding problems in the page
                       20021117003913,
                       20030816004422,
                       20041202122725,
@@ -29,6 +30,7 @@ class TestBase(unittest.TestCase):
                       20060208021218,
                       20070524191655,
                       20111008231656,
+                      20150930190314,  # No senderName, only email with xxxx
                       20160930024050
                       ]
         self.maxDiff = None
@@ -60,7 +62,7 @@ class TestItemExtraction(TestBase):
                 case = validationCase(caseId)
                 testItem = self.spider.parseItem(case.response)
 
-                caseBody = re.sub('\n$', '', case.body)
+                caseBody = re.sub('\n$', '', str(case.body))
                 testBody = re.sub('\n$', '', testItem['body'])
 
                 self.assertEqual(testBody, caseBody)

@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "bjorn.andersson@sonymobile.com",
+    "senderEmail": "bjorn.andersson@sonymobile.com",
+    "timeSent": "Wed, 30 Sep 2015 19:03:14 -0400 (EDT)",
+    "timeReceived": "Wed Sep 30 2015 - 19:03:14 EST",
+    "subject": "[PATCH] Bluetooth: hci_smd: Qualcomm WCNSS HCI driver",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1509.3/05252.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20150930190314,
+    "replyto": "NA",
+    "senderName": "bjorn.andersson@sonymobile.com",
+    "senderEmail": "bjorn.andersson@sonymobile.com",
+    "timeSent": "Wed, 30 Sep 2015 19:03:14 -0400 (EDT)",
+    "timestampSent": "2015-09-30 19:03:14-0400",
+    "timeReceived": "Wed Sep 30 2015 - 19:03:14 EST",
+    "timestampReceived": "2015-09-30 19:03:14-0500",
+    "subject": "[PATCH] Bluetooth: hci_smd: Qualcomm WCNSS HCI driver",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1509.3/05252.html"
+  }
+}

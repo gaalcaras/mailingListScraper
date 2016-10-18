@@ -1,0 +1,375 @@
+<!-- MHonArc v2.6.16 -->
+<!--X-Subject: [PATCH] Bluetooth: hci_smd: Qualcomm WCNSS HCI driver -->
+<!--X-From-R13: <owbea.naqreffbaNfbalzbovyr.pbz> -->
+<!--X-Date: Wed, 30 Sep 2015 19:03:14 &#45;0400 (EDT) -->
+<!--X-Message-Id: 1443654180&#45;29416&#45;1&#45;git&#45;send&#45;email&#45;bjorn.andersson@sonymobile.com -->
+<!--X-Content-Type: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: [PATCH] Bluetooth: hci_smd: Qualcomm WCNSS HCI driver</title>
+<meta NAME="Author" CONTENT="&lt;bjorn.andersson@xxxxxxxxxxxxxx&gt;">
+<meta NAME="Subject" CONTENT="[PATCH] Bluetooth: hci_smd: Qualcomm WCNSS HCI driver">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>[PATCH] Bluetooth: hci_smd: Qualcomm WCNSS HCI driver</h1>
+<strong>From: </strong>bjorn.andersson
+<br><strong>Date: </strong> Wed Sep 30 2015 - 19:03:14 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="05253.html"> Yang Shi: "[PATCH] arm64: replace read_lock to rcu lock in call_break_hook"</a>
+
+<li><strong>Previous message: </strong> <a href="05251.html"> David Daney: "Re: [PATCH v3 2/2] PCI: Add support for Enhanced Allocation devices"</a>
+
+
+
+
+
+<li><strong>Messages sorted by: </strong><a href="date.html#05252">[ date ]</a> <a href="index.html#05252">[ thread ]</a> <a href="subject.html#05252">[ subject ]</a> <a href="author.html#05252">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+From: Bjorn Andersson &lt;bjorn.andersson@xxxxxxxxxxxxxx&gt;<br>
+<br>
+The Qualcomm WCNSS chip provides two SMD channels to the BT core; one<br>
+for command and one for event packets. This driver exposes the two<br>
+channels as a hci device.<br>
+<br>
+Signed-off-by: Bjorn Andersson &lt;bjorn.andersson@xxxxxxxxxxxxxx&gt;<br>
+---<br>
+ drivers/bluetooth/Kconfig   |  11 +++<br>
+ drivers/bluetooth/Makefile  |   1 +<br>
+ drivers/bluetooth/hci_smd.c | 222 ++++++++++++++++++++++++++++++++++++++++++++<br>
+ include/net/bluetooth/hci.h |   1 +<br>
+ 4 files changed, 235 insertions(+)<br>
+ create mode 100644 drivers/bluetooth/hci_smd.c<br>
+<br>
+diff --git a/drivers/bluetooth/Kconfig b/drivers/bluetooth/Kconfig<br>
+index 3d480d8c6111..1a2658f373b5 100644<br>
+--- a/drivers/bluetooth/Kconfig<br>
++++ b/drivers/bluetooth/Kconfig<br>
+@@ -62,6 +62,17 @@ config BT_HCIBTSDIO<br>
+ 	  Say Y here to compile support for Bluetooth SDIO devices into the<br>
+ 	  kernel or say M to compile it as module (btsdio).<br>
+ <br>
++config BT_HCISMD<br>
++	tristate &quot;HCI Qualcomm SMD driver&quot;<br>
++	depends on QCOM_SMD<br>
++	help<br>
++	  Qualcomm SMD HCI driver.<br>
++	  This driver is used to bridge HCI data onto the shared memory<br>
++	  channels to the WCNSS core.<br>
++<br>
++	  Say Y here to compile support for HCI over Qualcomm SMD into the<br>
++	  kernelor say M to compile as a module.<br>
++<br>
+ config BT_HCIUART<br>
+ 	tristate &quot;HCI UART driver&quot;<br>
+ 	depends on TTY<br>
+diff --git a/drivers/bluetooth/Makefile b/drivers/bluetooth/Makefile<br>
+index 07c9cf381e5a..43c7dc8641ff 100644<br>
+--- a/drivers/bluetooth/Makefile<br>
++++ b/drivers/bluetooth/Makefile<br>
+@@ -14,6 +14,7 @@ obj-$(CONFIG_BT_HCIBTUART)	+= btuart_cs.o<br>
+ <br>
+ obj-$(CONFIG_BT_HCIBTUSB)	+= btusb.o<br>
+ obj-$(CONFIG_BT_HCIBTSDIO)	+= btsdio.o<br>
++obj-$(CONFIG_BT_HCISMD)		+= hci_smd.o<br>
+ <br>
+ obj-$(CONFIG_BT_INTEL)		+= btintel.o<br>
+ obj-$(CONFIG_BT_ATH3K)		+= ath3k.o<br>
+diff --git a/drivers/bluetooth/hci_smd.c b/drivers/bluetooth/hci_smd.c<br>
+new file mode 100644<br>
+index 000000000000..e5748da2f902<br>
+--- /dev/null<br>
++++ b/drivers/bluetooth/hci_smd.c<br>
+@@ -0,0 +1,222 @@<br>
++/*<br>
++ * Copyright (c) 2015, Sony Mobile Communications Inc.<br>
++ *<br>
++ * This program is free software; you can redistribute it and/or modify<br>
++ * it under the terms of the GNU General Public License version 2 and<br>
++ * only version 2 as published by the Free Software Foundation.<br>
++ *<br>
++ * This program is distributed in the hope that it will be useful,<br>
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of<br>
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the<br>
++ * GNU General Public License for more details.<br>
++ */<br>
++<br>
++#include &lt;linux/module.h&gt;<br>
++#include &lt;linux/slab.h&gt;<br>
++#include &lt;linux/soc/qcom/smd.h&gt;<br>
++#include &lt;net/bluetooth/bluetooth.h&gt;<br>
++#include &lt;net/bluetooth/hci_core.h&gt;<br>
++#include &lt;net/bluetooth/hci.h&gt;<br>
++<br>
++static struct {<br>
++	struct qcom_smd_channel *acl_channel;<br>
++	struct qcom_smd_channel *cmd_channel;<br>
++<br>
++	struct hci_dev *hci;<br>
++} smd_hci;<br>
++<br>
++static int smd_hci_recv(unsigned type, const void *data, size_t count)<br>
++{<br>
++	struct sk_buff *skb;<br>
++	void *buf;<br>
++	int ret;<br>
++<br>
++	skb = bt_skb_alloc(count, GFP_ATOMIC);<br>
++	if (!skb)<br>
++		return -ENOMEM;<br>
++<br>
++	buf = skb_put(skb, count);<br>
++	memcpy_fromio(buf, data, count);<br>
++<br>
++	skb-&gt;dev = (void *)smd_hci.hci;<br>
++	bt_cb(skb)-&gt;pkt_type = type;<br>
++	skb_orphan(skb);<br>
++<br>
++	ret = hci_recv_frame(smd_hci.hci, skb);<br>
++	if (ret &lt; 0)<br>
++		kfree_skb(skb);<br>
++<br>
++	return ret;<br>
++}<br>
++<br>
++static int smd_hci_acl_callback(struct qcom_smd_device *qsdev,<br>
++				const void *data,<br>
++				size_t count)<br>
++{<br>
++	return smd_hci_recv(HCI_ACLDATA_PKT, data, count);<br>
++}<br>
++<br>
++static int smd_hci_cmd_callback(struct qcom_smd_device *qsdev,<br>
++				const void *data,<br>
++				size_t count)<br>
++{<br>
++	return smd_hci_recv(HCI_EVENT_PKT, data, count);<br>
++}<br>
++<br>
++static int smd_hci_send(struct hci_dev *hdev, struct sk_buff *skb)<br>
++{<br>
++	int ret;<br>
++<br>
++	switch (bt_cb(skb)-&gt;pkt_type) {<br>
++	case HCI_ACLDATA_PKT:<br>
++	case HCI_SCODATA_PKT:<br>
++		ret = qcom_smd_send(smd_hci.acl_channel, skb-&gt;data, skb-&gt;len);<br>
++		break;<br>
++	case HCI_COMMAND_PKT:<br>
++		ret = qcom_smd_send(smd_hci.cmd_channel, skb-&gt;data, skb-&gt;len);<br>
++		break;<br>
++	default:<br>
++		ret = -ENODEV;<br>
++		break;<br>
++	}<br>
++<br>
++	kfree_skb(skb);<br>
++<br>
++	return ret;<br>
++}<br>
++<br>
++static int smd_hci_open(struct hci_dev *hci)<br>
++{<br>
++	return 0;<br>
++}<br>
++<br>
++static int smd_hci_close(struct hci_dev *hci)<br>
++{<br>
++	return 0;<br>
++}<br>
++<br>
++static int smd_hci_set_bdaddr(struct hci_dev *hci,<br>
++			      const bdaddr_t *bdaddr)<br>
++{<br>
++	u8 buf[12];<br>
++<br>
++	buf[0] = 0x0b;<br>
++	buf[1] = 0xfc;<br>
++	buf[2] = 0x9;<br>
++	buf[3] = 0x1;<br>
++	buf[4] = 0x2;<br>
++	buf[5] = sizeof(bdaddr_t);<br>
++	memcpy(buf + 6, bdaddr, sizeof(bdaddr_t));<br>
++<br>
++	return qcom_smd_send(smd_hci.cmd_channel, buf, sizeof(buf));<br>
++}<br>
++<br>
++static int smd_hci_register(void)<br>
++{<br>
++	struct hci_dev *hci;<br>
++	int ret;<br>
++<br>
++	if (smd_hci.hci)<br>
++		return 0;<br>
++<br>
++	/* Wait for both channels to probe before registering */<br>
++	if (!smd_hci.acl_channel || !smd_hci.cmd_channel)<br>
++		return 0;<br>
++<br>
++	hci = hci_alloc_dev();<br>
++	if (!hci)<br>
++		return -ENOMEM;<br>
++<br>
++	hci-&gt;bus = HCI_SMD;<br>
++	hci-&gt;open = smd_hci_open;<br>
++	hci-&gt;close = smd_hci_close;<br>
++	hci-&gt;send = smd_hci_send;<br>
++	hci-&gt;set_bdaddr = smd_hci_set_bdaddr;<br>
++<br>
++	ret = hci_register_dev(hci);<br>
++	if (ret &lt; 0) {<br>
++		hci_free_dev(hci);<br>
++		return ret;<br>
++	}<br>
++<br>
++	smd_hci.hci = hci;<br>
++<br>
++	return 0;<br>
++}<br>
++<br>
++static void smd_hci_unregister(void)<br>
++{<br>
++	/* Only unregister on the first remove call */<br>
++	if (!smd_hci.hci)<br>
++		return;<br>
++<br>
++	hci_unregister_dev(smd_hci.hci);<br>
++	hci_free_dev(smd_hci.hci);<br>
++	smd_hci.hci = NULL;<br>
++}<br>
++<br>
++static int smd_hci_acl_probe(struct qcom_smd_device *sdev)<br>
++{<br>
++	smd_hci.acl_channel = sdev-&gt;channel;<br>
++	smd_hci_register();<br>
++<br>
++	return 0;<br>
++}<br>
++<br>
++static int smd_hci_cmd_probe(struct qcom_smd_device *sdev)<br>
++{<br>
++	smd_hci.cmd_channel = sdev-&gt;channel;<br>
++	smd_hci_register();<br>
++<br>
++	return 0;<br>
++}<br>
++<br>
++static void smd_hci_acl_remove(struct qcom_smd_device *sdev)<br>
++{<br>
++	smd_hci.acl_channel = NULL;<br>
++	smd_hci_unregister();<br>
++}<br>
++<br>
++static void smd_hci_cmd_remove(struct qcom_smd_device *sdev)<br>
++{<br>
++	smd_hci.cmd_channel = NULL;<br>
++	smd_hci_unregister();<br>
++}<br>
++<br>
++static const struct qcom_smd_id smd_hci_acl_match[] = {<br>
++	{ .name = &quot;APPS_RIVA_BT_ACL&quot; },<br>
++	{}<br>
++};<br>
++<br>
++static const struct qcom_smd_id smd_hci_cmd_match[] = {<br>
++	{ .name = &quot;APPS_RIVA_BT_CMD&quot; },<br>
++	{}<br>
++};<br>
++<br>
++static struct qcom_smd_driver smd_hci_acl_driver = {<br>
++	.probe = smd_hci_acl_probe,<br>
++	.remove = smd_hci_acl_remove,<br>
++	.callback = smd_hci_acl_callback,<br>
++	.smd_match_table = smd_hci_acl_match,<br>
++	.driver  = {<br>
++		.name  = &quot;qcom_smd_hci_acl&quot;,<br>
++		.owner = THIS_MODULE,<br>
++	},<br>
++};<br>
++<br>
++static struct qcom_smd_driver smd_hci_cmd_driver = {<br>
++	.probe = smd_hci_cmd_probe,<br>
++	.remove = smd_hci_cmd_remove,<br>
++	.callback = smd_hci_cmd_callback,<br>
++	.smd_match_table = smd_hci_cmd_match,<br>
++	.driver  = {<br>
++		.name  = &quot;qcom_smd_hci_cmd&quot;,<br>
++		.owner = THIS_MODULE,<br>
++	},<br>
++};<br>
++<br>
++module_qcom_smd_driver(smd_hci_acl_driver);<br>
++module_qcom_smd_driver(smd_hci_cmd_driver);<br>
++<br>
++MODULE_DESCRIPTION(&quot;Qualcomm SMD HCI driver&quot;);<br>
++MODULE_LICENSE(&quot;GPL v2&quot;);<br>
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h<br>
+index 7ca6690355ea..ee5b2dd922f6 100644<br>
+--- a/include/net/bluetooth/hci.h<br>
++++ b/include/net/bluetooth/hci.h<br>
+@@ -58,6 +58,7 @@<br>
+ #define HCI_RS232	4<br>
+ #define HCI_PCI		5<br>
+ #define HCI_SDIO	6<br>
++#define HCI_SMD		7<br>
+ <br>
+ /* HCI controller types */<br>
+ #define HCI_BREDR	0x00<br>
+-- <br>
+2.4.2<br>
+<br>
+--<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  rel="nofollow" href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  rel="nofollow" href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+<br>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="05253.html"> Yang Shi: "[PATCH] arm64: replace read_lock to rcu lock in call_break_hook"</a>
+
+<li><strong>Previous message: </strong> <a href="05251.html"> David Daney: "Re: [PATCH v3 2/2] PCI: Add support for Enhanced Allocation devices"</a>
+
+
+
+
+
+<li><strong>Messages sorted by: </strong><a href="date.html#05252">[ date ]</a> <a href="index.html#05252">[ thread ]</a> <a href="subject.html#05252">[ subject ]</a> <a href="author.html#05252">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>

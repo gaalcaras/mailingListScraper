@@ -29,8 +29,8 @@ class validationCase:
         bodyId = caseId + '.txt'
         bodyPath = os.path.join(self.__curDir, 'pages', bodyId)
 
-        with open(bodyPath, 'r') as txtFile:
-            body = txtFile.read()
+        with open(bodyPath, 'rb') as txtFile:
+            body = txtFile.read().decode('utf-8', 'ignore')
 
         return body
 
@@ -41,9 +41,11 @@ class validationCase:
 
         pageId = caseId + '.html'
         pagePath = os.path.join(self.__curDir, 'pages', pageId)
-        page = open(pagePath, 'r')
+        page = open(pagePath, 'rb')
 
-        response = TextResponse(url=url, request=request, body=page.read(),
+        response = TextResponse(url=url,
+                                request=request,
+                                body=page.read().decode('utf-8', 'ignore'),
                                 encoding='utf-8')
 
         page = page.close()

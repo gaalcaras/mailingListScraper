@@ -1,0 +1,23 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Usuario Universo Online",
+    "senderEmail": "pablo.ninja@uol.com.br",
+    "timeSent": "Thu, 29 Nov 2001 16:41:59 -0200 (BRST)",
+    "timeReceived": "Thu Nov 29 13:57:30 2001",
+    "subject": "(no subject)",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0111.3/1556.html"
+  },
+  "pipelineOutput": {
+    "emailId": 20011129135730,
+    "replyto": "NA",
+    "senderName": "Usuario Universo Online",
+    "senderEmail": "pablo.ninja@uol.com.br",
+    "timeSent": "Thu, 29 Nov 2001 16:41:59 -0200 (BRST)",
+    "timestampSent": "2001-11-29 16:41:59-0200",
+    "timeReceived": "Thu Nov 29 13:57:30 2001",
+    "timestampReceived": "2001-11-29 13:57:30-0500",
+    "subject": "(no subject)",
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0111.3/1556.html"
+  }
+}
