@@ -72,9 +72,7 @@ class HypermailSpider(scrapy.Spider):
         replytoPattern = '//ul[1]/li[contains((b|strong), "In reply to:")]'
         replytoPattern += '/a/@href'
         link = response.xpath(replytoPattern).extract()
-
-        if len(link) == 0:
-            link = ['']
+        link = [''] if len(link) == 0 else link
 
         load.add_value('replyto', link[0])
 
