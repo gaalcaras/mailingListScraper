@@ -108,7 +108,10 @@ class HypermailSpider(scrapy.Spider):
 
         # Final field, the body of the email
         bodyPattern = bodyBeforeComment + '\n?(.*)' + bodyAfterComment
-        body = re.search(bodyPattern, response.body.decode(), flags=re.S)
+
+        # Ignore invalid bytes when necessary
+        pageBody = response.body.decode('utf-8', 'ignore')
+        body = re.search(bodyPattern, pageBody, flags=re.S)
         load.add_value('body', body.group(1))
 
         return load.load_item()
