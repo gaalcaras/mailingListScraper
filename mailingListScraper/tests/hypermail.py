@@ -46,7 +46,7 @@ class TestItemExtraction(TestBase):
             with self.subTest(caseId=caseId):
                 # Create a validation case and generate test data
                 case = validationCase(caseId)
-                testItem = self.spider.parse(case.response)
+                testItem = self.spider.parseItem(case.response)
 
                 # Compare test and validation data
                 for item, trueValue in case.rawItem.items():
@@ -58,7 +58,7 @@ class TestItemExtraction(TestBase):
             with self.subTest(caseId=caseId):
                 # Create a validation case and generate test data
                 case = validationCase(caseId)
-                testItem = self.spider.parse(case.response)
+                testItem = self.spider.parseItem(case.response)
 
                 caseBody = re.sub('\n$', '', case.body)
                 testBody = re.sub('\n$', '', testItem['body'])

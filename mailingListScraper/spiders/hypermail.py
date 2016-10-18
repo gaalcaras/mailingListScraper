@@ -11,17 +11,59 @@ class HypermailSpider(scrapy.Spider):
     name = "hypermail"
     allowed_domains = ["lkml.iu.edu"]
     start_urls = (
-        'http://lkml.iu.edu/hypermail/linux/kernel/9506/0000.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/0106.3/0269.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/0008.3/0094.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/0211.2/0196.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/9910.1/0253.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/9704.1/0107.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/9606.3/0278.html',
-        'http://lkml.iu.edu/hypermail/linux/kernel/0308.2/0009.html'
+        'http://lkml.iu.edu/hypermail/linux/kernel/',
     )
 
     def parse(self, response):
+        """
+        Extract all of the messages lists (grouped by date).
+
+        @url http://lkml.iu.edu/hypermail/linux/kernel/
+        @returns requests 1002
+        """
+
+        msgListUrls = response.xpath('//li//a//@href').extract()
+
+        for listRelUrl in msgListUrls:
+            msgListUrl = 'http://lkml.iu.edu/hypermail/linux/kernel/'
+            msgListUrl += listRelUrl
+            request = scrapy.Request(msgListUrl,
+                                     callback=self.parseMsgList)
+
+            yield request
+
+    def parseMsgList(self, response):
+        """
+        Extract all relative URLs to the individual messages.
+
+        @url http://lkml.iu.edu/hypermail/linux/kernel/9506/index.html
+        @returns requests 199
+        """
+
+        msgRelativeUrls = response.xpath('//li//a//@href').extract()
+        urlReg = re.search('^(.*)/index\.html', response.url)
+        baseUrl = urlReg.group(1)
+
+        for msgRelativeUrl in msgRelativeUrls:
+            if re.match('\d{4,6}', msgRelativeUrl) is None:
+                continue
+
+            msgUrl = baseUrl + '/' + msgRelativeUrl
+            request = scrapy.Request(msgUrl,
+                                     callback=self.parseItem)
+            yield request
+
+    def parseItem(self, response):
+        """
+        Extract fields from the individual email page and load them into the
+        item.
+
+        @url http://lkml.iu.edu/hypermail/linux/kernel/0111.3/0036.html
+        @returns items 1 1
+        @scrapes senderName senderEmail timeSent timeReceived subject body
+        @scrapes replyto url
+        """
+
         load = ItemLoader(item=Email(), selector=response)
 
         # Take care of easy fields first
