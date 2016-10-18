@@ -127,7 +127,7 @@ class HypermailSpider(scrapy.Spider):
         fields['senderName'] = whoReg.group(1)
         email = whoReg.group(2)
 
-        if 'xxxxxxxxxxxxx' in email:
+        if 'xxxx' in email:
             # Sometimes the email domain is masked in the Author meta field
             # (ex: "davem@xxxxxxxxxxxxx"). Turns out, more often then not,
             # you can get the domain of the email in the Message Id Field.
