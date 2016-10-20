@@ -91,7 +91,7 @@ Each row corresponds to an email, each column to one of the following fields:
 | timeSent | `Monday 17 Oct 2016 14:25:56 +05:00` | The date and time the email was sent at.|
 | timestampSent | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
 | timeReceived | `Monday 17 Oct 2016 14:25:56 +05:00` | The date and time the email was received at, as indicated in the archive.|
-| timestampReceived | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
+| timestampReceived | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeReceived is "NA" or cannot be parsed.|
 | subject | `Re: [PATCH v1] oops` | |
 | url | `http://archive.org/mailingList/msg2.html` | The url of the message. |
 | replyto | `http://archive.org/mailingList/msg1.html` | The url of the message the current email replies to. |
