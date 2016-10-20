@@ -81,19 +81,19 @@ The spider stores extracted emails in a `data` folder, containing:
 
 Each row corresponds to an email, each column to one of the following fields:
 
-| Field | Comment |
-| --- | --- |
-| mailingList | Examples: `lkml`, `alpha`, etc. |
-| emailId | The timestamp for received time (like `20161017142556` for "received on 2016-10-17 at 14:25:56"). If two or more emails were received at the same time, we append a 0 (or more) at the end of the timestamp. |
-| senderName | Example: `Linus Torvalds`. If no name is found, will be the email.|
-| senderEmail | Example: `foo@bar.com`. Might not be complete.|
-| timeSent | Example: `Monday 17 Oct 2016 14:25:56 +05:00`. The date and time the email was sent at, as indicated in the archive.|
-| timestampSent | Example: `20161017142556+0500`. Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
-| timeReceived | Example: `Monday 17 Oct 2016 14:25:56 +05:00`. The date and time the email was received at, as indicated in the archive.|
-| timestampReceived | Example: `20161017142556+0500`. Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
-| subject | Example: `Re: [PATCH v1] oops`.|
-| url | The url of the message. |
-| replyto | The url of the message this email replies to. |
+| Field | Example |Comment |
+| --- | --- | --- |
+| mailingList | `lkml` | |
+| emailId | `20161017142556` | The timestamp for received time ("received on 2016-10-17 at 14:25:56"). If two or more emails were received at the same time, we append a 0 (or more) at the end of the timestamp. |
+| senderName | `Linus Torvalds` | If no name is found, will be the email.|
+| senderEmail | `foo@bar.com` | Might not be complete.|
+| timeSent | `Monday 17 Oct 2016 14:25:56 +05:00` | The date and time the email was sent at.|
+| timestampSent | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
+| timeReceived | `Monday 17 Oct 2016 14:25:56 +05:00` | The date and time the email was received at, as indicated in the archive.|
+| timestampReceived | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
+| subject | `Re: [PATCH v1] oops` | |
+| url | `http://archive.org/mailingList/msg2.html` | The url of the message. |
+| replyto | `http://archive.org/mailingList/msg1.html` | The url of the message the current email replies to. |
 
 When the scraper fails to extract the relevant information from the email, the field is marked as "NA".
 
