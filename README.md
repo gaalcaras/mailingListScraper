@@ -75,7 +75,7 @@ The spider is collecting data.
 
 The spider stores extracted emails in a `data` folder, containing:
 
-+ `{ArchiveName}ByEmail.csv`: all metadata collected is stored in this file, with each row corresponding to an email.
++ `{ArchiveName}ByEmail.csv`: all metadata collected are stored in this file, with each row corresponding to an email.
 + `{ArchiveName}/{mailingList}/{emailId}.html`: a folder containing the content of the emails.
 
 #### CSV file
