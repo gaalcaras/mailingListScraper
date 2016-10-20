@@ -13,6 +13,7 @@
 		* [Email contents](#email-contents)
 	* [Options](#options)
 		* [mlist](#mlist)
+		* [body](#body)
 * [Development and testing](#development-and-testing)
 * [Privacy](#privacy)
 
@@ -105,6 +106,13 @@ In case of encoding problems, the scraper tries to get rid of problematic bytes 
 ### Options
 
 The spiders accept arguments from the command line.
+You can combine them to adjust the scope of your crawl.
+
+Say I only care about the metadata of the emails, but I want to collect the data of all the mailing lists in the Hypermail archive:
+
+```
+scrapy crawl hypermail -a mlist=all -a body=false
+```
 
 #### mlist
 
@@ -114,7 +122,7 @@ You can provide a comma separated list of mailing lists for a specific spider:
 scrapy crawl archiveName -a mlist=mailinglist1,mailinglist2
 ```
 
-To get the options of the argument:
+To print the available mailing lists in an archive:
 
 ```
 scrapy crawl hypermail -a mlist=print
@@ -124,6 +132,14 @@ To crawl every mailing list in the archive:
 
 ```
 scrapy crawl hypermail -a mlist=all
+```
+
+#### body
+
+Since downloading the body of each email can take up a lot of disk space, you can disable it:
+
+```
+scrapy crawl archiveName -a body=false
 ```
 
 ## Development and testing

@@ -115,13 +115,14 @@ class HypermailSpider(ArchiveSpider):
         for key, val in specificFields.items():
             load.add_value(key, val)
 
-        # Final field, the body of the email
-        bodyPattern = bodyBeforeComment + '\n?(.*)' + bodyAfterComment
+        if self.getBody:
+            # Final field, the body of the email
+            bodyPattern = bodyBeforeComment + '\n?(.*)' + bodyAfterComment
 
-        # Ignore invalid bytes when necessary
-        pageBody = response.body.decode('utf-8', 'ignore')
-        body = re.search(bodyPattern, pageBody, flags=re.S)
-        load.add_value('body', body.group(1))
+            # Ignore invalid bytes when necessary
+            pageBody = response.body.decode('utf-8', 'ignore')
+            body = re.search(bodyPattern, pageBody, flags=re.S)
+            load.add_value('body', body.group(1))
 
         return load.load_item()
 

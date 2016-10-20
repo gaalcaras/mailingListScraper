@@ -10,8 +10,11 @@ class ArchiveSpider(scrapy.Spider):
     name = "archive"
     start_urls = []
 
-    def __init__(self, mlist=None):
+    getBody = True
+
+    def __init__(self, body=None, mlist=None):
         self._mList(mlist)
+        self._getBody(body)
 
     def _mList(self, mlist):
         "Handle the mList argument."
@@ -45,3 +48,10 @@ class ArchiveSpider(scrapy.Spider):
                 msg = self.name + ' did not recognize any mailing list in your'
                 msg += 'mlist argument. Try with something else.'
                 self.logger.warning(msg)
+
+    def _getBody(self, body):
+        "Handle the body argument."
+
+        if body == "false":
+            self.getBody = False
+            self.logger.info('Spider will not extract email body.')

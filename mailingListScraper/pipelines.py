@@ -134,6 +134,9 @@ class BodyExport(object):
     """
 
     def process_item(self, item, spider):
+        if not spider.getBody:
+            return item
+
         destFile = 'data/{}/{}/{}.html'.format(spider.name,
                                                item['mailingList'],
                                                item['emailId'])
