@@ -4,6 +4,7 @@
 # #############################################
 
 import re
+import logging
 import os
 from datetime import datetime
 from dateutil.parser import parse as dateParser
@@ -11,6 +12,8 @@ from dateutil import tz
 
 from scrapy import signals
 from scrapy.exporters import CsvItemExporter
+
+logger = logging.getLogger('pipelines')
 
 
 class GenerateId(object):
@@ -89,12 +92,38 @@ class ParseTimeFields(object):
                 item[key] = "NA"
                 continue
 
-            parsedTime = dateParser(item[val])
+            try:
+                parsedTime = dateParser(item[val])
+            except ValueError:
+                try:
+                    # "... HH:MM:SS +0200"
+                    pattern = '(.* \d{2}:\d{2}:\d{2}(\s?[+,-]\d{4})?)'
+                    simpler = re.search(pattern, item[val])
+                    parsedTime = dateParser(simpler.group(1))
+                except:
+                    message = '<' + item['url'] + '> '
+                    message += 'ParseTimeFields could not parse ' + val + ', '
+                    message += key + ' will be NA.'
+                    logger.warning(message)
+                    item[key] = "NA"
+                    continue
 
             if parsedTime.tzinfo is None:
                 parsedTime = parsedTime.replace(tzinfo=defTZ)
 
             item[key] = parsedTime.strftime(timeFormat)
+
+        return item
+
+
+class GetMailingList(object):
+    """
+    """
+
+    def process_item(self, item, spider):
+        for mList, url in spider.mailingList.items():
+            if url in item['url']:
+                item['mailingList'] = mList
 
         return item
 
@@ -105,7 +134,9 @@ class BodyExport(object):
     """
 
     def process_item(self, item, spider):
-        destFile = 'data/{}/{}.html'.format(spider.name, item['emailId'])
+        destFile = 'data/{}/{}/{}.html'.format(spider.name,
+                                               item['mailingList'],
+                                               item['emailId'])
         os.makedirs(os.path.dirname(destFile), exist_ok=True)
 
         with open(destFile, 'wb') as body:
@@ -135,8 +166,8 @@ class CsvExport(object):
         file = open(destFilePath, 'wb')
         self.files[spider] = file
         self.exporter = CsvItemExporter(file)
-        self.exporter.fields_to_export = ['emailId', 'senderName',
-                                          'senderEmail',
+        self.exporter.fields_to_export = ['mailingList', 'emailId',
+                                          'senderName', 'senderEmail',
                                           'timeSent', 'timestampSent',
                                           'timeReceived', 'timestampReceived',
                                           'subject', 'url', 'replyto']

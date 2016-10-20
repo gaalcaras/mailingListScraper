@@ -18,6 +18,7 @@
     "timeReceived": "Wed Sep 30 2015 - 19:03:14 EST",
     "timestampReceived": "2015-09-30 19:03:14-0500",
     "subject": "[PATCH] Bluetooth: hci_smd: Qualcomm WCNSS HCI driver",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1509.3/05252.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1509.3/05252.html",
+    "mailingList": "lkml"
   }
 }

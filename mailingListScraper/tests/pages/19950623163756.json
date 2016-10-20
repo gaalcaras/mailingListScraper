@@ -18,6 +18,7 @@
     "timeReceived": "Fri Jun 23 16:32:53 1995 EST",
     "timestampReceived": "1995-06-23 16:32:53-0500",
     "subject": "New Mailing Archives",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9506/0000.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9506/0000.html",
+    "mailingList": "lkml"
   }
 }

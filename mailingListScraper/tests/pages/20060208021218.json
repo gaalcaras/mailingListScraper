@@ -18,6 +18,7 @@
     "timeReceived": "Wed Feb 08 2006 - 02:12:18 EST",
     "timestampReceived": "2006-02-08 02:12:18-0500",
     "subject": "[PATCH 03/17] s390x compat __user annotations",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0602.1/0090.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0602.1/0090.html",
+    "mailingList": "lkml"
   }
 }

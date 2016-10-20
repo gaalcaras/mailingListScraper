@@ -1,44 +1,130 @@
 # Mailing List Scraper
 
+[![Build Status](https://travis-ci.org/gaalcaras/mailingListScraper.svg?branch=master)](https://travis-ci.org/gaalcaras/mailingListScraper)
+
 **mailingListScraper** is a tool to extract data from public email lists in a format suitable for data analysis.
 
-For now, this scraper only supports the Linux Kernel Mailing List, using this public archive : [http://lkml.iu.edu/hypermail/linux/kernel/](http://lkml.iu.edu/hypermail/linux/kernel/).
-
-[![Build Status](https://travis-ci.org/gaalcaras/mailingListScraper.svg?branch=master)](https://travis-ci.org/gaalcaras/mailingListScraper)
+* [Introduction](#introduction)
+* [User guide](#user-guide)
+	* [Installation](#installation)
+	* [Quick start](#quick-start)
+	* [Collected data](#collected-data)
+		* [CSV file](#csv-file)
+		* [Email contents](#email-contents)
+	* [Options](#options)
+		* [mlist](#mlist)
+* [Development and testing](#development-and-testing)
+* [Privacy](#privacy)
 
 ## Introduction
 
 I am currently developing this scraper to collect data for my PhD ([EHESS](http://ehess.fr/) in Paris, France). If you do see problems with the code, I'll be glad to review your Pull Requests ;-)
 
+Supported archives and mailing lists include:
+
+| Email Archive | Mailing List | Development Status |
+| --- | --- | --- |
+|[Hypermail](http://lkml.iu.edu/hypermail/)|**Linux Kernel Mailing List** ([url](http://lkml.iu.edu/hypermail/linux/kernel))|Ready|
+|[Hypermail](http://lkml.iu.edu/hypermail/)|**Linux Alpha** ([url](http://lkml.iu.edu/hypermail/linux/alpha))|Testing|
+|[Hypermail](http://lkml.iu.edu/hypermail/)|**Linux Net** ([url](http://lkml.iu.edu/hypermail/linux/net))|Testing|
+
+
 If you're interested in using this scraper for your own project, I strongly recommend that you identify yourself in the *user-agent* (`mailingListScraper/settings.py`) so that people can contact you if needed.
 Also, be mindful of the potential impact of your scraper on the server's load.
 
+## User guide
 
-## Set up
+### Installation
 
 Make sure to install [scrapy](https://doc.scrapy.org/en/latest/intro/install.html) and the dependencies first.
 
 ```
-pip install scrapy python-dateutil
+pip install -r requirements.txt
 ```
 
 Clone the repo and `cd` into it. You're done!
 
-## Quick guide
+### Quick start
 
-You can launch a specific spider running this command at the root level of the repo:
+mailingListScraper is composed of several spiders.
+Each spider targets a specific email archive, which can host one or several mailing lists.
+
+You can launch a spider running this command at the root level of the repo:
+```
+scrapy crawl {archiveName}
+```
+
+For instance, if I want to collect data from the [Hypermail](http://lkml.iu.edu/hypermail/) archive:
 
 ```
 scrapy crawl hypermail
 ```
 
+If the archive hosts multiple mailing lists, the spider only crawls one of them by default and lets you know which one.
+In the Hypermail case, that's the Linux Kernel Mailing List :
+
+```
+[hypermail] INFO: Crawling the LKML by default.
+```
+
+That's it!
+The spider is collecting data.
+
+### Collected data
+
 The spider stores extracted emails in a `data` folder, containing:
 
-+ `hypermailByEmail.csv`: all metadata collected is stored in this file, with each row corresponding to an email.
-+ `hypermail/*`: a folder containing the content of the emails.
-  Each email body is stored in a single `html` file.
-  The file is named after its unique id, which is the timestamp for received time (like `20161017142556` for "received on 2016-10-17 at 14:25:56").
-  If two or more emails were received at the same time, we append a 0 (or more) at the end of the timestamp.
++ `{ArchiveName}ByEmail.csv`: all metadata collected is stored in this file, with each row corresponding to an email.
++ `{ArchiveName}/{mailingList}/{emailId}.html`: a folder containing the content of the emails.
+
+#### CSV file
+
+Each row corresponds to an email, each column to one of the following fields:
+
+| Field | Comment |
+| --- | --- |
+| mailingList | Examples: `lkml`, `alpha`, etc. |
+| emailId | The timestamp for received time (like `20161017142556` for "received on 2016-10-17 at 14:25:56"). If two or more emails were received at the same time, we append a 0 (or more) at the end of the timestamp. |
+| senderName | Example: `Linus Torvalds`. If no name is found, will be the email.|
+| senderEmail | Example: `foo@bar.com`. Might not be complete.|
+| timeSent | Example: `Monday 17 Oct 2016 14:25:56 +05:00`. The date and time the email was sent at, as indicated in the archive.|
+| timestampSent | Example: `20161017142556+0500`. Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
+| timeReceived | Example: `Monday 17 Oct 2016 14:25:56 +05:00`. The date and time the email was received at, as indicated in the archive.|
+| timestampReceived | Example: `20161017142556+0500`. Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
+| subject | Example: `Re: [PATCH v1] oops`.|
+| url | The url of the message. |
+| replyto | The url of the message this email replies to. |
+
+When the scraper fails to extract the relevant information from the email, the field is marked as "NA".
+
+#### Email contents
+
+Each email body is stored in a single `{emailId}.html` file.
+In case of encoding problems, the scraper tries to get rid of problematic bytes and uses UTF-8 for the HTML files.
+
+### Options
+
+The spiders accept arguments from the command line.
+
+#### mlist
+
+You can provide a comma separated list of mailing lists for a specific spider:
+
+```
+scrapy crawl archiveName -a mlist=mailinglist1,mailinglist2
+```
+
+To get the options of the argument:
+
+```
+scrapy crawl hypermail -a mlist=print
+```
+
+To crawl every mailing list in the archive:
+
+```
+scrapy crawl hypermail -a mlist=all
+```
 
 ## Development and testing
 

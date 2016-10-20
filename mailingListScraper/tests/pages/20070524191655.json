@@ -18,6 +18,7 @@
     "timeReceived": "Thu May 24 2007 - 19:16:55 EST",
     "timestampReceived": "2007-05-24 19:16:55-0500",
     "subject": "Re: pcmcia resume 60 second hang. Re: [patch 00/69] -stable review",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0705.3/0451.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0705.3/0451.html",
+    "mailingList": "lkml"
   }
 }

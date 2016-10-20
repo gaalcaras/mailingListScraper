@@ -18,6 +18,7 @@
     "timeReceived": "Sat Jun 29 00:35:29 1996 EST",
     "timestampReceived": "1996-06-29 00:35:29-0500",
     "subject": "Re: Network performance",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9606.3/0278.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9606.3/0278.html",
+    "mailingList": "lkml"
   }
 }

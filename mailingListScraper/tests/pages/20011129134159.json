@@ -18,6 +18,7 @@
     "timeReceived": "Thu Nov 29 13:57:30 2001",
     "timestampReceived": "2001-11-29 13:57:30-0500",
     "subject": "(no subject)",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0111.3/1556.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0111.3/1556.html",
+    "mailingList": "lkml"
   }
 }

@@ -18,6 +18,7 @@
     "timeReceived": "Sun Nov 17 00:39:13 2002",
     "timestampReceived": "2002-11-17 00:39:13-0500",
     "subject": "Re: Why can't Johnny compile?",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0211.2/0196.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0211.2/0196.html",
+    "mailingList": "lkml"
   }
 }

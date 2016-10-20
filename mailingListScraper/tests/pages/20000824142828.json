@@ -18,6 +18,7 @@
     "timeReceived": "Thu Aug 24 14:28:28 2000",
     "timestampReceived": "2000-08-24 14:28:28-0500",
     "subject": "Re: SCO: &quot;thread creation is about a thousand times faster than on native Linux&quot;",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0008.3/0094.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0008.3/0094.html",
+    "mailingList": "lkml"
   }
 }

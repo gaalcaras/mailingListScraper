@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # #############################################
 # Hypermail Spider
+#
+# Archive: http://lkml.iu.edu/hypermail/
 # #############################################
 
 import re
@@ -8,14 +10,20 @@ import re
 import scrapy
 from scrapy.loader import ItemLoader
 from mailingListScraper.items import Email
+from mailingListScraper.spiders.ArchiveSpider import ArchiveSpider
 
 
-class HypermailSpider(scrapy.Spider):
+class HypermailSpider(ArchiveSpider):
     name = "hypermail"
     allowed_domains = ["lkml.iu.edu"]
-    start_urls = (
-        'http://lkml.iu.edu/hypermail/linux/kernel/',
-    )
+
+    # Email Lists available from Hypermail archive:
+    mailingList = {
+        'lkml': 'http://lkml.iu.edu/hypermail/linux/kernel/',
+        'alpha': 'http://lkml.iu.edu/hypermail/linux/alpha/',
+        'net': 'http://lkml.iu.edu/hypermail/linux/net/'
+    }
+    defaultList = 'lkml'
 
     def parse(self, response):
         """
@@ -28,7 +36,7 @@ class HypermailSpider(scrapy.Spider):
         msgListUrls = response.xpath('//li//a//@href').extract()
 
         for listRelUrl in msgListUrls:
-            msgListUrl = 'http://lkml.iu.edu/hypermail/linux/kernel/'
+            msgListUrl = response.url
             msgListUrl += listRelUrl
             request = scrapy.Request(msgListUrl,
                                      callback=self.parseMsgList)

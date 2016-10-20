@@ -18,6 +18,7 @@
     "timeReceived": "Fri Oct  8 20:27:39 1999 EST",
     "timestampReceived": "1999-10-08 20:27:39-0500",
     "subject": "Re: devfs again, (was RE: USB device allocation)",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9910.1/0253.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/9910.1/0253.html",
+    "mailingList": "lkml"
   }
 }

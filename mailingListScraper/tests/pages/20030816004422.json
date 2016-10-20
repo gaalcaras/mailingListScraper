@@ -18,6 +18,7 @@
     "timeReceived": "Sat Aug 16 2003 - 00:44:22 EST",
     "timestampReceived": "2003-08-16 00:44:22-0500",
     "subject": "Re: [RFC][PATCH] Make cryptoapi non-optional?",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0308.2/0009.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0308.2/0009.html",
+    "mailingList": "lkml"
   }
 }

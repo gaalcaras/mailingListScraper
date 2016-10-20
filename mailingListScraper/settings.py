@@ -26,6 +26,7 @@ ITEM_PIPELINES = {
    'mailingListScraper.pipelines.ParseTimeFields': 100,
    'mailingListScraper.pipelines.GenerateId': 200,
    'mailingListScraper.pipelines.CleanReplyto': 300,
+   'mailingListScraper.pipelines.GetMailingList': 400,
    'mailingListScraper.pipelines.BodyExport': 800,
    'mailingListScraper.pipelines.CsvExport': 900,
 }

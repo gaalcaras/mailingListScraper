@@ -18,6 +18,7 @@
     "timeReceived": "Fri Sep 30 2016 - 02:40:50 EST",
     "timestampReceived": "2016-09-30 02:40:50-0500",
     "subject": "Re: [PATCH v8 0/8] thunderbolt: Introducing Thunderbolt(TM) Networking",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1609.3/03505.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/1609.3/03505.html",
+    "mailingList": "lkml"
   }
 }

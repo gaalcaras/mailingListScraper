@@ -18,6 +18,7 @@
     "timeReceived": "Thu Dec 02 2004 - 12:27:25 EST",
     "timestampReceived": "2004-12-02 12:27:25-0500",
     "subject": "Re: [PATCH] oom killer (Core)",
-    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0412.0/0389.html"
+    "url": "http://lkml.iu.edu/hypermail/linux/kernel/0412.0/0389.html",
+    "mailingList": "lkml"
   }
 }

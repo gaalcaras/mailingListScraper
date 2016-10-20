@@ -8,9 +8,8 @@ import re
 
 from mailingListScraper.tests.validationCase import validationCase
 
-from mailingListScraper.pipelines import CleanReplyto
-from mailingListScraper.pipelines import ParseTimeFields
-from mailingListScraper.pipelines import GenerateId
+from mailingListScraper.pipelines import CleanReplyto, ParseTimeFields
+from mailingListScraper.pipelines import GenerateId, GetMailingList
 
 from mailingListScraper.spiders.hypermail import HypermailSpider
 
@@ -106,6 +105,40 @@ class TestPipelines(TestBase):
                                  testItem['timestampSent'])
                 self.assertEqual(case.finalItem['timestampReceived'],
                                  testItem['timestampReceived'])
+
+    def testGetMailingList(self):
+        pipeline = GetMailingList()
+
+        for caseId in self.cases:
+            with self.subTest(caseId=caseId):
+                # Create a validation case and generate test data
+                case = validationCase(caseId)
+                testItem = pipeline.process_item(case.rawItem, self.spider)
+
+                # Compare test and validation data
+                self.assertEqual(case.finalItem['mailingList'],
+                                 testItem['mailingList'])
+
+
+class TestPipelineGetMailingList(TestBase):
+
+    def testMatching(self):
+        emailLists = {
+            'lkml':
+                'http://lkml.iu.edu/hypermail/linux/kernel/9910.1/0253.html',
+            'alpha':
+                'http://lkml.iu.edu/hypermail/linux/alpha/9508.2/0012.html',
+            'net':
+                'http://lkml.iu.edu/hypermail/linux/net/9509.1/0008.html'
+        }
+
+        pipeline = GetMailingList()
+
+        for result, url in emailLists.items():
+            with self.subTest(url=url):
+                testItem = {'url': url, 'mailingList': ''}
+                testRes = pipeline.process_item(testItem, self.spider)
+                self.assertEqual(result, testRes['mailingList'])
 
 
 class TestPipelineGenerateId(TestBase):
