@@ -4,6 +4,8 @@
 
 For now, this scraper only supports the Linux Kernel Mailing List, using this public archive : [http://lkml.iu.edu/hypermail/linux/kernel/](http://lkml.iu.edu/hypermail/linux/kernel/).
 
+[![Build Status](https://travis-ci.org/gaalcaras/mailingListScraper.svg?branch=master)](https://travis-ci.org/gaalcaras/mailingListScraper)
+
 ## Introduction
 
 I am currently developing this scraper to collect data for my PhD ([EHESS](http://ehess.fr/) in Paris, France). If you do see problems with the code, I'll be glad to review your Pull Requests ;-)
