@@ -1,0 +1,30 @@
+
+
+Hi,
+
+On Wed, 1 Aug 2007, Alex Riesen wrote:
+
+> Also mention '--file' in FILES.
+> 
+> Signed-off-by: Alex Riesen <raa.lkml@gmail.com>
+> ---
+> 
+> Alex Riesen, Tue, Jul 31, 2007 14:02:13 +0200:
+> > On 7/31/07, Johannes Schindelin <Johannes.Schindelin@gmx.de> wrote:
+> > > You could use this chance to make the verse nicer, i.e. split it into a
+> > > [<file-option>] and an [<action>] part.
+> 
+> Did only the long one, file-option. I don't think the [<action>] part
+> is essential, though. It is quite understandable...
+
+It is too long.  That's my gripe with it.  But then, I do not really care; 
+I know pretty well what "git config" can do...
+
+Ciao,
+Dscho
+
+
+-
+To unsubscribe from this list: send the line "unsubscribe git" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html
