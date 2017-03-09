@@ -35,6 +35,6 @@ class Email(scrapy.Item):
     subject = scrapy.Field(output_processor=Join())
     body = scrapy.Field(output_processor=Join())
     url = scrapy.Field(output_processor=Join())
-    mailingList = scrapy.Field()
+    mailingList = scrapy.Field(output_processor=Join())
 
     pass

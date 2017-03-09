@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-# #############################################
-# Hypermail Spider
-#
-# Archive: http://lkml.iu.edu/hypermail/
-# #############################################
+"""
+HypermailSpider helps you scrap the mailing lists on the Hypermail archive
+http://lkml.iu.edu/hypermail/
+"""
 
 import re
 
@@ -14,16 +13,21 @@ from mailingListScraper.spiders.ArchiveSpider import ArchiveSpider
 
 
 class HypermailSpider(ArchiveSpider):
+    """
+    HypermailSpider scraps the mailing lists in the Hypermail archive. There
+    are only three of them (lkml, alpha and net). The default option is to
+    scrap lkml.
+    """
     name = "hypermail"
     allowed_domains = ["lkml.iu.edu"]
 
     # Email Lists available from Hypermail archive:
-    mailingList = {
+    mailing_lists = {
         'lkml': 'http://lkml.iu.edu/hypermail/linux/kernel/',
         'alpha': 'http://lkml.iu.edu/hypermail/linux/alpha/',
         'net': 'http://lkml.iu.edu/hypermail/linux/net/'
     }
-    defaultList = 'lkml'
+    default_list = 'lkml'
 
     def parse(self, response):
         """
@@ -33,17 +37,13 @@ class HypermailSpider(ArchiveSpider):
         @returns requests 1002
         """
 
-        msgListUrls = response.xpath('//li//a//@href').extract()
+        msglist_urls = response.xpath('//li//a//@href').extract()
+        msglist_urls = [response.url + u for u in msglist_urls]
 
-        for listRelUrl in msgListUrls:
-            msgListUrl = response.url
-            msgListUrl += listRelUrl
-            request = scrapy.Request(msgListUrl,
-                                     callback=self.parseMsgList)
+        for url in msglist_urls:
+            yield scrapy.Request(url, callback=self.parse_msglist)
 
-            yield request
-
-    def parseMsgList(self, response):
+    def parse_msglist(self, response):
         """
         Extract all relative URLs to the individual messages.
 
@@ -51,20 +51,19 @@ class HypermailSpider(ArchiveSpider):
         @returns requests 199
         """
 
-        msgRelativeUrls = response.xpath('//li//a//@href').extract()
-        urlReg = re.search('^(.*)/index\.html', response.url)
-        baseUrl = urlReg.group(1)
+        msg_urls = response.xpath('//li//a//@href').extract()
+        reg_url = re.search(r'^(.*)/index\.html', response.url)
+        base_url = reg_url.group(1)
 
-        for msgRelativeUrl in msgRelativeUrls:
-            if re.match('\d{4,6}', msgRelativeUrl) is None:
+# TODO: refactor here
+        for rel_url in msg_urls:
+            if re.match(r'\d{4,6}', rel_url) is None:
                 continue
 
-            msgUrl = baseUrl + '/' + msgRelativeUrl
-            request = scrapy.Request(msgUrl,
-                                     callback=self.parseItem)
-            yield request
+            msg_url = base_url + '/' + rel_url
+            yield scrapy.Request(msg_url, callback=self.parse_item)
 
-    def parseItem(self, response):
+    def parse_item(self, response):
         """
         Extract fields from the individual email page and load them into the
         item.
@@ -80,53 +79,53 @@ class HypermailSpider(ArchiveSpider):
         # Take care of easy fields first
         load.add_value('url', response.url)
 
-        replytoPattern = '//ul[1]/li[contains((b|strong), "In reply to:")]'
-        replytoPattern += '/a/@href'
-        link = response.xpath(replytoPattern).extract()
-        link = [''] if len(link) == 0 else link
+        pattern_replyto = '//ul[1]/li[contains((b|strong), "In reply to:")]'
+        pattern_replyto += '/a/@href'
+        link = response.xpath(pattern_replyto).extract()
+        link = [''] if not link else link
 
         load.add_value('replyto', link[0])
 
         # Sometime in 2003, the archive changes and the email pages
         # require specific procedure to extract the following fields:
-        specificFields = {
-                'senderName': None,
-                'senderEmail': None,
-                'timeSent': None,
-                'timeReceived': None,
-                'subject': None
+        specific_fields = {
+            'senderName': None,
+            'senderEmail': None,
+            'timeSent': None,
+            'timeReceived': None,
+            'subject': None
         }
 
         # Detect new archive system with HTML comment
-        newSystem = response.xpath('/comment()[1][contains(., "MHonArc")]')
+        new_system = response.xpath('/comment()[1][contains(., "MHonArc")]')
 
-        if len(newSystem) >= 1:
+        if len(new_system) >= 1:
             # If new archive system is detected...
-            specificFields = self.parseNewSystem(response, specificFields)
-            bodyBeforeComment = '<!--X-Body-of-Message-->'
-            bodyAfterComment = '<!--X-Body-of-Message-End-->'
+            specific_fields = self.parse_new_system(response, specific_fields)
+            body_before_comment = '<!--X-Body-of-Message-->'
+            body_after_comment = '<!--X-Body-of-Message-End-->'
         else:
             # Otherwise...
-            specificFields = self.parseOldSystem(response, specificFields)
-            bodyBeforeComment = '<!-- body="start" -->'
-            bodyAfterComment = '<!-- body="end" -->'
+            specific_fields = self.parse_old_system(response, specific_fields)
+            body_before_comment = '<!-- body="start" -->'
+            body_after_comment = '<!-- body="end" -->'
 
         # Load all the values from these specific fields
-        for key, val in specificFields.items():
+        for key, val in specific_fields.items():
             load.add_value(key, val)
 
-        if self.getBody:
+        if self.get_body:
             # Final field, the body of the email
-            bodyPattern = bodyBeforeComment + '\n?(.*)' + bodyAfterComment
+            pattern_body = body_before_comment + '\n?(.*)' + body_after_comment
 
             # Ignore invalid bytes when necessary
-            pageBody = response.body.decode('utf-8', 'ignore')
-            body = re.search(bodyPattern, pageBody, flags=re.S)
+            page_body = response.body.decode('utf-8', 'ignore')
+            body = re.search(pattern_body, page_body, flags=re.S)
             load.add_value('body', body.group(1))
 
         return load.load_item()
 
-    def parseNewSystem(self, response, fields):
+    def parse_new_system(self, response, fields):
         """
         Populates the fields dictionary for responses that were generated
         by a new archive system (post 2003).
@@ -135,48 +134,48 @@ class HypermailSpider(ArchiveSpider):
         who = response.xpath('//meta[@name="Author"]/@content').extract()[0]
         # The author meta field often contains the name and the email :
         # "Sender Name <email@adress.com>"
-        whoReg = re.search('^"?([^"]*)"?\s+<(.*)>', who)
+        reg_who = re.search(r'^"?([^"]*)"?\s+<(.*)>', who)
 
-        email = who if whoReg is None else whoReg.group(2)
+        email = who if reg_who is None else reg_who.group(2)
 
         if 'xxxx' in email:
             # Sometimes the email domain is masked in the Author meta field
             # (ex: "davem@xxxxxxxxxxxxx"). Turns out, more often then not,
             # you can get the domain of the email in the Message Id Field.
-            msgId = response.xpath('//comment()[contains(., "X-Message-Id")]')
-            domainReg = re.search('@(.*) -->', msgId.extract()[0])
-            emailReg = re.search('^<?(.*)@', email)
-            email = emailReg.group(1) + '@' + domainReg.group(1)
+            msg_id = response.xpath('//comment()[contains(., "X-Message-Id")]')
+            reg_domain = re.search('@(.*) -->', msg_id.extract()[0])
+            reg_email = re.search('^<?(.*)@', email)
+            email = reg_email.group(1) + '@' + reg_domain.group(1)
 
-        fields['senderName'] = email if whoReg is None else whoReg.group(1)
+        fields['senderName'] = email if reg_who is None else reg_who.group(1)
         fields['senderEmail'] = email
 
         what = response.xpath('//meta[@name="Subject"]/@content').extract()[0]
         fields['subject'] = what
 
         sent = response.xpath('//comment()[contains(., "X-Date")]').extract()
-        sentReg = re.search('<!--X-Date: (.*) -->', sent[0])
-        fields['timeSent'] = sentReg.group(1)
+        reg_sent = re.search('<!--X-Date: (.*) -->', sent[0])
+        fields['timeSent'] = reg_sent.group(1)
 
-        timeXPath = '//strong[contains(., "Date")]/following-sibling::text()'
-        timeRaw = response.xpath(timeXPath).extract()[0]
-        timeReg = re.search(' (.*)\n', timeRaw)
-        fields['timeReceived'] = timeReg.group(1)
+        xpath_time = '//strong[contains(., "Date")]/following-sibling::text()'
+        raw_time = response.xpath(xpath_time).extract()[0]
+        reg_time = re.search(' (.*)\n', raw_time)
+        fields['timeReceived'] = reg_time.group(1)
 
         return fields
 
-    def parseOldSystem(self, response, fields):
+    def parse_old_system(self, response, fields):
         """
         Populates the fields dictionary for responses that were generated
         by the old archive system (before 2003).
         """
 
         selectors = {
-                'senderName': 'name',
-                'senderEmail': 'email',
-                'timeSent': 'sent',
-                'timeReceived': 'received',
-                'subject': 'subject'
+            'senderName': 'name',
+            'senderEmail': 'email',
+            'timeSent': 'sent',
+            'timeReceived': 'received',
+            'subject': 'subject'
         }
 
         for item, sel in selectors.items():

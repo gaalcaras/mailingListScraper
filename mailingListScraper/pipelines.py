@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-# #############################################
-# mailingListScraper Pipelines
-# #############################################
+# pylint: disable=missing-docstring,too-few-public-methods,unused-argument
+# pylint: disable=no-self-use
+"""
+Pipelines that handle the scraped data, format it and save it.
+"""
 
 import re
 import logging
@@ -13,7 +15,7 @@ from dateutil import tz
 from scrapy import signals
 from scrapy.exporters import CsvItemExporter
 
-logger = logging.getLogger('pipelines')
+LOGGER = logging.getLogger('pipelines')
 
 
 class GenerateId(object):
@@ -27,22 +29,22 @@ class GenerateId(object):
     """
 
     def __init__(self):
-        self.attributedIds = set()
+        self.existing_ids = set()
 
     def process_item(self, item, spider):
-        timeFormat = "%Y-%m-%d %H:%M:%S%z"
-        timestamp = datetime.strptime(item['timestampReceived'], timeFormat)
+        time_format = "%Y-%m-%d %H:%M:%S%z"
+        timestamp = datetime.strptime(item['timestampReceived'], time_format)
 
-        idFormat = "%Y%m%d%H%M%S"
-        emailId = int(timestamp.strftime(idFormat))
+        id_format = "%Y%m%d%H%M%S"
+        email_id = int(timestamp.strftime(id_format))
 
         # If two emails were received at the same time, multiply by 10
         # (i.e. add a 0 at the end of the ID)
-        emailId = emailId*10 if emailId in self.attributedIds else emailId
+        email_id = email_id*10 if email_id in self.existing_ids else email_id
 
-        self.attributedIds.add(emailId)
+        self.existing_ids.add(email_id)
 
-        item['emailId'] = emailId
+        item['emailId'] = email_id
 
         return item
 
@@ -60,8 +62,9 @@ class CleanReplyto(object):
             item['replyto'] = 'NA'
             return item
 
-        urlBase = re.search('^(.*)/\d{4,6}\.html', item['url']).group(1)
-        item['replyto'] = urlBase + '/' + item['replyto']
+        if spider.name == 'hypermail':
+            base_url = re.search(r'^(.*)/\d{4,6}\.html', item['url']).group(1)
+            item['replyto'] = base_url + '/' + item['replyto']
 
         return item
 
@@ -76,15 +79,15 @@ class ParseTimeFields(object):
 
     def process_item(self, item, spider):
         times = {
-                'timestampSent': 'timeSent',
-                'timestampReceived': 'timeReceived'
+            'timestampSent': 'timeSent',
+            'timestampReceived': 'timeReceived'
         }
 
-        timeFormat = "%Y-%m-%d %H:%M:%S%z"
+        time_format = "%Y-%m-%d %H:%M:%S%z"
 
         # Define a default time zone according to the email server setting
         if spider.name == 'hypermail':
-            defTZ = tz.tzoffset('EST', -18000)
+            def_tz = tz.tzoffset('EST', -18000)
 
         for key, val in times.items():
             if item[val] == "":
@@ -93,37 +96,38 @@ class ParseTimeFields(object):
                 continue
 
             try:
-                parsedTime = dateParser(item[val])
+                parsed_time = dateParser(item[val])
             except ValueError:
                 try:
                     # "... HH:MM:SS +0200"
-                    pattern = '(.* \d{2}:\d{2}:\d{2}(\s?[+,-]\d{4})?)'
+                    pattern = r'(.* \d{2}:\d{2}:\d{2}(\s?[+,-]\d{4})?)'
                     simpler = re.search(pattern, item[val])
-                    parsedTime = dateParser(simpler.group(1))
-                except:
+                    parsed_time = dateParser(simpler.group(1))
+                except AttributeError:
                     message = '<' + item['url'] + '> '
                     message += 'ParseTimeFields could not parse ' + val + ', '
                     message += key + ' will be NA.'
-                    logger.warning(message)
+                    LOGGER.warning(message)
                     item[key] = "NA"
                     continue
 
-            if parsedTime.tzinfo is None:
-                parsedTime = parsedTime.replace(tzinfo=defTZ)
+            if parsed_time.tzinfo is None:
+                parsed_time = parsed_time.replace(tzinfo=def_tz)
 
-            item[key] = parsedTime.strftime(timeFormat)
+            item[key] = parsed_time.strftime(time_format)
 
         return item
 
 
 class GetMailingList(object):
     """
+    Get the mailing list.
     """
 
     def process_item(self, item, spider):
-        for mList, url in spider.mailingList.items():
+        for mlist, url in spider.mailing_lists.items():
             if url in item['url']:
-                item['mailingList'] = mList
+                item['mailingList'] = mlist
 
         return item
 
@@ -134,15 +138,15 @@ class BodyExport(object):
     """
 
     def process_item(self, item, spider):
-        if not spider.getBody:
+        if not spider.get_body:
             return item
 
-        destFile = 'data/{}/{}/{}.html'.format(spider.name,
-                                               item['mailingList'],
-                                               item['emailId'])
-        os.makedirs(os.path.dirname(destFile), exist_ok=True)
+        dest_file = 'data/{}/{}/{}.html'.format(spider.name,
+                                                item['mailingList'],
+                                                item['emailId'])
+        os.makedirs(os.path.dirname(dest_file), exist_ok=True)
 
-        with open(destFile, 'wb') as body:
+        with open(dest_file, 'wb') as body:
             for line in item['body']:
                 body.write(line.encode('utf-8'))
 
@@ -156,6 +160,7 @@ class CsvExport(object):
 
     def __init__(self):
         self.files = {}
+        self.exporter = {}
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -165,10 +170,10 @@ class CsvExport(object):
         return pipeline
 
     def spider_opened(self, spider):
-        destFilePath = 'data/{}ByEmail.csv'.format(spider.name)
-        file = open(destFilePath, 'wb')
-        self.files[spider] = file
+        dest_file_path = 'data/{}ByEmail.csv'.format(spider.name)
+        file = open(dest_file_path, 'wb')
         self.exporter = CsvItemExporter(file)
+        self.files[spider] = file
         self.exporter.fields_to_export = ['mailingList', 'emailId',
                                           'senderName', 'senderEmail',
                                           'timeSent', 'timestampSent',

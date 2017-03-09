@@ -1,57 +1,77 @@
 # -*- coding: utf-8 -*-
-# #############################################
-# Archive Spider
-# #############################################
+"""
+ArchiveSpider provides basic tools for all the other spiders. It focuses
+on the command line arguments and the options for each spider.
+"""
 
 import scrapy
 
 
 class ArchiveSpider(scrapy.Spider):
+    """
+    Provides the tools to interact with the command line arguments.
+    """
     name = "archive"
     start_urls = []
+    mailing_lists = {}
+    default_list = ''
+    start_url = ''
 
-    getBody = True
+    get_body = True
 
     def __init__(self, body=None, mlist=None):
-        self._mList(mlist)
-        self._getBody(body)
+        self._set_lists()
+        self._mlist(mlist)
+        self._getbody(body)
 
-    def _mList(self, mlist):
+    def _set_lists(self):
+        """
+        Sets the mailing_lists property. If start_url exists, then the
+        spider will call _getLists() to get the urls directly from
+        the archive.
+        """
+
+        # TODO: à améliorer
+        if not any(self.mailing_lists):
+            if self.start_url == "":
+                self.logger.error('No start_url or mailing_lists')
+
+    def _mlist(self, mlist):
         "Handle the mList argument."
 
-        allLists = ' '.join(self.mailingList.keys())
+        all_lists = ' '.join(self.mailing_lists.keys())
 
         if mlist is None:
             # Default mailing list
-            self.start_urls.append(self.mailingList[self.defaultList])
-            self.logger.info('Crawling ' + self.defaultList + ' by default.')
+            self.start_urls.append(self.mailing_lists[self.default_list])
+            self.logger.info('Crawling ' + self.default_list + ' by default.')
         elif mlist == 'print':
-            print('Available lists: ' + allLists)
+            print('Available lists: ' + all_lists)
             self.close(self, 'Just asking nicely.')
             return
         elif mlist == 'all':
-            self.logger.info('Crawling: ' + allLists + '.')
-            self.start_urls = self.mailingList.values()
+            self.logger.info('Crawling: ' + all_lists + '.')
+            self.start_urls = self.mailing_lists.values()
         else:
             # Adding start_urls according to mlist argument
             lists = mlist.split(',')
 
-            for listName in lists:
+            for list_name in lists:
                 try:
-                    url = self.mailingList[listName]
+                    url = self.mailing_lists[list_name]
                     self.start_urls.append(url)
                 except KeyError:
-                    self.logger.warning('Unknown mailing list ' + listName)
+                    self.logger.warning('Unknown mailing list ' + list_name)
 
             # In case no mlist argument was valid...
-            if len(self.start_urls) == 0:
+            if not self.start_urls:
                 msg = self.name + ' did not recognize any mailing list in your'
                 msg += 'mlist argument. Try with something else.'
                 self.logger.warning(msg)
 
-    def _getBody(self, body):
+    def _getbody(self, body):
         "Handle the body argument."
 
         if body == "false":
-            self.getBody = False
+            self.get_body = False
             self.logger.info('Spider will not extract email body.')
