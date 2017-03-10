@@ -8,7 +8,7 @@ import unittest
 import re
 
 from mailingListScraper.tests.validation_case import ValidationCase
-from mailingListScraper.pipelines import CleanReplyto, ParseTimeFields, GetMailingList
+from mailingListScraper.pipelines import CleanReplyto, ParseTimeFields, GetMailingList, GenerateId
 
 from mailingListScraper.spiders.marc import MarcSpider
 
@@ -116,3 +116,20 @@ class TestPipelines(TestBase):
                 # Compare test and validation data
                 self.assertEqual(case.final_item['mailingList'],
                                  test_item['mailingList'])
+
+class TestPipelineGenerateId(TestBase):
+
+    def test_real_data(self):
+        pipeline = GenerateId()
+        parse_time = ParseTimeFields()
+
+        for case_id in self.cases:
+            with self.subTest(case_id=case_id):
+                # Create a validation case and generate test data
+                case = ValidationCase(case_id, self.spider.name)
+                test_item = parse_time.process_item(case.raw_item, self.spider)
+                test_item = pipeline.process_item(test_item, self.spider)
+
+                # Compare test and validation data
+                self.assertEqual(case.final_item['emailId'],
+                                 test_item['emailId'])
