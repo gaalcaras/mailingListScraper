@@ -8,48 +8,46 @@ import unittest
 import re
 
 from mailingListScraper.tests.validation_case import ValidationCase
-from mailingListScraper.pipelines import CleanReplyto, ParseTimeFields, GetMailingList, GenerateId
-from mailingListScraper.pipelines import CleanSenderEmail
+from mailingListScraper.tests.utils import set_cases
 
 from mailingListScraper.spiders.marc import MarcSpider
 
-class TestBase(unittest.TestCase):
-    """
-    Creates a bunch of useful settings for testing spiders.
-    """
+class MarcTest(unittest.TestCase):
 
     def setUp(self):
         self.spider = MarcSpider()
-        self.cases = [
-            '20070731223613'
-            ]
+        self.cases = set_cases(self.spider.name)
 
         # Enable long strings comparisons
         self.maxDiff = None # pylint: disable=invalid-name
 
-class TestGetMailingList(TestBase):
-    """
-    Test if the spider gets all the mailing lists in the MARC archive.
-    """
+    def _setup(self):
+        self.spider = MarcSpider()
 
-    def test_number_items(self):
+    def test_nb_items_mailing_list(self):
+        """
+        Test if the spider gets all the mailing lists in the MARC archive.
+        """
+        print('test')
         self.spider._set_lists()
         self.assertEqual(len(self.spider.mailing_lists), 3700)
 
-    def test_url_match(self):
+    def test_accuracy_mailing_lis(self):
+        """
+        Test if the spider gets the right mailing lists in the MARC archive.
+        """
         self.spider._set_lists()
         self.assertEqual(self.spider.mailing_lists['git'], 'http://marc.info/?l=git&r=1&w=2')
         self.assertEqual(self.spider.mailing_lists['postgis-devel'],
                          'http://marc.info/?l=postgis-devel&r=1&w=2')
 
-class TestItemExtraction(TestBase):
-    """
-    Testing how the Spider and the ItemLoaders deal with several test pages.
-    This test only concerns the Item extraction in the Spider (xpath, etc.)
-    and the ItemLoader stuff (input and output processor).
-    """
-
-    def test_item_extraction(self):
+    def test_extract_all_items(self):
+        """
+        Test how the Spider and the ItemLoaders deal with several test pages.
+        This test only concerns the Item extraction in the Spider (xpath, etc.)
+        and the ItemLoader stuff (input and output processor) for all fields,
+        except the body of the email.
+        """
         for case_id in self.cases:
             with self.subTest(case_id=case_id):
                 # Create a validation case and generate test data
@@ -61,7 +59,12 @@ class TestItemExtraction(TestBase):
                     with self.subTest(item=item):
                         self.assertEqual(true_value, test_item[item])
 
-    def test_body(self):
+    def test_extract_body(self):
+        """
+        Test how the Spider and the ItemLoaders deal with several test pages.
+        This test only concerns the Item extraction in the Spider (xpath, etc.)
+        and the ItemLoader stuff (input and output processor), only for the body.
+        """
         for case_id in self.cases:
             with self.subTest(case_id=case_id):
                 # Create a validation case and generate test data
@@ -73,77 +76,5 @@ class TestItemExtraction(TestBase):
 
                 self.assertEqual(test_body, case_body)
 
-class TestPipelines(TestBase):
-    """
-    Testing pipelines on "raw outputs" defined in the json test cases.
-    """
-
-    def test_clean_reply_to(self):
-        pipeline = CleanReplyto()
-
-        for case_id in self.cases:
-            with self.subTest(case_id=case_id):
-                # Create a validation case and generate test data
-                case = ValidationCase(case_id, self.spider.name)
-                test_item = pipeline.process_item(case.raw_item, self.spider)
-
-                # Compare test and validation data
-                self.assertEqual(case.final_item['replyto'], test_item['replyto'])
-
-    def test_parse_time_fields(self):
-        pipeline = ParseTimeFields()
-
-        for case_id in self.cases:
-            with self.subTest(case_id=case_id):
-                # Create a validation case and generate test data
-                case = ValidationCase(case_id, self.spider.name)
-                test_item = pipeline.process_item(case.raw_item, self.spider)
-
-                # Compare test and validation data
-                self.assertEqual(case.final_item['timestampSent'],
-                                 test_item['timestampSent'])
-                self.assertEqual(case.final_item['timestampReceived'],
-                                 test_item['timestampReceived'])
-
-    def test_get_mailing_list(self):
-        pipeline = GetMailingList()
-
-        for case_id in self.cases:
-            with self.subTest(case_id=case_id):
-                # Create a validation case and generate test data
-                case = ValidationCase(case_id, self.spider.name)
-                test_item = pipeline.process_item(case.raw_item, self.spider)
-
-                # Compare test and validation data
-                self.assertEqual(case.final_item['mailingList'],
-                                 test_item['mailingList'])
-
-    def test_clean_sender_email(self):
-        pipeline = CleanSenderEmail()
-
-        for case_id in self.cases:
-            with self.subTest(case_id=case_id):
-                # Create a validation case and generate test data
-                case = ValidationCase(case_id, self.spider.name)
-                test_item = pipeline.process_item(case.raw_item, self.spider)
-
-                # Compare test and validation data
-                self.assertEqual(case.final_item['senderEmail'],
-                                 test_item['senderEmail'])
-
-class TestPipelineGenerateId(TestBase):
-
-    def test_real_data(self):
-        pipeline = GenerateId()
-        parse_time = ParseTimeFields()
-
-        for case_id in self.cases:
-            with self.subTest(case_id=case_id):
-                # Create a validation case and generate test data
-                case = ValidationCase(case_id, self.spider.name)
-                test_item = parse_time.process_item(case.raw_item, self.spider)
-                test_item = pipeline.process_item(test_item, self.spider)
-
-                # Compare test and validation data
-                self.assertEqual(case.final_item['emailId'],
-                                 test_item['emailId'])
+if __name__ == '__main__':
+    unittest.main()
