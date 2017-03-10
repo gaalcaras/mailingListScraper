@@ -1,0 +1,25 @@
+{
+  "itemOutput": {
+    "replyto": "http://marc.info/?l=git&m=128299035329427&w=2",
+    "senderName": "\"Schalk, Ken\"",
+    "senderEmail": "ken.schalk () intel ! com",
+    "timeSent": "",
+    "timeReceived": "2010-08-31 21:05:51",
+    "subject": "RE: [PATCH] Avoid rename/add conflict when contents are identical",
+    "url": "http://marc.info/?l=git&m=128328876208723&w=2",
+    "mailingList": "git"
+  },
+  "pipelineOutput": {
+    "emailId": 20100831210551,
+    "replyto": "http://marc.info/?l=git&m=128299035329427&w=2",
+    "senderName": "\"Schalk, Ken\"",
+    "senderEmail": "ken.schalk@intel.com",
+    "timeSent": "NA",
+    "timestampSent": "NA",
+    "timeReceived": "2010-08-31 21:05:51",
+    "timestampReceived": "2010-08-31 21:05:51-0400",
+    "subject": "Re: [PATCH] Make verse of git-config manpage more readable",
+    "url": "http://marc.info/?l=git&m=128328876208723&w=2",
+    "mailingList": "git"
+  }
+}

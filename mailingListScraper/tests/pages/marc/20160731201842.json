@@ -1,0 +1,25 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Britton Kerin",
+    "senderEmail": "britton.kerin () gmail ! com",
+    "timeSent": "",
+    "timeReceived": "2016-07-31 20:18:42",
+    "subject": "gitk should maybe keep focus on same file when switching patch->tree view",
+    "url": "http://marc.info/?l=git&m=146999633429322&w=2",
+    "mailingList": "git"
+  },
+  "pipelineOutput": {
+    "emailId": 20160731201842,
+    "replyto": "NA",
+    "senderName": "Britton Kerin",
+    "senderEmail": "britton.kerin@gmail.com",
+    "timeSent": "NA",
+    "timestampSent": "NA",
+    "timeReceived": "2016-07-31 20:18:42",
+    "timestampReceived": "2016-07-31 20:18:42-0400",
+    "subject": "gitk should maybe keep focus on same file when switching patch->tree view",
+    "url": "http://marc.info/?l=git&m=146999633429322&w=2",
+    "mailingList": "git"
+  }
+}

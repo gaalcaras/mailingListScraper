@@ -1,0 +1,15 @@
+
+
+if you're looking at the patch for a given file (have it selected in
+the lower right window), then when
+you switch to tree it would be nice if it started at that file.  I
+realize you can view Old version/New version but that doesn't help
+with landing the the right level of the tree for projects with
+subdirs, and sometimes you want to just switch to looking at the file
+sans all diff markup.
+
+Britton
+--
+To unsubscribe from this list: send the line "unsubscribe git" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

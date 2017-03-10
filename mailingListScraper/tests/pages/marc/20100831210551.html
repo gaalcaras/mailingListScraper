@@ -1,0 +1,52 @@
+<head>
+ <meta http-equiv="Content-Type" content="text/html ">
+ <title>'RE: [PATCH] Avoid rename/add conflict when contents are identical' - MARC</title>
+ <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+
+<body bgcolor="#ffffff" text="#000000" link="#0000C0" vlink="#800080">
+<pre><b>[<a href="?l=git&m=128328847708239&w=2">prev in list</a>] [<a href="?l=git&m=128328881608813&w=2">next in list</a>] [<a href="?l=git&m=128299035329427&w=2">prev in thread</a>] [<a href="?l=git&m=128337216902031&w=2">next in thread</a>] </b>
+<b><font size=+1>
+List:       <a href="?l=git&r=1&w=2">git</a>
+Subject:    <a href="?t=128152011300008&r=1&w=2">RE: [PATCH] Avoid rename/add conflict when contents are identical</a>
+From:       <a href="?a=128152008400003&r=1&w=2">"Schalk, Ken" &lt;ken.schalk () intel ! com&gt;</a>
+Date:       <a href="http://marc.info/?l=git&r=1&b=201008&w=2">2010-08-31 21:05:51</a>
+Message-ID: <a href="?i=EF9FEAB3A4B7D245B0801936B6EF4A2533CEF8%20()%20azsmsx503%20!%20amr%20!%20corp%20!%20intel%20!%20com">EF9FEAB3A4B7D245B0801936B6EF4A2533CEF8 () azsmsx503 ! amr ! corp ! intel ! com</a></font>
+[<a href="?l=git&m=128328876208723&q=raw">Download message RAW</a>]</b>
+
+&gt; On Fri, Aug 27, 2010 at 22:14, Schalk, Ken &lt;ken.schalk@intel.com&gt; wrote:
+
+&gt; &gt; +       ln -s e a &amp;&amp;
+
+&gt; Due to this this (and maybe all the tests) need to depend on the
+&gt; SYMLINKS prereq.
+
+I used a symlink here to try and duplicate the original problem case that a git user \
+at Intel brought to me.  I admit I didn't consider the problem of testing on \
+platforms without symlink support.
+
+I'm having a little difficulty generating a rename/add conflict inside this test \
+without using a symlink, which seems odd to me as the symlink doesn't seem to be \
+necessary in an experiment I did by hand.  I'll either re-submit with this portion of \
+the test conditional on symlink support, or with an alternate test that doesn't use \
+symlinks (if I can get that to work in the test).
+
+--Ken
+--
+To unsubscribe from this list: send the line "unsubscribe git" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  <a href="http://vger.kernel.org/majordomo-info.html" rel="nofollow">http://vger.kernel.org/majordomo-info.html</a>
+
+
+<b>[<a href="?l=git&m=128328847708239&w=2">prev in list</a>] [<a href="?l=git&m=128328881608813&w=2">next in list</a>] [<a href="?l=git&m=128299035329427&w=2">prev in thread</a>] [<a href="?l=git&m=128337216902031&w=2">next in thread</a>] </b>
+</pre>
+  </pre><br><center>
+    <a href="?q=configure">Configure</a> | 
+
+    <a href="?q=about">About</a> |
+    <a href="?q=news">News</a> |
+    <a href="mailto:webguy@marc.info?subject=Add%20a%20list%20to%20MARC">Add&nbsp;a&nbsp;list</a> |
+    Sponsored&nbsp;by&nbsp;<a href="http://www.korelogic.com/">KoreLogic</a>
+</center>
+</body>
+</html>

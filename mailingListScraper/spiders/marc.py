@@ -99,6 +99,8 @@ class MarcSpider(ArchiveSpider):
         replyto = response.xpath(xpath_replyto).extract()
         if any(replyto):
             load.add_value('replyto', self.start_url + replyto[0])
+        else:
+            load.add_value('replyto', '')
 
         meta = response.xpath("//font[@size='+1']//child::text()").extract()
         meta = ''.join(meta).split('\n') # Give each line its element in list

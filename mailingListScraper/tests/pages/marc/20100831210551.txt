@@ -1,0 +1,26 @@
+
+
+> On Fri, Aug 27, 2010 at 22:14, Schalk, Ken <ken.schalk@intel.com> wrote:
+
+> > +       ln -s e a &&
+
+> Due to this this (and maybe all the tests) need to depend on the
+> SYMLINKS prereq.
+
+I used a symlink here to try and duplicate the original problem case that a git user \
+at Intel brought to me.  I admit I didn't consider the problem of testing on \
+platforms without symlink support.
+
+I'm having a little difficulty generating a rename/add conflict inside this test \
+without using a symlink, which seems odd to me as the symlink doesn't seem to be \
+necessary in an experiment I did by hand.  I'll either re-submit with this portion of \
+the test conditional on symlink support, or with an alternate test that doesn't use \
+symlinks (if I can get that to work in the test).
+
+--Ken
+--
+To unsubscribe from this list: send the line "unsubscribe git" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
