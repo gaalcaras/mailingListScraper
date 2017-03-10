@@ -88,6 +88,8 @@ class ParseTimeFields(object):
         # Define a default time zone according to the email server setting
         if spider.name == 'hypermail':
             def_tz = tz.tzoffset('EST', -18000)
+        elif spider.name == 'marc':
+            def_tz = tz.tzoffset('EDT', -14400)
 
         for key, val in times.items():
             if item[val] == "":

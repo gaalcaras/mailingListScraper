@@ -14,10 +14,10 @@
     "replyto": "http://marc.info/?l=git&m=118591966601018&w=2",
     "senderName": "Johannes Schindelin",
     "senderEmail": "johannes.schindelin@gmx.de",
-    "timeSent": "",
-    "timestampSent": "",
+    "timeSent": "NA",
+    "timestampSent": "NA",
     "timeReceived": "2007-07-31 22:36:13",
-    "timestampReceived": "2007-07-31 22:36:13",
+    "timestampReceived": "2007-07-31 22:36:13-0400",
     "subject": "Re: [PATCH] Make verse of git-config manpage more readable",
     "url": "http://marc.info/?l=git&m=118592163426701&w=2",
     "mailingList": "git"
