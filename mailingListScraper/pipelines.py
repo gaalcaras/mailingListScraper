@@ -120,6 +120,20 @@ class ParseTimeFields(object):
 
         return item
 
+class CleanSenderEmail(object):
+    """
+    Clean the senderEmail field.
+    """
+
+    def process_item(self, item, spider):
+        if spider.name == 'marc':
+            email = item['senderEmail']
+            email = email.lower()
+            email = email.replace(' () ', '@')
+            email = email.replace(' ! ', '.')
+            item['senderEmail'] = email
+
+        return item
 
 class GetMailingList(object):
     """
