@@ -186,21 +186,29 @@ class CsvExport(object):
         return pipeline
 
     def spider_opened(self, spider):
-        dest_file_path = 'data/{}ByEmail.csv'.format(spider.name)
-        file = open(dest_file_path, 'wb')
-        self.exporter = CsvItemExporter(file)
-        self.files[spider] = file
-        self.exporter.fields_to_export = ['mailingList', 'emailId',
-                                          'senderName', 'senderEmail',
-                                          'timeSent', 'timestampSent',
-                                          'timeReceived', 'timestampReceived',
-                                          'subject', 'url', 'replyto']
+        fields_to_export = ['mailingList', 'emailId',
+                            'senderName', 'senderEmail',
+                            'timestampSent', 'timestampReceived',
+                            'subject', 'url', 'replyto']
+
+        if len(spider.scraping_lists) == 1:
+            dest_file_path = 'data/{}ByEmail.csv'.format(spider.scraping_lists[0])
+            fields_to_export.pop(0)
+        else:
+            dest_file_path = 'data/{}ByEmail.csv'.format(spider.name)
+
+        dest_file = open(dest_file_path, 'wb')
+
+        self.exporter = CsvItemExporter(dest_file)
+        self.files[spider] = dest_file
+        self.exporter.fields_to_export = fields_to_export
+
         self.exporter.start_exporting()
 
     def spider_closed(self, spider):
         self.exporter.finish_exporting()
-        file = self.files.pop(spider)
-        file.close()
+        dest_file = self.files.pop(spider)
+        dest_file.close()
 
     def process_item(self, item, spider):
         self.exporter.export_item(item)

@@ -12,6 +12,7 @@ class ArchiveSpider(scrapy.Spider):
     Provides the tools to interact with the command line arguments.
     """
     name = "archive"
+    scraping_lists = []
     start_urls = []
     mailing_lists = {}
     default_list = ''
@@ -44,6 +45,8 @@ class ArchiveSpider(scrapy.Spider):
         if mlist is None:
             # Default mailing list
             self.start_urls.append(self.mailing_lists[self.default_list])
+            self.scraping_lists = [self.default_list]
+
             self.logger.info('Crawling ' + self.default_list + ' by default.')
         elif mlist == 'print':
             print('Available lists: ' + all_lists)
@@ -51,10 +54,13 @@ class ArchiveSpider(scrapy.Spider):
             return
         elif mlist == 'all':
             self.logger.info('Crawling: ' + all_lists + '.')
+            self.scraping_lists = self.mailing_lists.keys()
+
             self.start_urls = self.mailing_lists.values()
         else:
             # Adding start_urls according to mlist argument
             lists = mlist.split(',')
+            self.scraping_lists = lists
 
             for list_name in lists:
                 try:
