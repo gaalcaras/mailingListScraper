@@ -67,7 +67,6 @@ class MarcSpider(ArchiveSpider):
 
         xpath_next = "//pre//a[contains(text(), 'Next')][1]//@href"
         next_url = response.xpath(xpath_next).extract()
-        next_url = self.start_url + next_url[0]
 
         xpath_msg = "//pre//a[contains(@href, '&m')]//@href"
         msg_urls = response.xpath(xpath_msg).extract()
@@ -76,7 +75,9 @@ class MarcSpider(ArchiveSpider):
         for url in msg_urls:
             yield scrapy.Request(url, callback=self.parse_item)
 
-        yield scrapy.Request(next_url, callback=self.parse_msglist)
+        if any(next_url):
+            next_url = self.start_url + next_url[0]
+            yield scrapy.Request(next_url, callback=self.parse_msglist)
 
     def parse_item(self, response):
         """
