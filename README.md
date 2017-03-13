@@ -4,18 +4,22 @@
 
 **mailingListScraper** is a tool to extract data from public email lists in a format suitable for data analysis.
 
+<!-- vim-markdown-toc Redcarpet -->
 * [Introduction](#introduction)
 * [User guide](#user-guide)
-	* [Installation](#installation)
-	* [Quick start](#quick-start)
-	* [Collected data](#collected-data)
-		* [CSV file](#csv-file)
-		* [Email contents](#email-contents)
-	* [Options](#options)
-		* [mlist](#mlist)
-		* [body](#body)
+  * [Installation](#installation)
+  * [Quick start](#quick-start)
+  * [Collected data](#collected-data)
+    * [CSV file](#csv-file)
+    * [XML file](#xml-file)
+  * [Options](#options)
+    * [mlist](#mlist)
+    * [body](#body)
+    * [year](#year)
 * [Development and testing](#development-and-testing)
 * [Privacy](#privacy)
+
+<!-- vim-markdown-toc -->
 
 ## Introduction
 
@@ -76,8 +80,9 @@ The spider is collecting data.
 The spider stores extracted emails in a `data` folder, containing:
 
 + `{ArchiveName}ByEmail.csv`: all metadata collected are stored in this file, with each row corresponding to an email.
-    If you only crawl one mailing list, then the name is `{mailingList}ByEmail.csv`.
-+ `{ArchiveName}/{mailingList}/{emailId}.html`: a folder containing the content of the emails.
+    If you only crawl one mailing list, then the name is `{mailingList}ByEmail.csv` (and column `mailingList` is dropped).
++ `{ArchiveName}{year}Bodies.xml`: a XML file with the email body, in which each item is an email .
+    If you only crawl one mailing list, then the name is `{mailingList}ByEmail.csv` (and node `mailingList` is dropped).
 
 #### CSV file
 
@@ -97,10 +102,49 @@ Each row corresponds to an email, each column to one of the following fields:
 
 When the scraper fails to extract the relevant information from the email, the field is marked as "NA".
 
-#### Email contents
+#### XML file
 
-Each email body is stored in a single `{emailId}.html` file.
-In case of encoding problems, the scraper tries to get rid of problematic bytes and uses UTF-8 for the HTML files.
+The body of the emails is stored in an XML file, with some metadata, to make text mining easier.
+It's organized like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<items>
+  <item>
+    <emailId>20060130061212</emailId>
+    <senderName>Linus Torvalds</senderName>
+    <senderEmail>foo@bar.com</senderEmail>
+    <timestampReceived>2006-01-30 06:12:12-0400</timestampReceived>
+    <subject>Re: [PATCH v1] oops</subject>
+    <body>bla bla bla</body>
+  </item>
+</items>
+```
+
+Each email is an item node.
+
+This is how you would load the data with the [tm](https://cran.r-project.org/web/packages/tm/index.html) package in R.
+
+```r
+library('tm')
+
+xml_reader <- readXML(
+  spec = list(id = list("node", "/item/emailId"),
+              content = list("node", "/item/body"),
+              datetimestamp = list("node", "/item/timestampReceived"),
+              subject = list("node", "/item/subject"),
+              author = list("node", "/item/senderName"),
+              author_email = list("node", "/item/senderEmail")
+              ),
+  doc = PlainTextDocument()
+)
+
+lkml_source <- function(x) {
+  XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)), xml_reader)
+}
+
+lkml <- VCorpus(lkml_source("./lkml1995Bodies.xml"))
+```
 
 ### Options
 

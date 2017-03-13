@@ -13,7 +13,7 @@ from dateutil.parser import parse as dateParser
 from dateutil import tz
 
 from scrapy import signals
-from scrapy.exporters import CsvItemExporter
+from scrapy.exporters import CsvItemExporter, XmlItemExporter
 
 LOGGER = logging.getLogger('pipelines')
 
@@ -153,21 +153,76 @@ class BodyExport(object):
     Export email body to a separate file.
     """
 
+    def __init__(self):
+        self.fields_to_export = ['mailingList', 'emailId',
+                                 'senderName', 'senderEmail',
+                                 'timestampSent', 'timestampReceived',
+                                 'subject', 'body']
+        self.file_base = ''
+        self.exporters = {}
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        pipeline = cls()
+        crawler.signals.connect(pipeline.spider_opened, signals.spider_opened)
+        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+        return pipeline
+
+    def spider_opened(self, spider):
+        """
+        When spider opens, set up fields and base of filename
+        """
+
+        if len(spider.scraping_lists) == 1:
+            self.file_base = 'data/{}'.format(spider.scraping_lists[0])
+            self.fields_to_export.remove('mailingList')
+        else:
+            self.file_base = 'data/{}'.format(spider.name)
+
+        self.fields_to_export = [f for f in self.fields_to_export if f not in spider.drop_fields]
+
+    def spider_closed(self, spider):
+        """
+        When spider closes, close everything gently
+        """
+
+        for year_item in self.exporters.values():
+            year_item['exporter'].finish_exporting()
+            year_item['file'].close()
+
     def process_item(self, item, spider):
-        if not spider.get_body:
-            return item
+        """
+        Process each item to export them according to their year.
+        """
 
-        dest_file = 'data/{}/{}/{}.html'.format(spider.name,
-                                                item['mailingList'],
-                                                item['emailId'])
-        os.makedirs(os.path.dirname(dest_file), exist_ok=True)
+        # Get the year
+        time_format = "%Y-%m-%d %H:%M:%S%z"
+        timestamp = datetime.strptime(item['timestampReceived'], time_format)
+        year = str(timestamp.year)
+        filename = self.file_base + year + 'Bodies.xml'
 
-        with open(dest_file, 'wb') as body:
-            for line in item['body']:
-                body.write(line.encode('utf-8'))
+        if year in self.exporters:
+            # If we already have an exporter for this year, select it
+            exporter = self.exporters[year]['exporter']
+        else:
+            # If we encounter this year for the first time, then:
+            # Open a new file
+            dest_file = open(filename, 'wb')
 
+            # Store file and create exporter in dictionary
+            self.exporters[year] = {
+                'file': dest_file,
+                'exporter': XmlItemExporter(dest_file)
+            }
+
+            # Initialize the exporter
+            exporter = self.exporters[year]['exporter']
+            exporter.fields_to_export = self.fields_to_export
+            exporter.start_exporting()
+
+        # Now we can export the item for real
+        exporter.export_item(item)
         return item
-
 
 class CsvExport(object):
     """
