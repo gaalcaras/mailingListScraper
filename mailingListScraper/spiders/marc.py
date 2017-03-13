@@ -31,6 +31,14 @@ class MarcSpider(ArchiveSpider):
     # Default list
     default_list = 'git'
 
+
+    custom_settings = {
+        # Unfortunately, we have to ignore the robots.txt file
+        'ROBOTSTXT_OBEY': False,
+        # We don't want to overload their servers, so let's be gentle here
+        'AUTOTHROTTLE_ENABLED': True
+    }
+
     def _set_lists(self):
         """
         Extract path to messages lists for each mailing list.

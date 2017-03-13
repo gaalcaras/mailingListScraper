@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# #############################################
-# Settings for mailingListScraper bot
-# #############################################
+"""
+Settings for spiders, crawling, etc.
+"""
 
 BOT_NAME = 'mailingListScraper'
 
@@ -18,15 +18,13 @@ LOG_LEVEL = 'INFO'
 # USER_AGENT = 'mailingListScraper '
 # USER_AGENT += '(https://github.com/gaalcaras/mailingListScraper)'
 
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
-
 # Configure item pipelines and their order
 ITEM_PIPELINES = {
-   'mailingListScraper.pipelines.ParseTimeFields': 100,
-   'mailingListScraper.pipelines.GenerateId': 200,
-   'mailingListScraper.pipelines.CleanReplyto': 300,
-   'mailingListScraper.pipelines.GetMailingList': 400,
-   'mailingListScraper.pipelines.BodyExport': 800,
-   'mailingListScraper.pipelines.CsvExport': 900,
+    'mailingListScraper.pipelines.ParseTimeFields': 100,
+    'mailingListScraper.pipelines.GenerateId': 200,
+    'mailingListScraper.pipelines.CleanSenderEmail': 250,
+    'mailingListScraper.pipelines.CleanReplyto': 300,
+    'mailingListScraper.pipelines.GetMailingList': 400,
+    'mailingListScraper.pipelines.BodyExport': 800,
+    'mailingListScraper.pipelines.CsvExport': 900,
 }

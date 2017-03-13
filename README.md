@@ -17,25 +17,28 @@
     * [body](#body)
     * [year](#year)
 * [Development and testing](#development-and-testing)
+  * [Development](#development)
+  * [Testing](#testing)
 * [Privacy](#privacy)
 
 <!-- vim-markdown-toc -->
 
 ## Introduction
 
-I am currently developing this scraper to collect data for my PhD ([EHESS](http://ehess.fr/) in Paris, France). If you do see problems with the code, I'll be glad to review your Pull Requests ;-)
+If you want to make some data analysis on a mailing list, first you need a dataset.
+`mailingListScraper` is a python tool enabling you to process the unstructured data available in public mailing list archives.
+The data is saved as `.csv` and `.xml` for easy statistical analysis, data modeling, text mining, machine learning, etc.
 
-Supported archives and mailing lists include:
+`mailingListScraper` is organized around [Mailing List Archives](https://en.wikipedia.org/wiki/Electronic_mailing_list#Archives).
+They usually store many mailing lists and provide a web interface to browse and read the emails.
 
-| Email Archive | Mailing List | Development Status |
-| --- | --- | --- |
-|[Hypermail](http://lkml.iu.edu/hypermail/)|**Linux Kernel Mailing List** ([url](http://lkml.iu.edu/hypermail/linux/kernel))|Ready|
-|[Hypermail](http://lkml.iu.edu/hypermail/)|**Linux Alpha** ([url](http://lkml.iu.edu/hypermail/linux/alpha))|Testing|
-|[Hypermail](http://lkml.iu.edu/hypermail/)|**Linux Net** ([url](http://lkml.iu.edu/hypermail/linux/net))|Testing|
+Supported archives include:
 
+| Email Archive | Lists # | Emails # | Default Mailing List |
+| --- | --- | --- | --- |
+|[Hypermail](http://lkml.iu.edu/hypermail/) | 3 ([list](http://lkml.iu.edu/hypermail/linux/)) | 2,5m+ | [Linux Kernel Mailing List](http://lkml.iu.edu/hypermail/linux/kernel) |
+|[MARC](http://marc.info/)| 3500+ ([list](http://marc.info/))| 80m+ | [git](http://marc.info/?l=git&r=1&w=2) |
 
-If you're interested in using this scraper for your own project, I strongly recommend that you identify yourself in the *user-agent* (`mailingListScraper/settings.py`) so that people can contact you if needed.
-Also, be mindful of the potential impact of your scraper on the server's load.
 
 ## User guide
 
@@ -50,6 +53,9 @@ pip install -r requirements.txt
 Clone the repo and `cd` into it. You're done!
 
 ### Quick start
+
+**I strongly recommend that you identify yourself in the user-agent** (`mailingListScraper/settings.py`) so that people can contact you if needed.
+Also, be mindful of the potential impact of your scraper on the server's load.
 
 mailingListScraper is composed of several spiders.
 Each spider targets a specific email archive, which can host one or several mailing lists.
@@ -82,7 +88,7 @@ The spider stores extracted emails in a `data` folder, containing:
 + `{ArchiveName}ByEmail.csv`: all metadata collected are stored in this file, with each row corresponding to an email.
     If you only crawl one mailing list, then the name is `{mailingList}ByEmail.csv` (and column `mailingList` is dropped).
 + `{ArchiveName}{year}Bodies.xml`: a XML file with the email body, in which each item is an email .
-    If you only crawl one mailing list, then the name is `{mailingList}ByEmail.csv` (and node `mailingList` is dropped).
+    If you only crawl one mailing list, then the name is `{mailingList}{year}Bodies.xml` (and node `mailingList` is dropped).
 
 #### CSV file
 
@@ -213,10 +219,15 @@ scrapy crawl marc -a year=2006:2008
 
 ## Development and testing
 
+I am currently developing this scraper to collect data for my PhD ([EHESS](http://ehess.fr/) in Paris, France). If you do see problems with the code, I'll be glad to review your Pull Requests ;-)
+
+### Development
 
 This scraper is developed in Python 3.5.2 with the [scrapy](https://doc.scrapy.org/en/latest/) framework.
 
 **Before you start working on your own spiders**, you should set the `LOG_LEVEL` setting (`mailingListScraper/settings.py`) to `DEBUG` (or just uncomment the line).
+
+### Testing
 
 You can run the `scrapy check` command to run simple tests, with the built-in [Scrapy contracts](https://doc.scrapy.org/en/latest/topics/contracts.html).
 
