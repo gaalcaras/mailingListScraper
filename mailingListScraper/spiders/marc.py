@@ -148,9 +148,12 @@ class MarcSpider(ArchiveSpider):
             elif 'Date' in reg.group(1):
                 load.add_value('timeReceived', reg.group(2).strip())
 
-        xpath_body = "//text()[preceding::b/font[@size='+1'] and following::b]"
-        body = response.xpath(xpath_body).extract()
-        load.add_value('body', ''.join(body))
+        if self.get_body:
+            xpath_body = "//text()[preceding::b/font[@size='+1'] and following::b]"
+            body = response.xpath(xpath_body).extract()
+            load.add_value('body', ''.join(body))
+        else:
+            load.add_value('body', '')
 
         load.add_value('timeSent', '')
 

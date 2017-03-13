@@ -147,7 +147,7 @@ class GetMailingList(object):
         return item
 
 
-class BodyExport(object):
+class XmlExport(object):
     """
     Export email body to a separate file.
     """
@@ -172,6 +172,9 @@ class BodyExport(object):
         When spider opens, set up fields and base of filename
         """
 
+        if not spider.get_body:
+            return
+
         if len(spider.scraping_lists) == 1:
             self.file_base = 'data/{}'.format(spider.scraping_lists[0])
             self.fields_to_export.remove('mailingList')
@@ -185,6 +188,9 @@ class BodyExport(object):
         When spider closes, close everything gently
         """
 
+        if not spider.get_body:
+            return
+
         for year_item in self.exporters.values():
             year_item['exporter'].finish_exporting()
             year_item['file'].close()
@@ -193,6 +199,8 @@ class BodyExport(object):
         """
         Process each item to export them according to their year.
         """
+        if not spider.get_body:
+            return item
 
         # Get the year
         time_format = "%Y-%m-%d %H:%M:%S%z"
