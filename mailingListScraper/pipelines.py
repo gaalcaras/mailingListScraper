@@ -191,9 +191,11 @@ class CsvExport(object):
                             'timestampSent', 'timestampReceived',
                             'subject', 'url', 'replyto']
 
+        fields_to_export = [f for f in fields_to_export if f not in spider.drop_fields]
+
         if len(spider.scraping_lists) == 1:
             dest_file_path = 'data/{}ByEmail.csv'.format(spider.scraping_lists[0])
-            fields_to_export.pop(0)
+            fields_to_export.remove('mailingList')
         else:
             dest_file_path = 'data/{}ByEmail.csv'.format(spider.name)
 

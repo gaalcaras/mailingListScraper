@@ -26,6 +26,7 @@ class MarcSpider(ArchiveSpider):
     name = "marc"
     allowed_domains = ["marc.info"]
     start_url = "http://marc.info/"
+    drop_fields = ['timeSent', 'timestampSent']
 
     # Default list
     default_list = 'git'

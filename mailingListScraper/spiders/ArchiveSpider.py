@@ -17,6 +17,7 @@ class ArchiveSpider(scrapy.Spider):
     mailing_lists = {}
     default_list = ''
     start_url = ''
+    drop_fields = []
 
     get_body = True
 
