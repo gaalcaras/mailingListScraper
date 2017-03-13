@@ -115,16 +115,16 @@ It's organized like this:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<items>
-  <item>
+<emails>
+  <email>
     <emailId>20060130061212</emailId>
     <senderName>Linus Torvalds</senderName>
     <senderEmail>foo@bar.com</senderEmail>
     <timestampReceived>2006-01-30 06:12:12-0400</timestampReceived>
     <subject>Re: [PATCH v1] oops</subject>
     <body>bla bla bla</body>
-  </item>
-</items>
+  </email>
+</emails>
 ```
 
 Each email is an item node.
@@ -136,23 +136,23 @@ library('tm')
 
 # Define custom XML reader
 ml_reader <- readXML(
-  spec = list(id = list("node", "/item/emailId"),
-              content = list("node", "/item/body"),
-              datetimestamp = list("node", "/item/timestampReceived"),
-              subject = list("node", "/item/subject"),
-              author = list("node", "/item/senderName"),
-              author_email = list("node", "/item/senderEmail")
+  spec = list(id = list("node", "/email/emailId"),
+              content = list("node", "/email/body"),
+              datetimestamp = list("node", "/email/timestampReceived"),
+              subject = list("node", "/email/subject"),
+              author = list("node", "/email/senderName"),
+              author_email = list("node", "/email/senderEmail")
               ),
   doc = PlainTextDocument()
 )
 
 # Create custom source
-lkml_source <- function(x) {
+ml_source <- function(x) {
   XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)), ml_reader)
 }
 
 # Load documents as a VCorpus for example
-lkml <- VCorpus(lkml_source("./lkml1995Bodies.xml"))
+ml <- VCorpus(ml_source("./lkml2017Bodies.xml"))
 ```
 
 ### Options

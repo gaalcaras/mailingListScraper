@@ -216,6 +216,8 @@ class BodyExport(object):
 
             # Initialize the exporter
             exporter = self.exporters[year]['exporter']
+            exporter.root_element = 'emails'
+            exporter.item_element = 'email'
             exporter.fields_to_export = self.fields_to_export
             exporter.start_exporting()
 
