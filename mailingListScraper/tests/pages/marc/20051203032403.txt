@@ -1,0 +1,47 @@
+
+
+
+So, between yesterday and today, I issued "git-init-db", followed by
+enough commands to have done this:
+
+git-diff-tree -p -M 1723 HEAD | git-apply --stat --summary
+ lib/GC/App/change_transactions.tt                  |    4 -
+ lib/GC/App/edit_snippets.pm                        |    2 
+ lib/GC/App/generate_aged_receivables.tt            |    2 
+ lib/GC/App/make_manifest.tt                        |    2 
+ lib/GC/App/record_adjustment.tt                    |   11 +-
+ lib/GC/App/record_payment.pm                       |    7 +
+ lib/GC/App/record_payment.tt                       |    7 +
+ lib/GC/App/snippet.pm                              |    3 
+ lib/GC/App/snippet.tt                              |    2 
+ lib/GC/App/welcome.pm                              |    2 
+ lib/GC/App/welcome.tt                              |    1 
+ lib/GC/DB.pm                                       |   11 ++
+ lib/GC/DB/Booking.pm                               |   28 ----
+ lib/GC/DB/PersonCruise.pm                          |    3 
+ lib/GC/DB/Phone.cfg                                |    1 
+ lib/GC/DB/all.pm                                   |   20 ++-
+ lib/GC/DB/randal-funcs-4                           |    2 
+ lib/GC/DB/randal-funcs-5                           |  132 ++++++++++++++++++++
+ lib/GC/DB/randal-funcs-6                           |   14 ++
+ lib/GC/ttlib/pcs_to_ar.tt                          |   14 +-
+ lib/GC/ttlib/pcs_to_matrix.tt                      |    3 
+ lib/GC/ttlib/view/amount_with_button.tt            |   15 ++
+ .../view/combo_select_person_ccs_for_payment.tt    |   31 ++++-
+ 23 files changed, 251 insertions(+), 66 deletions(-)
+ create mode 100644 lib/GC/DB/randal-funcs-5
+ create mode 100644 lib/GC/DB/randal-funcs-6
+ create mode 100644 lib/GC/ttlib/view/amount_with_button.tt
+
+This was on Darwin.  yeay.
+
+-- 
+Randal L. Schwartz - Stonehenge Consulting Services, Inc. - +1 503 777 0095
+<merlyn@stonehenge.com> <URL:http://www.stonehenge.com/merlyn/>
+Perl/Unix/security consulting, Technical writing, Comedy, etc. etc.
+See PerlTraining.Stonehenge.com for onsite and open-enrollment Perl training!
+-
+To unsubscribe from this list: send the line "unsubscribe git" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html
+

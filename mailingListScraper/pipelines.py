@@ -7,7 +7,6 @@ Pipelines that handle the scraped data, format it and save it.
 
 import re
 import logging
-import os
 from datetime import datetime
 from dateutil.parser import parse as dateParser
 from dateutil import tz
@@ -126,7 +125,7 @@ class CleanSenderEmail(object):
     """
 
     def process_item(self, item, spider):
-        if spider.name == 'marc':
+        if spider.name == 'marc' and 'senderEmail' in item:
             email = item['senderEmail']
             email = email.lower()
             email = email.replace(' () ', '@')

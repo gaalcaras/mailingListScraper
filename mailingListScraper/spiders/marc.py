@@ -128,7 +128,15 @@ class MarcSpider(ArchiveSpider):
                     load.add_value('senderName', from_reg.group(1).strip())
                     load.add_value('senderEmail', from_reg.group(2).strip())
                 except AttributeError:
-                    load.add_value('senderName', reg.group(2).strip())
+                    from_reg2 = re.search(r'(.*)\((.*)\)', reg.group(2))
+
+                    try:
+                        load.add_value('senderName', from_reg2.group(2).strip())
+                        load.add_value('senderEmail', from_reg2.group(1).strip())
+                    except AttributeError:
+                        load.add_value('senderName', reg.group(2))
+                        load.add_value('senderEmail', '')
+
             elif 'Date' in reg.group(1):
                 load.add_value('timeReceived', reg.group(2).strip())
 

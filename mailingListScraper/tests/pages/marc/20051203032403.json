@@ -1,0 +1,25 @@
+{
+  "itemOutput": {
+    "replyto": "",
+    "senderName": "Randal L !  Schwartz",
+    "senderEmail": "merlyn () stonehenge ! com",
+    "timeSent": "",
+    "timeReceived": "2005-12-03 3:24:03",
+    "subject": "managing my first project with git, yeay",
+    "url": "http://marc.info/?l=git&r=10&b=200512&w=2?l=git&m=113358032716798&w=2",
+    "mailingList": "git"
+  },
+  "pipelineOutput": {
+    "emailId": 20051203032403,
+    "replyto": "NA",
+    "senderName": "Randal L !  Schwartz",
+    "senderEmail": "merlyn@stonehenge.com",
+    "timeSent": "NA",
+    "timestampSent": "NA",
+    "timeReceived": "2005-12-03 3:24:03",
+    "timestampReceived": "2005-12-03 03:24:03-0400",
+    "subject": "managing my first project with git, yeay",
+    "url": "http://marc.info/?l=git&r=10&b=200512&w=2?l=git&m=113358032716798&w=2",
+    "mailingList": "git"
+  }
+}
