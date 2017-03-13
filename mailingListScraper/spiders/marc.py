@@ -55,6 +55,14 @@ class MarcSpider(ArchiveSpider):
         msglist_urls = response.xpath('//dd//@href').extract()
         msglist_urls = [self.start_url + u for u in msglist_urls]
 
+        if any(self.years):
+            urls = []
+
+            for year in self.years:
+                urls.extend([u for u in msglist_urls if year in u])
+
+            msglist_urls = urls
+
         for url in msglist_urls:
             yield scrapy.Request(url, callback=self.parse_msglist)
 

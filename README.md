@@ -76,6 +76,7 @@ The spider is collecting data.
 The spider stores extracted emails in a `data` folder, containing:
 
 + `{ArchiveName}ByEmail.csv`: all metadata collected are stored in this file, with each row corresponding to an email.
+    If you only crawl one mailing list, then the name is `{mailingList}ByEmail.csv`.
 + `{ArchiveName}/{mailingList}/{emailId}.html`: a folder containing the content of the emails.
 
 #### CSV file
@@ -84,15 +85,13 @@ Each row corresponds to an email, each column to one of the following fields:
 
 | Field | Example |Comment |
 | --- | --- | --- |
-| mailingList | `lkml` | |
+| mailingList | `lkml` | Migth be dropped if you only crawl through one mailing list. |
 | emailId | `20161017142556` | The timestamp for received time ("received on 2016-10-17 at 14:25:56"). If two or more emails were received at the same time, we append a 0 (or more) at the end of the timestamp. |
 | senderName | `Linus Torvalds` | If no name is found, will be the email.|
 | senderEmail | `foo@bar.com` | Might not be complete.|
-| timeSent | `Monday 17 Oct 2016 14:25:56 +05:00` | The date and time the email was sent at.|
-| timestampSent | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed.|
-| timeReceived | `Monday 17 Oct 2016 14:25:56 +05:00` | The date and time the email was received at, as indicated in the archive.|
+| timestampSent | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeSent is "NA" or cannot be parsed. Some mailing list don't have one, so the whole column will be dropped. |
 | timestampReceived | `20161017142556+0500` | Based upon previous field, a timestamp with timezone (if available). Will be "NA" if timeReceived is "NA" or cannot be parsed.|
-| subject | `Re: [PATCH v1] oops` | |
+| subject | `Re: [PATCH v1] oops` | Pretty obvious :) |
 | url | `http://archive.org/mailingList/msg2.html` | The url of the message. |
 | replyto | `http://archive.org/mailingList/msg1.html` | The url of the message the current email replies to. |
 
@@ -108,10 +107,10 @@ In case of encoding problems, the scraper tries to get rid of problematic bytes 
 The spiders accept arguments from the command line.
 You can combine them to adjust the scope of your crawl.
 
-Say I only care about the metadata of the emails, but I want to collect the data of all the mailing lists in the Hypermail archive:
+Say I only care about the metadata of the emails sent in 1995, but I want to crawl all the lists in the Hypermail archive:
 
 ```
-scrapy crawl hypermail -a mlist=all -a body=false
+scrapy crawl hypermail -a mlist=all -a body=false -a year=1995
 ```
 
 #### mlist
@@ -142,9 +141,35 @@ Since downloading the body of each email can take up a lot of disk space, you ca
 scrapy crawl archiveName -a body=false
 ```
 
+#### year
+
+By default, the spiders crawl through every message in the mailing list.
+If you're only interested in a specific period of time, you can use the year argument for that.
+
+You can focus on one year:
+
+```
+scrapy crawl marc -a year=2006
+```
+
+Or you can give it a comma separated list of years:
+
+```
+scrapy crawl marc -a year=2006,2011
+```
+
+Or even a range of years:
+
+```
+scrapy crawl marc -a year=2006:2008
+```
+
 ## Development and testing
 
+
 This scraper is developed in Python 3.5.2 with the [scrapy](https://doc.scrapy.org/en/latest/) framework.
+
+**Before you start working on your own spiders**, you should set the `LOG_LEVEL` setting (`mailingListScraper/settings.py`) to `DEBUG` (or just uncomment the line).
 
 You can run the `scrapy check` command to run simple tests, with the built-in [Scrapy contracts](https://doc.scrapy.org/en/latest/topics/contracts.html).
 
@@ -153,7 +178,8 @@ That's why some basic unit testing is provided in `mailingListScraper/tests`.
 Each spider and pipeline is to be tested with "real world" test cases.
 
 The data for these test cases is provided in the `pages` directory.
-Test cases consist of three files:
+Cases are organized into subfolders, named after their spiders.
+In these subfolders, you'll find the test cases which consist of three files:
 
 + `emailId.html`: this is the page used as a Scrapy response to test the methods of the spider.
 + `emailId.json`: this is the data you expect to get from the spider.
@@ -165,6 +191,12 @@ You can test a specific spider running this command at the root level of the rep
 
 ```
 python -m unittest mailingListScraper.tests.hypermail
+```
+
+Pipelines can also be tested:
+
+```
+python -m unittest mailingListScraper.tests.pipelines
 ```
 
 ## Privacy

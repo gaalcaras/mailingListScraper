@@ -40,6 +40,15 @@ class HypermailSpider(ArchiveSpider):
         msglist_urls = response.xpath('//li//a//@href').extract()
         msglist_urls = [response.url + u for u in msglist_urls]
 
+        if any(self.years):
+            urls = []
+
+            for year in self.years:
+                pattern = response.url + year[2:]
+                urls.extend([u for u in msglist_urls if pattern in u])
+
+            msglist_urls = urls
+
         for url in msglist_urls:
             yield scrapy.Request(url, callback=self.parse_msglist)
 
@@ -55,7 +64,7 @@ class HypermailSpider(ArchiveSpider):
         reg_url = re.search(r'^(.*)/index\.html', response.url)
         base_url = reg_url.group(1)
 
-# TODO: refactor here
+        # TODO: refactor here
         for rel_url in msg_urls:
             if re.match(r'\d{4,6}', rel_url) is None:
                 continue

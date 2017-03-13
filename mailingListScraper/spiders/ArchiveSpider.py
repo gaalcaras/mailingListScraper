@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=abstract-method
 """
 ArchiveSpider provides basic tools for all the other spiders. It focuses
 on the command line arguments and the options for each spider.
 """
 
+import re
 import scrapy
 
 
@@ -18,13 +20,16 @@ class ArchiveSpider(scrapy.Spider):
     default_list = ''
     start_url = ''
     drop_fields = []
+    years = []
 
     get_body = True
 
-    def __init__(self, body=None, mlist=None):
+    def __init__(self, body=None, mlist=None, year=None):
         self._set_lists()
         self._mlist(mlist)
         self._getbody(body)
+        self._year(year)
+        super().__init__()
 
     def _set_lists(self):
         """
@@ -33,10 +38,35 @@ class ArchiveSpider(scrapy.Spider):
         the archive.
         """
 
-        # TODO: à améliorer
         if not any(self.mailing_lists):
             if self.start_url == "":
                 self.logger.error('No start_url or mailing_lists')
+
+    def _year(self, year):
+        "Handle the year argument."
+
+        if year is None:
+            year = ''
+            self.years = []
+            self.logger.info('Crawling all years by default.')
+            return
+
+        if re.match(r'^\d{4}$', year):
+            # Only scrap one year
+            self.years = [year.strip()]
+        elif re.match(r'\d{4},', year):
+            # Scrap several years
+            years = year.split(',')
+            years = [y.strip() for y in years]
+            self.years = years
+        elif re.match(r'(\d{4}):(\d{4})', year):
+            # Scrap a range of years
+            reg = re.search(r'(\d{4}):(\d{4})', year)
+            years = range(int(reg.group(1)), int(reg.group(2))+1)
+            years = [str(y) for y in years]
+            self.years = years
+
+        self.logger.info('Crawling is limited to the following years: ' + ','.join(self.years))
 
     def _mlist(self, mlist):
         "Handle the mList argument."
