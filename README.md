@@ -128,7 +128,8 @@ This is how you would load the data with the [tm](https://cran.r-project.org/web
 ```r
 library('tm')
 
-xml_reader <- readXML(
+# Define custom XML reader
+ml_reader <- readXML(
   spec = list(id = list("node", "/item/emailId"),
               content = list("node", "/item/body"),
               datetimestamp = list("node", "/item/timestampReceived"),
@@ -139,10 +140,12 @@ xml_reader <- readXML(
   doc = PlainTextDocument()
 )
 
+# Create custom source
 lkml_source <- function(x) {
-  XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)), xml_reader)
+  XMLSource(x, function(tree) XML::xmlChildren(XML::xmlRoot(tree)), ml_reader)
 }
 
+# Load documents as a VCorpus for example
 lkml <- VCorpus(lkml_source("./lkml1995Bodies.xml"))
 ```
 
