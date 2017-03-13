@@ -25,6 +25,6 @@ ITEM_PIPELINES = {
     'mailingListScraper.pipelines.CleanSenderEmail': 250,
     'mailingListScraper.pipelines.CleanReplyto': 300,
     'mailingListScraper.pipelines.GetMailingList': 400,
-    'mailingListScraper.pipelines.BodyExport': 800,
+    'mailingListScraper.pipelines.XmlExport': 800,
     'mailingListScraper.pipelines.CsvExport': 900,
 }
