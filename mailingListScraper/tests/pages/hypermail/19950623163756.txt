@@ -9,7 +9,7 @@ This collection should build quickly. This new method should load pages<br>
 faster and keep them in a logical monthly order. It also includes text<br>
 archiving of the messages which can be found at the following URL:<br>
  <br>
-&lt;URL:<a href="ftp://linux.ucs.indiana.edu/pub/linux/mail.archive/">ftp://linux.ucs.indiana.edu/pub/linux/mail.archive/</a>&gt;<br>
+<URL:<a href="ftp://linux.ucs.indiana.edu/pub/linux/mail.archive/">ftp://linux.ucs.indiana.edu/pub/linux/mail.archive/</a>><br>
  <br>
 Sorry for the inconvenience.<br>
  <br>

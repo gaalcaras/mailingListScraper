@@ -1,33 +1,34 @@
-Roland Dreier &lt;roland@xxxxxxxxxxx&gt; wrote:<br>
-&gt;<i></i><br>
-&gt;<i>     Roland&gt;     a) app registers 0x0000 through 0x17ff</i><br>
-&gt;<i>     Roland&gt;     b) app registers 0x1800 through 0x2fff</i><br>
-&gt;<i>     Roland&gt;     c) app unregisters 0x0000 through 0x17ff</i><br>
-&gt;<i>     Roland&gt;     d) the page at 0x1000 must stay pinned</i><br>
-&gt;<i> </i><br>
-&gt;<i>     Andrew&gt; The userspace library should be able to track the tree and</i><br>
-&gt;<i>     Andrew&gt; the overlaps, etc.  Things might become interesting when</i><br>
-&gt;<i>     Andrew&gt; the memory is MAP_SHARED pagecache and multiple</i><br>
-&gt;<i>     Andrew&gt; independent processes are involved, although I guess</i><br>
-&gt;<i>     Andrew&gt; that'd work OK.</i><br>
-&gt;<i> </i><br>
-&gt;<i> I used to think I knew how to handle this, but in your scheme where</i><br>
-&gt;<i> the kernel is doing accounting for pinned memory by marking vmas with</i><br>
-&gt;<i> VM_KERNEL_LOCKED, at step c), I don't see why the kernel won't unlock</i><br>
-&gt;<i> vmas covering 0x0000 through 0x1fff and credit 8K back to the</i><br>
-&gt;<i> process's pinning count.</i><br>
-&gt;<i> </i><br>
-&gt;<i> Sorry to be so dense but can you spell out what you think should</i><br>
-&gt;<i> happen at steps a), b) and c) above?</i><br>
+Roland Dreier <roland@xxxxxxxxxxx> wrote:<br>
+><i></i><br>
+><i>     Roland>     a) app registers 0x0000 through 0x17ff</i><br>
+><i>     Roland>     b) app registers 0x1800 through 0x2fff</i><br>
+><i>     Roland>     c) app unregisters 0x0000 through 0x17ff</i><br>
+><i>     Roland>     d) the page at 0x1000 must stay pinned</i><br>
+><i> </i><br>
+><i>     Andrew> The userspace library should be able to track the tree and</i><br>
+><i>     Andrew> the overlaps, etc.  Things might become interesting when</i><br>
+><i>     Andrew> the memory is MAP_SHARED pagecache and multiple</i><br>
+><i>     Andrew> independent processes are involved, although I guess</i><br>
+><i>     Andrew> that'd work OK.</i><br>
+><i> </i><br>
+><i> I used to think I knew how to handle this, but in your scheme where</i><br>
+><i> the kernel is doing accounting for pinned memory by marking vmas with</i><br>
+><i> VM_KERNEL_LOCKED, at step c), I don't see why the kernel won't unlock</i><br>
+><i> vmas covering 0x0000 through 0x1fff and credit 8K back to the</i><br>
+><i> process's pinning count.</i><br>
+><i> </i><br>
+><i> Sorry to be so dense but can you spell out what you think should</i><br>
+><i> happen at steps a), b) and c) above?</i><br>
 <br>
 Well I was vaguely proposing that the userspace library keep track of the<br>
 byteranges and the underlying page states.  So in the above scenario<br>
 userspace would leave the page at 0x1000 registered until all<br>
 registrations against that page have been undone.<br>
 -<br>
-To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in<br>
 the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
 More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
 Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
 <br>
 <br>
+

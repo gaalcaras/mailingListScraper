@@ -1,27 +1,27 @@
 <P>
 On Sat, Nov 16, 2002 at 01:04:35AM -0500, Patrick Finnegan wrote:
 <BR>
-<P><EM>&gt; Wouldn't it then seem reasonable to remove things from the kernel that
+<P><EM>> Wouldn't it then seem reasonable to remove things from the kernel that
 </EM><BR>
-<EM>&gt; have been broken for a long time, and no one seems to care enough to fix?
+<EM>> have been broken for a long time, and no one seems to care enough to fix?
 </EM><BR>
-<EM>&gt; I know of at least one driver (IOmega Buz v4l) that seems to have fallen
+<EM>> I know of at least one driver (IOmega Buz v4l) that seems to have fallen
 </EM><BR>
-<EM>&gt; into disrepair possibly since before 2.4.0, and as far as I know has not
+<EM>> into disrepair possibly since before 2.4.0, and as far as I know has not
 </EM><BR>
-<EM>&gt; been repaired since then.
+<EM>> been repaired since then.
 </EM><BR>
 <P>On a few opportunities when I removed broken features from the MIPS
 <BR>
 kernel that was what it took to trigger somebody to fix it.
 <BR>
-<P>&nbsp;&nbsp;Ralf
+<P>  Ralf
 <BR>
 -
 <BR>
-To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
 <BR>
-the body of a message to <A HREF="mailto:majordomo@vger.kernel.org?Subject=Re:%20Why%20can't%20Johnny%20compile?&In-Reply-To=&lt;20021117063413.A18893@linux-mips.org&gt;">majordomo@vger.kernel.org</A>
+the body of a message to <A HREF="mailto:majordomo@vger.kernel.org?Subject=Re:%20Why%20can't%20Johnny%20compile?&In-Reply-To=<20021117063413.A18893@linux-mips.org>">majordomo@vger.kernel.org</A>
 <BR>
 More majordomo info at  <A HREF="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</A>
 <BR>

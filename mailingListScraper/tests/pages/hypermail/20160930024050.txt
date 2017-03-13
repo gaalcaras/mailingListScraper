@@ -1,24 +1,25 @@
-From: Greg KH &lt;gregkh@xxxxxxxxxxxxxxxxxxx&gt;<br>
+From: Greg KH <gregkh@xxxxxxxxxxxxxxxxxxx><br>
 Date: Fri, 30 Sep 2016 08:30:05 +0200<br>
 <br>
-&gt;<i> On Fri, Sep 30, 2016 at 01:55:55AM -0400, David Miller wrote:</i><br>
-&gt;<i>&gt; From: Amir Levy &lt;amir.jer.levy@xxxxxxxxx&gt;</i><br>
-&gt;<i>&gt; Date: Wed, 28 Sep 2016 17:44:22 +0300</i><br>
-&gt;<i>&gt; </i><br>
-&gt;<i>&gt; &gt; This driver enables Thunderbolt Networking on non-Apple platforms</i><br>
-&gt;<i>&gt; &gt; running Linux.</i><br>
-&gt;<i>&gt; </i><br>
-&gt;<i>&gt; Greg, any idea where this should get merged once fully vetted?  I can</i><br>
-&gt;<i>&gt; take it through the net-next tree, but I'm fine with another more</i><br>
-&gt;<i>&gt; appropriate tree taking it as well.</i><br>
-&gt;<i> </i><br>
-&gt;<i> I am supposed to be taking thunderbolt patches, but if this really is a</i><br>
-&gt;<i> network driver, it should go under drivers/net/ somewhere.  It needs</i><br>
-&gt;<i> more review though, it's not ready to go through anyone's tree just yet :)</i><br>
-&gt;<i> </i><br>
-&gt;<i> I'll let the thunderbolt maintainer go through it first before asking</i><br>
-&gt;<i> for a netdev review.</i><br>
+><i> On Fri, Sep 30, 2016 at 01:55:55AM -0400, David Miller wrote:</i><br>
+><i>> From: Amir Levy <amir.jer.levy@xxxxxxxxx></i><br>
+><i>> Date: Wed, 28 Sep 2016 17:44:22 +0300</i><br>
+><i>> </i><br>
+><i>> > This driver enables Thunderbolt Networking on non-Apple platforms</i><br>
+><i>> > running Linux.</i><br>
+><i>> </i><br>
+><i>> Greg, any idea where this should get merged once fully vetted?  I can</i><br>
+><i>> take it through the net-next tree, but I'm fine with another more</i><br>
+><i>> appropriate tree taking it as well.</i><br>
+><i> </i><br>
+><i> I am supposed to be taking thunderbolt patches, but if this really is a</i><br>
+><i> network driver, it should go under drivers/net/ somewhere.  It needs</i><br>
+><i> more review though, it's not ready to go through anyone's tree just yet :)</i><br>
+><i> </i><br>
+><i> I'll let the thunderbolt maintainer go through it first before asking</i><br>
+><i> for a netdev review.</i><br>
 <br>
 Ok, thanks Greg.<br>
 <br>
 <br>
+

@@ -1,19 +1,19 @@
 At 09:31 06/27/96, Leonard N. Zubkoff wrote:<br>
-<i>&gt;  Date:         Thu, 27 Jun 1996 17:32:11 +0200 (MET DST)</i><br>
-<i>&gt;  From: Michael Neuffer &lt;neuffer@goofy.zdv.uni-mainz.de&gt;</i><br>
-<i>&gt;</i><br>
-<i>&gt;  &gt; I always wondered what happened to Convex ;)</i><br>
-<i>&gt;</i><br>
-<i>&gt;  They have been bought by HP. They also tried to "buy" the people,</i><br>
-<i>&gt;  but at least Stefan didn't seem to be too happy with it.</i><br>
-<i>&gt;</i><br>
-<i>&gt;&lt;sigh&gt; No doubt their acquisition of Convex will work out as well as the Apollo</i><br>
-<i>&gt;acquisition did...</i><br>
-<i>&gt;</i><br>
-<i>&gt;                Leonard</i><br>
+<i>>  Date:         Thu, 27 Jun 1996 17:32:11 +0200 (MET DST)</i><br>
+<i>>  From: Michael Neuffer <neuffer@goofy.zdv.uni-mainz.de></i><br>
+<i>></i><br>
+<i>>  > I always wondered what happened to Convex ;)</i><br>
+<i>></i><br>
+<i>>  They have been bought by HP. They also tried to "buy" the people,</i><br>
+<i>>  but at least Stefan didn't seem to be too happy with it.</i><br>
+<i>></i><br>
+<i>><sigh> No doubt their acquisition of Convex will work out as well as the Apollo</i><br>
+<i>>acquisition did...</i><br>
+<i>></i><br>
+<i>>                Leonard</i><br>
 <p>
 Aw Jeez,<br>
-    I'd only just gotten over that and you had to remind me! &lt;sigh&gt; :-)<br>
+    I'd only just gotten over that and you had to remind me! <sigh> :-)<br>
 <p>
     A touch more seriously, that reminds me of a couple of wonderful Apollo<br>
 features that I'd love to see in Linux. Those features are variant links<br>

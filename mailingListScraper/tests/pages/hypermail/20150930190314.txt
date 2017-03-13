@@ -1,10 +1,10 @@
-From: Bjorn Andersson &lt;bjorn.andersson@xxxxxxxxxxxxxx&gt;<br>
+From: Bjorn Andersson <bjorn.andersson@xxxxxxxxxxxxxx><br>
 <br>
 The Qualcomm WCNSS chip provides two SMD channels to the BT core; one<br>
 for command and one for event packets. This driver exposes the two<br>
 channels as a hci device.<br>
 <br>
-Signed-off-by: Bjorn Andersson &lt;bjorn.andersson@xxxxxxxxxxxxxx&gt;<br>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@xxxxxxxxxxxxxx><br>
 ---<br>
  drivers/bluetooth/Kconfig   |  11 +++<br>
  drivers/bluetooth/Makefile  |   1 +<br>
@@ -22,7 +22,7 @@ index 3d480d8c6111..1a2658f373b5 100644<br>
  	  kernel or say M to compile it as module (btsdio).<br>
  <br>
 +config BT_HCISMD<br>
-+	tristate &quot;HCI Qualcomm SMD driver&quot;<br>
++	tristate "HCI Qualcomm SMD driver"<br>
 +	depends on QCOM_SMD<br>
 +	help<br>
 +	  Qualcomm SMD HCI driver.<br>
@@ -33,7 +33,7 @@ index 3d480d8c6111..1a2658f373b5 100644<br>
 +	  kernelor say M to compile as a module.<br>
 +<br>
  config BT_HCIUART<br>
- 	tristate &quot;HCI UART driver&quot;<br>
+ 	tristate "HCI UART driver"<br>
  	depends on TTY<br>
 diff --git a/drivers/bluetooth/Makefile b/drivers/bluetooth/Makefile<br>
 index 07c9cf381e5a..43c7dc8641ff 100644<br>
@@ -66,12 +66,12 @@ index 000000000000..e5748da2f902<br>
 + * GNU General Public License for more details.<br>
 + */<br>
 +<br>
-+#include &lt;linux/module.h&gt;<br>
-+#include &lt;linux/slab.h&gt;<br>
-+#include &lt;linux/soc/qcom/smd.h&gt;<br>
-+#include &lt;net/bluetooth/bluetooth.h&gt;<br>
-+#include &lt;net/bluetooth/hci_core.h&gt;<br>
-+#include &lt;net/bluetooth/hci.h&gt;<br>
++#include <linux/module.h><br>
++#include <linux/slab.h><br>
++#include <linux/soc/qcom/smd.h><br>
++#include <net/bluetooth/bluetooth.h><br>
++#include <net/bluetooth/hci_core.h><br>
++#include <net/bluetooth/hci.h><br>
 +<br>
 +static struct {<br>
 +	struct qcom_smd_channel *acl_channel;<br>
@@ -93,12 +93,12 @@ index 000000000000..e5748da2f902<br>
 +	buf = skb_put(skb, count);<br>
 +	memcpy_fromio(buf, data, count);<br>
 +<br>
-+	skb-&gt;dev = (void *)smd_hci.hci;<br>
-+	bt_cb(skb)-&gt;pkt_type = type;<br>
++	skb->dev = (void *)smd_hci.hci;<br>
++	bt_cb(skb)->pkt_type = type;<br>
 +	skb_orphan(skb);<br>
 +<br>
 +	ret = hci_recv_frame(smd_hci.hci, skb);<br>
-+	if (ret &lt; 0)<br>
++	if (ret < 0)<br>
 +		kfree_skb(skb);<br>
 +<br>
 +	return ret;<br>
@@ -122,13 +122,13 @@ index 000000000000..e5748da2f902<br>
 +{<br>
 +	int ret;<br>
 +<br>
-+	switch (bt_cb(skb)-&gt;pkt_type) {<br>
++	switch (bt_cb(skb)->pkt_type) {<br>
 +	case HCI_ACLDATA_PKT:<br>
 +	case HCI_SCODATA_PKT:<br>
-+		ret = qcom_smd_send(smd_hci.acl_channel, skb-&gt;data, skb-&gt;len);<br>
++		ret = qcom_smd_send(smd_hci.acl_channel, skb->data, skb->len);<br>
 +		break;<br>
 +	case HCI_COMMAND_PKT:<br>
-+		ret = qcom_smd_send(smd_hci.cmd_channel, skb-&gt;data, skb-&gt;len);<br>
++		ret = qcom_smd_send(smd_hci.cmd_channel, skb->data, skb->len);<br>
 +		break;<br>
 +	default:<br>
 +		ret = -ENODEV;<br>
@@ -182,14 +182,14 @@ index 000000000000..e5748da2f902<br>
 +	if (!hci)<br>
 +		return -ENOMEM;<br>
 +<br>
-+	hci-&gt;bus = HCI_SMD;<br>
-+	hci-&gt;open = smd_hci_open;<br>
-+	hci-&gt;close = smd_hci_close;<br>
-+	hci-&gt;send = smd_hci_send;<br>
-+	hci-&gt;set_bdaddr = smd_hci_set_bdaddr;<br>
++	hci->bus = HCI_SMD;<br>
++	hci->open = smd_hci_open;<br>
++	hci->close = smd_hci_close;<br>
++	hci->send = smd_hci_send;<br>
++	hci->set_bdaddr = smd_hci_set_bdaddr;<br>
 +<br>
 +	ret = hci_register_dev(hci);<br>
-+	if (ret &lt; 0) {<br>
++	if (ret < 0) {<br>
 +		hci_free_dev(hci);<br>
 +		return ret;<br>
 +	}<br>
@@ -212,7 +212,7 @@ index 000000000000..e5748da2f902<br>
 +<br>
 +static int smd_hci_acl_probe(struct qcom_smd_device *sdev)<br>
 +{<br>
-+	smd_hci.acl_channel = sdev-&gt;channel;<br>
++	smd_hci.acl_channel = sdev->channel;<br>
 +	smd_hci_register();<br>
 +<br>
 +	return 0;<br>
@@ -220,7 +220,7 @@ index 000000000000..e5748da2f902<br>
 +<br>
 +static int smd_hci_cmd_probe(struct qcom_smd_device *sdev)<br>
 +{<br>
-+	smd_hci.cmd_channel = sdev-&gt;channel;<br>
++	smd_hci.cmd_channel = sdev->channel;<br>
 +	smd_hci_register();<br>
 +<br>
 +	return 0;<br>
@@ -239,12 +239,12 @@ index 000000000000..e5748da2f902<br>
 +}<br>
 +<br>
 +static const struct qcom_smd_id smd_hci_acl_match[] = {<br>
-+	{ .name = &quot;APPS_RIVA_BT_ACL&quot; },<br>
++	{ .name = "APPS_RIVA_BT_ACL" },<br>
 +	{}<br>
 +};<br>
 +<br>
 +static const struct qcom_smd_id smd_hci_cmd_match[] = {<br>
-+	{ .name = &quot;APPS_RIVA_BT_CMD&quot; },<br>
++	{ .name = "APPS_RIVA_BT_CMD" },<br>
 +	{}<br>
 +};<br>
 +<br>
@@ -254,7 +254,7 @@ index 000000000000..e5748da2f902<br>
 +	.callback = smd_hci_acl_callback,<br>
 +	.smd_match_table = smd_hci_acl_match,<br>
 +	.driver  = {<br>
-+		.name  = &quot;qcom_smd_hci_acl&quot;,<br>
++		.name  = "qcom_smd_hci_acl",<br>
 +		.owner = THIS_MODULE,<br>
 +	},<br>
 +};<br>
@@ -265,7 +265,7 @@ index 000000000000..e5748da2f902<br>
 +	.callback = smd_hci_cmd_callback,<br>
 +	.smd_match_table = smd_hci_cmd_match,<br>
 +	.driver  = {<br>
-+		.name  = &quot;qcom_smd_hci_cmd&quot;,<br>
++		.name  = "qcom_smd_hci_cmd",<br>
 +		.owner = THIS_MODULE,<br>
 +	},<br>
 +};<br>
@@ -273,8 +273,8 @@ index 000000000000..e5748da2f902<br>
 +module_qcom_smd_driver(smd_hci_acl_driver);<br>
 +module_qcom_smd_driver(smd_hci_cmd_driver);<br>
 +<br>
-+MODULE_DESCRIPTION(&quot;Qualcomm SMD HCI driver&quot;);<br>
-+MODULE_LICENSE(&quot;GPL v2&quot;);<br>
++MODULE_DESCRIPTION("Qualcomm SMD HCI driver");<br>
++MODULE_LICENSE("GPL v2");<br>
 diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h<br>
 index 7ca6690355ea..ee5b2dd922f6 100644<br>
 --- a/include/net/bluetooth/hci.h<br>
@@ -291,7 +291,7 @@ index 7ca6690355ea..ee5b2dd922f6 100644<br>
 2.4.2<br>
 <br>
 --<br>
-To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in<br>
 the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
 More majordomo info at  <a  rel="nofollow" href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
 Please read the FAQ at  <a  rel="nofollow" href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>

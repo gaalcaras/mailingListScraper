@@ -1,16 +1,16 @@
 On Fri, 25 May 2007, Pavel Machek wrote:<br>
-&gt;<i> My proposed solution is &quot;fix pcmcia to load firmware before suspend</i><br>
-&gt;<i> even starts&quot;</i><br>
+><i> My proposed solution is "fix pcmcia to load firmware before suspend</i><br>
+><i> even starts"</i><br>
 <br>
 s/pcmcia/all drivers that load firmware/ if you are going to go that way.<br>
 <br>
 -- <br>
-  &quot;One disk to rule them all, One disk to find them. One disk to bring<br>
+  "One disk to rule them all, One disk to find them. One disk to bring<br>
   them all and in the darkness grind them. In the Land of Redmond<br>
-  where the shadows lie.&quot; -- The Silicon Valley Tarot<br>
+  where the shadows lie." -- The Silicon Valley Tarot<br>
   Henrique Holschuh<br>
 -<br>
-To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in<br>
 the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
 More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
 Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>

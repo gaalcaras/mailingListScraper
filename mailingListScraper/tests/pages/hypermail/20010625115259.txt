@@ -1,27 +1,27 @@
 <P>
 On Mon, 25 Jun 2001, Timur Tabi wrote:
 <BR>
-<P><EM>&gt; ** Reply to message from James Lamanna &lt;<A HREF="mailto:jlamanna@its.caltech.edu?Subject=Re:%20Making%20a%20module%202.4%20compatible&In-Reply-To=&lt;Pine.LNX.3.95.1010625123838.9515A-100000@chaos.analogic.com&gt;">jlamanna@its.caltech.edu</A>&gt; on Sat, 23
+<P><EM>> ** Reply to message from James Lamanna <<A HREF="mailto:jlamanna@its.caltech.edu?Subject=Re:%20Making%20a%20module%202.4%20compatible&In-Reply-To=<Pine.LNX.3.95.1010625123838.9515A-100000@chaos.analogic.com>">jlamanna@its.caltech.edu</A>> on Sat, 23
 </EM><BR>
-<EM>&gt; Jun 2001 22:10:58 -0700
+<EM>> Jun 2001 22:10:58 -0700
 </EM><BR>
-<EM>&gt; 
+<EM>> 
 </EM><BR>
-<EM>&gt; 
+<EM>> 
 </EM><BR>
-<EM>&gt; &gt; It would be nice to have it working under 2.4, so is there someplace
+<EM>> > It would be nice to have it working under 2.4, so is there someplace
 </EM><BR>
-<EM>&gt; &gt; that outlines some of the major things that would have changed so I can
+<EM>> > that outlines some of the major things that would have changed so I can
 </EM><BR>
-<EM>&gt; &gt; update the module accordingly?
+<EM>> > update the module accordingly?
 </EM><BR>
-<EM>&gt; 
+<EM>> 
 </EM><BR>
-<EM>&gt; Unfortunately, no.  But if it turns out I'm wrong, please let me know what you
+<EM>> Unfortunately, no.  But if it turns out I'm wrong, please let me know what you
 </EM><BR>
-<EM>&gt; find.
+<EM>> find.
 </EM><BR>
-<EM>&gt; 
+<EM>> 
 </EM><BR>
 <P>As a start:
 <BR>
@@ -31,15 +31,15 @@ You can do '#if !defined(...)` and make code changes backwards compatible.
 <BR>
 <P><P>Macro, THIS_MODULE	is now the first member of struct file_operations.
 <BR>
-<P><P>Include &lt;linux/init.h&gt;	__init data type for one-time initialization code
+<P><P>Include <linux/init.h>	__init data type for one-time initialization code
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or data.
+                        or data.
 <BR>
 This is new, hense not backwards compatible.
 <BR>
 <P><P>Explicit initialization of spin-locks, SPIN_LOCK_UNLOCKED and/or
 <BR>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spin_lock_init(spinlock_t *);
+                        spin_lock_init(spinlock_t *);
 <BR>
 If you fix this, it's backwards compatible.
 <BR>
@@ -59,17 +59,17 @@ Dick Johnson
 <BR>
 <P>Penguin : Linux version 2.4.1 on an i686 machine (799.53 BogoMips).
 <BR>
-<P>&quot;Memory is like gasoline. You use it up when you are running. Of
+<P>"Memory is like gasoline. You use it up when you are running. Of
 <BR>
-course you get it all back when you reboot...&quot;; Actual explanation
+course you get it all back when you reboot..."; Actual explanation
 <BR>
 obtained from the Micro$oft help desk.
 <BR>
 <P><P>-
 <BR>
-To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
 <BR>
-the body of a message to <A HREF="mailto:majordomo@vger.kernel.org?Subject=Re:%20Making%20a%20module%202.4%20compatible&In-Reply-To=&lt;Pine.LNX.3.95.1010625123838.9515A-100000@chaos.analogic.com&gt;">majordomo@vger.kernel.org</A>
+the body of a message to <A HREF="mailto:majordomo@vger.kernel.org?Subject=Re:%20Making%20a%20module%202.4%20compatible&In-Reply-To=<Pine.LNX.3.95.1010625123838.9515A-100000@chaos.analogic.com>">majordomo@vger.kernel.org</A>
 <BR>
 More majordomo info at  <A HREF="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</A>
 <BR>
