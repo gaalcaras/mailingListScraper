@@ -106,7 +106,7 @@ class MarcSpider(ArchiveSpider):
 
         meta = response.xpath("//font[@size='+1']//child::text()").extract()
         meta = ''.join(meta).split('\n') # Give each line its element in list
-        meta = list(filter(None, meta))[:-1] # Remove empty lines and last item
+        meta = list(filter(None, meta)) # Remove empty lines
 
         for line in meta:
             reg = re.search('^([^:]*):(.*)$', line)
