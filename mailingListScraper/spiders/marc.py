@@ -31,12 +31,12 @@ class MarcSpider(ArchiveSpider):
     # Default list
     default_list = 'git'
 
-
     custom_settings = {
         # Unfortunately, we have to ignore the robots.txt file
         'ROBOTSTXT_OBEY': False,
         # We don't want to overload their servers, so let's be gentle here
-        'AUTOTHROTTLE_ENABLED': True
+        'AUTOTHROTTLE_ENABLED': True,
+        'AUTOTHROTTLE_TARGET_CONCURRENCY': 0.5
     }
 
     def _set_lists(self):
@@ -116,7 +116,9 @@ class MarcSpider(ArchiveSpider):
         xpath_replyto = "//a[contains(text(), 'prev in thread')]/@href"
         replyto = response.xpath(xpath_replyto).extract()
         if any(replyto):
-            load.add_value('replyto', self.start_url + replyto[0])
+            replyto = self.start_url + replyto[0]
+            load.add_value('replyto', replyto)
+            yield scrapy.Request(replyto, self.parse_item)
         else:
             load.add_value('replyto', '')
 
@@ -157,4 +159,4 @@ class MarcSpider(ArchiveSpider):
 
         load.add_value('timeSent', '')
 
-        return load.load_item()
+        yield load.load_item()
