@@ -159,4 +159,4 @@ class MarcSpider(ArchiveSpider):
 
         load.add_value('timeSent', '')
 
-        yield load.load_item()
+        return load.load_item()
