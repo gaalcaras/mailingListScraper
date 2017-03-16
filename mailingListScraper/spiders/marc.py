@@ -36,7 +36,8 @@ class MarcSpider(ArchiveSpider):
         'ROBOTSTXT_OBEY': False,
         # We don't want to overload their servers, so let's be gentle here
         'AUTOTHROTTLE_ENABLED': True,
-        'AUTOTHROTTLE_TARGET_CONCURRENCY': 0.5
+        'AUTOTHROTTLE_TARGET_CONCURRENCY': 0.5,
+        'DOWNLOAD_DELAY': 1 # Minimum delay of 1s
     }
 
     def _set_lists(self):
