@@ -101,7 +101,7 @@ class MarcSpider(ArchiveSpider):
         Test if there is a previous or next message in the thread to follow.
 
         @url http://marc.info/?l=git&m=118324291930219&w=2
-        @returns requests 3 3
+        @returns requests 2 2
         """
 
         xpath_prev = "//a[contains(text(), 'prev in thread')]/@href"
@@ -118,7 +118,7 @@ class MarcSpider(ArchiveSpider):
             next_msg = self.start_url + next_msg[0]
             yield scrapy.Request(next_msg, self.parse_thread)
 
-        yield scrapy.Request(response.url, self.parse_item)
+        yield self.parse_item(response)
 
     def parse_item(self, response):
         """
