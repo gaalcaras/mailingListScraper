@@ -90,11 +90,35 @@ class MarcSpider(ArchiveSpider):
         msg_urls = [response.url + u for u in msg_urls]
 
         for url in msg_urls:
-            yield scrapy.Request(url, callback=self.parse_item)
+            yield scrapy.Request(url, callback=self.parse_thread)
 
         if any(next_url):
             next_url = self.start_url + next_url[0]
             yield scrapy.Request(next_url, callback=self.parse_msglist)
+
+    def parse_thread(self, response):
+        """
+        Test if there is a previous or next message in the thread to follow.
+
+        @url http://marc.info/?l=git&m=118324291930219&w=2
+        @returns requests 3 3
+        """
+
+        xpath_prev = "//a[contains(text(), 'prev in thread')]/@href"
+        prev = response.xpath(xpath_prev).extract()
+
+        if any(prev):
+            prev = self.start_url + prev[0]
+            yield scrapy.Request(prev, self.parse_thread)
+
+        xpath_next = "//a[contains(text(), 'next in thread')]/@href"
+        next_msg = response.xpath(xpath_next).extract()
+
+        if any(next_msg):
+            next_msg = self.start_url + next_msg[0]
+            yield scrapy.Request(next_msg, self.parse_thread)
+
+        yield scrapy.Request(response.url, self.parse_item)
 
     def parse_item(self, response):
         """
@@ -102,7 +126,7 @@ class MarcSpider(ArchiveSpider):
 
         @url http://marc.info/?l=git&m=148889722812631&w=2
         @returns item 1
-        @scrapes url subject senderName senderEmail timeReceived body
+        @scrapes url subject senderName senderEmail timeReceived body replyto timeSent
         """
 
         load = ItemLoader(item=Email(), selector=response)
@@ -115,10 +139,10 @@ class MarcSpider(ArchiveSpider):
 
         xpath_replyto = "//a[contains(text(), 'prev in thread')]/@href"
         replyto = response.xpath(xpath_replyto).extract()
+
         if any(replyto):
             replyto = self.start_url + replyto[0]
             load.add_value('replyto', replyto)
-            yield scrapy.Request(replyto, self.parse_item)
         else:
             load.add_value('replyto', '')
 
