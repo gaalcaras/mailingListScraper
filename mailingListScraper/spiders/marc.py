@@ -99,23 +99,24 @@ class MarcSpider(ArchiveSpider):
 
     def parse_thread(self, response):
         """
-        Test if there is a previous or next message in the thread to follow.
+        Find if there are previous or next message in the thread to follow.
+        If the message is from one of the targeted mailing lists, then follow.
 
-        @url http://marc.info/?l=git&m=118324291930219&w=2
-        @returns requests 2 2
+        @url http://marc.info/?l=git&m=143699661419579&w=2
+        @returns requests 0 0
         """
 
         xpath_prev = "//a[contains(text(), 'prev in thread')]/@href"
         prev = response.xpath(xpath_prev).extract()
 
-        if any(prev):
+        if any(prev) and any(ml in prev[0] for ml in self.scraping_lists):
             prev = self.start_url + prev[0]
             yield scrapy.Request(prev, self.parse_thread)
 
         xpath_next = "//a[contains(text(), 'next in thread')]/@href"
         next_msg = response.xpath(xpath_next).extract()
 
-        if any(next_msg):
+        if any(next_msg) and any(ml in next_msg[0] for ml in self.scraping_lists):
             next_msg = self.start_url + next_msg[0]
             yield scrapy.Request(next_msg, self.parse_thread)
 
