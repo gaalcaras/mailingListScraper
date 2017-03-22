@@ -79,19 +79,31 @@ class MarcSpider(ArchiveSpider):
         """
         Extract all relative URLs to the individual messages.
 
-        @url http://marc.info/?l=git&r=1&b=201406&w=2
-        @returns requests 31 31
-        """
+        For instance, on the following page, there are:
+        + 30 messages requests
+        + 16 threads requests
+        + 1 next page request
 
-        xpath_next = "//pre//a[contains(text(), 'Next')][1]//@href"
-        next_url = response.xpath(xpath_next).extract()
+        @url http://marc.info/?l=git&r=1&b=201406&w=2
+        @returns requests 47 47
+        """
 
         xpath_msg = "//pre//a[contains(@href, '&m')]//@href"
         msg_urls = response.xpath(xpath_msg).extract()
-        msg_urls = [response.url + u for u in msg_urls]
+        msg_urls = [self.start_url + u for u in msg_urls]
 
         for url in msg_urls:
+            yield scrapy.Request(url, callback=self.parse_item)
+
+        xpath_threads = "//a[contains(@href, '?t=')]/@href"
+        thread_urls = response.xpath(xpath_threads).extract()
+        thread_urls = [self.start_url + u for u in thread_urls]
+
+        for url in thread_urls:
             yield scrapy.Request(url, callback=self.parse_thread)
+
+        xpath_next = "//pre//a[contains(text(), 'Next')][1]//@href"
+        next_url = response.xpath(xpath_next).extract()
 
         if any(next_url):
             next_url = self.start_url + next_url[0]
@@ -99,28 +111,31 @@ class MarcSpider(ArchiveSpider):
 
     def parse_thread(self, response):
         """
-        Find if there are previous or next message in the thread to follow.
-        If the message is from one of the targeted mailing lists, then follow.
+        Go in the thread list itself to follow message links, if
+        they are in the targeted mailing lists.
 
-        @url http://marc.info/?l=git&m=143699661419579&w=2
-        @returns requests 0 0
+        For instance, on the following page, there are:
+        + 10 messages links to follow (git only)
+        + 1 next page link
+
+        @url http://marc.info/?t=111957107900001&r=1&w=2
+        @returns requests 11 11
         """
 
-        xpath_prev = "//a[contains(text(), 'prev in thread')]/@href"
-        prev = response.xpath(xpath_prev).extract()
+        xpath_msg = "//a[contains(@href, '&m=')]/@href"
+        msg_urls = response.xpath(xpath_msg).extract()
+        msg_urls = [self.start_url + u for u in msg_urls]
 
-        if any(prev) and any(ml in prev[0] for ml in self.scraping_lists):
-            prev = self.start_url + prev[0]
-            yield scrapy.Request(prev, self.parse_thread)
+        for url in msg_urls:
+            if any(ml in url for ml in self.scraping_lists):
+                yield scrapy.Request(url, self.parse_item)
 
-        xpath_next = "//a[contains(text(), 'next in thread')]/@href"
-        next_msg = response.xpath(xpath_next).extract()
+        xpath_next = "//pre//a[contains(text(), 'Next')][1]//@href"
+        next_url = response.xpath(xpath_next).extract()
 
-        if any(next_msg) and any(ml in next_msg[0] for ml in self.scraping_lists):
-            next_msg = self.start_url + next_msg[0]
-            yield scrapy.Request(next_msg, self.parse_thread)
-
-        yield self.parse_item(response)
+        if any(next_url):
+            next_url = self.start_url + next_url[0]
+            yield scrapy.Request(next_url, callback=self.parse_thread)
 
     def parse_item(self, response):
         """
