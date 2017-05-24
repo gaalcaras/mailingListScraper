@@ -68,7 +68,17 @@ class MarcSpider(ArchiveSpider):
             urls = []
 
             for year in self.years:
-                urls.extend([u for u in msglist_urls if year in u])
+                pattern = 'b=' + year
+                urls.extend([u for u in msglist_urls if pattern in u])
+
+            msglist_urls = urls
+
+        if any(self.months):
+            urls = []
+
+            for month in self.months:
+                pattern = month + '&'
+                urls.extend([u for u in msglist_urls if pattern in u])
 
             msglist_urls = urls
 

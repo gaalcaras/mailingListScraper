@@ -21,14 +21,16 @@ class ArchiveSpider(scrapy.Spider):
     start_url = ''
     drop_fields = []
     years = []
+    months = []
 
     get_body = True
 
-    def __init__(self, body=None, mlist=None, year=None):
+    def __init__(self, body=None, mlist=None, year=None, month=None):
         self._set_lists()
         self._mlist(mlist)
         self._getbody(body)
         self._year(year)
+        self._month(month)
         super().__init__()
 
     def _set_lists(self):
@@ -67,6 +69,32 @@ class ArchiveSpider(scrapy.Spider):
             self.years = years
 
         self.logger.info('Crawling is limited to the following years: ' + ','.join(self.years))
+
+    def _month(self, month):
+        "Handle the month argument."
+
+        if month is None:
+            month = ''
+            self.months = []
+            self.logger.info('Crawling all months by default.')
+            return
+
+        if re.match(r'^\d{2}$', month):
+            # Only scrap one month
+            self.months = [month.strip()]
+        elif re.match(r'\d{2},', month):
+            # Scrap several months
+            months = month.split(',')
+            months = [y.strip() for y in months]
+            self.months = months
+        elif re.match(r'(\d{2}):(\d{2})', month):
+            # Scrap a range of months
+            reg = re.search(r'(\d{2}):(\d{2})', month)
+            months = range(int(reg.group(1)), int(reg.group(2))+1)
+            months = [str(y) for y in months]
+            self.months = months
+
+        self.logger.info('Crawling is limited to the following months: ' + ','.join(self.months))
 
     def _mlist(self, mlist):
         "Handle the mList argument."

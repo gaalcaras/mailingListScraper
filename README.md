@@ -15,7 +15,7 @@
   * [Options](#options)
     * [mlist](#mlist)
     * [body](#body)
-    * [year](#year)
+    * [year, month](#year-month)
 * [Development and testing](#development-and-testing)
   * [Development](#development)
   * [Testing](#testing)
@@ -194,27 +194,36 @@ Since downloading the body of each email can take up a lot of disk space, you ca
 scrapy crawl archiveName -a body=false
 ```
 
-#### year
+#### year, month
 
 By default, the spiders crawl through every message in the mailing list.
-If you're only interested in a specific period of time, you can use the year argument for that.
+If you're only interested in a specific period of time, you can use the `year` and/or `month` argument for that.
 
-You can focus on one year:
+You can focus on one year/month:
 
 ```
 scrapy crawl marc -a year=2006
+scrapy crawl marc -a month=01
 ```
 
-Or you can give it a comma separated list of years:
+Or you can give it a comma separated list of years/months:
 
 ```
 scrapy crawl marc -a year=2006,2011
+scrapy crawl marc -a month=01,06
 ```
 
-Or even a range of years:
+Or even a range of months:
 
 ```
 scrapy crawl marc -a year=2006:2008
+scrapy crawl marc -a month=01:06
+```
+
+You can also combine the year and month arguments:
+
+```
+scrapy crawl marc -a year=2006:2008 -a month=01:06
 ```
 
 ## Development and testing
