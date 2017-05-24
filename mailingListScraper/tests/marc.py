@@ -28,9 +28,8 @@ class MarcTest(unittest.TestCase):
         """
         Test if the spider gets all the mailing lists in the MARC archive.
         """
-        print('test')
         self.spider._set_lists()
-        self.assertEqual(len(self.spider.mailing_lists), 3700)
+        self.assertEqual(len(self.spider.mailing_lists), 3711)
 
     def test_accuracy_mailing_lis(self):
         """
