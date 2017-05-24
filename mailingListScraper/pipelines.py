@@ -7,6 +7,7 @@ Pipelines that handle the scraped data, format it and save it.
 
 import re
 import logging
+import os
 from datetime import datetime
 from dateutil.parser import parse as dateParser
 from dateutil import tz
@@ -175,6 +176,9 @@ class XmlExport(object):
         if not spider.get_body:
             return
 
+        if not os.path.exists('data'):
+            os.makedirs('data')
+
         if len(spider.scraping_lists) == 1:
             self.file_base = 'data/{}'.format(spider.scraping_lists[0])
             self.fields_to_export.remove('mailingList')
@@ -256,6 +260,9 @@ class CsvExport(object):
                             'subject', 'url', 'replyto']
 
         fields_to_export = [f for f in fields_to_export if f not in spider.drop_fields]
+
+        if not os.path.exists('data'):
+            os.makedirs('data')
 
         if len(spider.scraping_lists) == 1:
             dest_file_path = 'data/{}ByEmail.csv'.format(spider.scraping_lists[0])
