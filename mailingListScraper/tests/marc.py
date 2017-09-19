@@ -26,10 +26,11 @@ class MarcTest(unittest.TestCase):
 
     def test_nb_items_mailing_list(self):
         """
-        Test if the spider gets all the mailing lists in the MARC archive.
+        Test if the spider gets more than 3500 mailing lists in the MARC archive.
+        That's according to the about page: https://marc.info/?q=about
         """
         self.spider._set_lists()
-        self.assertEqual(len(self.spider.mailing_lists), 3711)
+        self.assertGreater(len(self.spider.mailing_lists), 3500)
 
     def test_accuracy_mailing_lis(self):
         """
