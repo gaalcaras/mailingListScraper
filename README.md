@@ -19,6 +19,8 @@
 * [Development and testing](#development-and-testing)
   * [Development](#development)
   * [Testing](#testing)
+    * [Running tests and git pre-commit hook](#running-tests-and-git-pre-commit-hook)
+    * [How the tests work](#how-the-tests-work)
 * [Privacy](#privacy)
 
 <!-- vim-markdown-toc -->
@@ -237,6 +239,18 @@ This scraper is developed in Python 3.5.2 with the [scrapy](https://doc.scrapy.o
 **Before you start working on your own spiders**, you should set the `LOG_LEVEL` setting (`mailingListScraper/settings.py`) to `DEBUG` (or just uncomment the line).
 
 ### Testing
+
+#### Running tests and git pre-commit hook
+
+You can run all tests with a simple `./run-tests.sh` (see below for a detailed explanation of how the tests work).
+
+If you want to only commit code that passes tests, you should install the git pre-commit hook by running:
+
+```
+ln -s ../../pre-commit.sh .git/hooks/pre-commit
+```
+
+#### How the tests work
 
 You can run the `scrapy check` command to run simple tests, with the built-in [Scrapy contracts](https://doc.scrapy.org/en/latest/topics/contracts.html).
 

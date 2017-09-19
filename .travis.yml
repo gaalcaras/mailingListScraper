@@ -2,7 +2,4 @@ language: python
 python: "3.5"
 install: "pip install -r requirements.txt"
 script:
-  - scrapy check
-  - python -m unittest -v mailingListScraper.tests.hypermail
-  - python -m unittest -v mailingListScraper.tests.marc
-  - python -m unittest -v mailingListScraper.tests.pipelines
+  - ./run-tests.sh
